@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Ankunft</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="./assets/css/styles.css">
+	<link rel="stylesheet" href="./assets/css/line-colors.css">
+	<link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
+	<link rel="manifest" href="/manifest.json" type="application/json" >
+	<meta name="theme-color" content="#000">
+</head>
+<body>
+
+<noscript> You need to enable JavaScript to run this app. </noscript>
+
+<div class="navbar" id="navbar"></div>
+<script>
+// Rendering upper navbar
+function processStationInfo(data, station) {
+	var navbarDiv = document.getElementById('navbar');
+	
+	if (
+		(data.products.nationalExpress || data.products.national || data.products.regionalExpress || data.products.regional)
+		&& data.products.suburban === true
+	) {
+		navbarDiv.innerHTML += '<div class="tabs">' +
+		'<a href="departure.html?station=' + station + '">&nbsp;Abfahrt&nbsp;</a>' +
+		'<a href="arrival.html?station=' + station + '" class="active">&nbsp;Ankunft&nbsp;</a>' +
+		'<a href="suburban.html?station=' + station + '">&nbsp;S-Bahn&nbsp;</a>' +
+		'</div>';
+	}
+			
+	if (data.products.suburban === true && data.products.regional === false) {
+		navbarDiv.innerHTML +='<a href="#" class="disabled">&nbsp;Abfahrt&nbsp;</a>' +
+		'<a href="#" class="disabled">&nbsp;Ankunft&nbsp;</a>' + 
+		'<a href="suburban.html?station=' + station + '" class="active">&nbsp;S-Bahn&nbsp;</a>';
+		document.location='suburban.html?station=' + station;
+					
+	}
+	
+	if (
+		(data.products.nationalExpress || data.products.national || data.products.regionalExpress || data.products.regional)
+		&& data.products.suburban === false
+	) {
+		navbarDiv.innerHTML += '<a href="departure.html?station=' + station + '">&nbsp;Abfahrt&nbsp;</a>' +
+		'<a href="arrival.html?station=' + station + '" class="active">&nbsp;Ankunft&nbsp;</a>' +
+		'<a href="#" class="disabled">&nbsp;S-Bahn&nbsp;</a>';
+	}
+			
+	{
+		navbarDiv.innerHTML += '<div class="iconbar bigonly"><a href="index.html">Stationssuche</a></div><div class="iconbar"><a href="index.html"><img src="./assets/icons/search.svg" class="mediumicon"></a></div>'
+	                                   
+	}
+}
+	
+
+// API Source to get station details (needed for header)
+var apiUrl = 'https://v6.db.transport.rest/stops/';
+
+// Add station id (digit code) to url
+var queryString = window.location.search;
+var stationParam = new URLSearchParams(queryString).get('station');
+var fullApiUrl = apiUrl + stationParam + '?linesOfStops=false&language=de';
+
+// Fetch API
+fetch(fullApiUrl)
+	.then(response => response.json())
+	.then(data => processStationInfo(data, stationParam))
+	.catch(error => console.error('Fehler beim Abrufen der Daten:', error));
+
+</script>
+
+<table class="zerotable"><tr><td class="topline"><span class="aligner"><img src="./assets/icons/rail.svg" class="megaicon"><span id="stationname" class="big"></span>&nbsp;<span class="big bigonly disabled">Ankunft</span></span></td><td class="clockbox topline">&nbsp;<span id="clock" class="big bigonly"></span></td></tr></table>
+
+<script>
+// API Source to get station details
+function loadTransportData(station) {
+	var apiUrl = 'https://v6.db.transport.rest/stops/' + station + '?linesOfStops=false&language=de';
+
+	var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var data = JSON.parse(xhr.responseText);
+
+				var stationName = data.name;
+
+				document.getElementById('stationname').textContent = stationName;
+			}
+		};
+	xhr.open('GET', apiUrl, true);
+	xhr.send();
+}
+
+//	Add station name to div
+var urlParams = new URLSearchParams(window.location.search);
+var station = urlParams.get('station');
+
+loadTransportData(station);
+
+// Clock
+function updateClock() {
+	var now = new Date();
+	var hours = now.getHours().toString().padStart(2, '0');
+	var minutes = now.getMinutes().toString().padStart(2, '0');
+
+	var clockElement = document.getElementById('clock');
+	clockElement.innerHTML = hours + '<span class="blink">:</span>' + minutes;
+}
+
+setInterval(updateClock, 1000);
+
+updateClock();
+	
+</script>
+
+<table class="board">
+	<thead>
+		<tr class="header">
+			<td><b>Linie</b><br>Line</td>
+			<td><b>Ab</b><br>Dep.</td>
+			<td class="wide"><b>Von</b><br>From</td>
+			<td><b>Gleis</b><br>Track</td>
+			<td></td>
+		</tr>
+	</thead>
+	<tbody id="tableBody">
+		<!-- Table body will be populated dynamically with arriving trains -->
+	</tbody>
+</table>
+
+<script>
+function loadData() {
+	// Get parameters from url
+	function getParameterByName(name, url) {
+		if (!url) url = window.location.href;
+		name = name.replace(/[\[\]]/g, '\\$&');
+		var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+		results = regex.exec(url);
+		if (!results) return null;
+		if (!results[2]) return '';
+		return decodeURIComponent(results[2].replace(/\+/g, ' '));
+	}
+
+	// Save station code (6 digit number) from url in var
+	var stationNumber = getParameterByName('station');
+
+	if (!stationNumber) {
+		console.error("Station-Nummer nicht gefunden!");
+		return;
+	}
+
+	// AJAX-Request
+	var xhr = new XMLHttpRequest();
+	xhr.open('GET', 'https://v6.db.transport.rest/stops/' + stationNumber + '/arrivals?duration=20000&results=500&linesOfStops=false&remarks=true&language=de', true);
+
+	// Callback to end request
+	xhr.onload = function() {
+		if (xhr.status === 200) {
+			// JSON Data to table
+			var jsonData = JSON.parse(xhr.responseText);
+			updateTable(jsonData.arrivals);
+		}
+	};
+
+	// Send request
+	xhr.send();
+}
+
+
+function updateTable(data) {
+	var tableBody = document.getElementById('tableBody');
+	tableBody.innerHTML = ''; // delete everything before  rewrite table content
+
+	// Looking for departing products "suburban"
+	var hasSuburbanDeparture = data.some(function(entry) {
+		return entry.line.product === "suburban";
+	});
+
+	data.forEach(function(entry) {
+	// If product is bus, ferry, subway, tram or taxi
+	if (
+		entry.line.product === "bus" ||
+		entry.line.product === "suburban" ||
+		entry.line.product === "ferry" ||
+		entry.line.product === "subway" ||
+		entry.line.product === "tram" ||
+		entry.line.product === "taxi"
+	) {
+		// skip this entry (not needed for a TRAIN ONLY board)
+		return;
+	}
+	
+	// if trip is cancelled
+	var isCancelled = entry.remarks.some(function(remark) {
+		return remark.type === "status" && remark.code === "cancelled";
+	});
+
+	// Is trip more than 10 mins ago?
+	var plannedDepartureTime = new Date(entry.plannedWhen);
+	var now = new Date();
+	var diffPlannedMinutes = Math.round((now - plannedDepartureTime) / (1000 * 60));
+
+	// If entry is cancelled and more than 10 mins ago skip (not neccesary to skip cancelled trips which should have been departed already. may increase or decrease the time 
+	if (isCancelled && diffPlannedMinutes < 0) {
+		return;
+	}
+
+	var row = tableBody.insertRow();
+	row.classList.add('boardcell');
+    
+	// set style to line-trough if cancelled
+	if (isCancelled) {
+		row.style.textDecoration = "line-through";
+	}
+    
+	// Format time stemps to actual readable format and add a cloosing door icon i needed
+	var formattedWhen = formatTime(entry.when);
+	var formattedPlannedWhen = formatTime(entry.plannedWhen);
+	var abMessage = getAbMessage(entry.when);
+
+	row.insertCell(0).innerHTML = '<div class="linebadge '+ entry.line.product + ' ' + entry.line.name.replace(/\s/g, '') + entry.line.operator.id + ' ' + entry.line.productName +'">'+ entry.line.name +'</div>';
+	
+	// Calculate minutes from time now - departing time (needed for the countdown in sbahn tab
+	var now = new Date();
+	var departureTime = new Date(entry.when);
+	var diffMinutes = Math.round((departureTime - now) / (1000 * 60));
+
+	var countdownCell = row.insertCell(1);
+
+	countdownCell.textContent = formatTime(entry.when);
+
+	var wideCell2 = row.insertCell(2);
+	// Create link to the trip information tab
+	wideCell2.innerHTML = '<span class="additional">Von </span><a href="trip.html?id=' + entry.tripId + '&station=' + entry.stop.id + '" class="black">' + entry.provenance + '</a>';
+	wideCell2.className = 'wide';
+	wideCell2.classList.add('boardcell');
+	
+	row.insertCell(3).textContent = entry.platform;
+	var cell = row.insertCell(4);
+	cell.innerHTML = abMessage;
+	cell.classList.add("zerotable");
+	});
+}
+
+
+// Format time
+function formatTime(dateTimeString) {
+	var dateTime = new Date(dateTimeString);
+	var hours = dateTime.getHours();
+	var minutes = dateTime.getMinutes();
+
+	hours = hours < 10 ? '0' + hours : hours;
+	minutes = minutes < 10 ? '0' + minutes : minutes;
+
+	return hours + ':' + minutes;
+}
+
+// Create cloosing doors icon when needed
+function getAbMessage(dateTimeString) {
+	var dateTime = new Date(dateTimeString);
+	var now = new Date();
+
+	var diffMinutes = Math.round((dateTime - now) / (1000 * 60));
+
+	return diffMinutes <= 0 ? '' : '';
+}
+
+
+// reload the function every 5 secs, so displayed data will always been up to date
+setInterval(loadData, 5000);
+
+loadData();
+</script>
+
+</body>
+</html>

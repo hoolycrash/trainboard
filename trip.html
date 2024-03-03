@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Zuginformationen</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="./assets/css/styles.css">
+	<link rel="stylesheet" href="./assets/css/line-colors.css">
+	<link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
+	<link rel="manifest" href="/manifest.json" type="application/json" >
+	<meta name="theme-color" content="#000">
+</head>
+
+<body>
+
+<center>
+<noscript> You need to enable JavaScript to run this app. </noscript>
+
+<div class="navbar" id="navbar"><div class="tabs"><span class="active">&nbsp;Zuginformationen&nbsp;</a></div><div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div><div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg" class="mediumicon"></a></div></div>
+
+<br>
+
+<div class="tripcontainer">
+	<div class="container">
+		<div class="left-div">
+			<div id="destination" class="big"></div>
+			<div id="stopovers"></div>
+		</div>
+		<div class="right-div lineview">
+			<div id="selectedDepartureTime" class="departtime"></div>
+			<div id="lineInfo"></div>
+			<br><br>
+		</div>
+	</div>
+	
+	<div class="coacheswrapper">
+		<div class="coachescontent">
+			<div class="coach">?</div>
+			<div class="coach">?</div>
+			<div class="coach">?</div>
+			<div class="coach">?</div>
+			<div class="coach">?</div>
+		</div>
+	</div>
+	
+	<i class="disabled">Wagenreihungen vllt. irgendwann verfügbar</i>	
+
+</div>
+
+</center>
+
+<script>
+// This whole thing loads data from db-rest/stops/{id}/departures
+async function fetchAndDisplayData() {
+	// Extract params from url
+	const urlParams = new URLSearchParams(window.location.search);
+	const tripId = urlParams.get('id'); //trip id needed to identify the train
+	const stationId = urlParams.get('station'); //station id to identify the station which the user came from when clicking a train (hope you understand this phahahahaha)
+
+	try {
+		// Load trip-data from API
+		const response = await fetch(`https://v6.db.transport.rest/trips/${tripId || ''}?stopovers=true&remarks=true&polyline=false&language=de`);
+		const data = await response.json();
+
+		// Create the flowing text with the next stations of this trip
+		let flowText = "";
+		let foundStation = false;
+
+		data.trip.stopovers.forEach(stopover => {
+			if (stopover.stop.id == stationId) {
+				foundStation = true;
+
+				// Departure time at the stop from where you clicked on the train
+				const selectedDepartureTimeDiv = document.getElementById('selectedDepartureTime');
+				if (selectedDepartureTimeDiv) {
+					const selectedTime = new Date(stopover.departure);
+					const selectedFormattedTime = `<b>${selectedTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</b>`;
+					selectedDepartureTimeDiv.innerHTML = selectedFormattedTime;
+				} else {
+					console.error('Div mit der ID "selectedDepartureTime" nicht gefunden.');
+				}
+
+				return;
+			}
+
+			if (foundStation) {
+				// Create an item in the flowing text
+				const time = stopover.arrival ? new Date(stopover.arrival) : new Date(stopover.departure);
+				const timeType = stopover.arrival ? 'ARRIVAL' : 'DEPARTURE';
+				const formattedTime = `${time.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}`;
+				flowText += `${formattedTime} <b>${stopover.stop.name}</b> | `;
+			}
+		});
+
+		// Show the destination of the train in destinations div (the big title on top)
+		const destinationStopover = data.trip.stopovers.find(stopover => stopover.stop.id === data.trip.destination.id);
+		if (destinationStopover) {
+			const destinationDiv = document.getElementById('destination');
+			if (destinationDiv) {
+				destinationDiv.innerHTML = `<div>&#10132; ${destinationStopover.stop.name}</div>`;
+			} else {
+				console.error('Div mit der ID "destination" nicht gefunden.');
+			}
+		}
+
+		// Push the flowing text to the div to show
+		const stopoversDiv = document.getElementById('stopovers');
+		if (stopoversDiv) {
+			//Remove the last ' | ' because its not needed due there is no following station
+			stopoversDiv.innerHTML = flowText.slice(0, -2);
+		} else {
+			console.error('Div mit der ID "stopovers" nicht gefunden.');
+		}
+
+		// Left div with departing train and linenumber
+		const lineInfoDiv = document.getElementById('lineInfo');
+		if (lineInfoDiv) {
+			lineInfoDiv.innerHTML = `<div class="biglinebadge ${data.trip.line.product}  ${data.trip.line.name.replace(/\s/g, '')}${data.trip.line.operator.id} ${data.trip.line.productName}">${data.trip.line.name}  </div>`;
+
+		} else {
+			console.error('Div mit der ID "lineInfo" nicht gefunden.');
+		}
+	} catch (error) {
+		console.error('Fehler beim Abrufen der Daten:', error);
+	}
+}
+
+fetchAndDisplayData();
+</script>
+
+</body>
+</html>

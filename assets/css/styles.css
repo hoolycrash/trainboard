@@ -1,0 +1,525 @@
+/* DONT ASK WHATS THAT FOR A HURTING CRAP!
+ it's just what happens when I try to do CSS :(
+ 
+ If you really nead to now what all those classes do, feel free to ask me,
+ otherwise just add another class, nobody cares hahahahahaha
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Kode+Mono&display=swap');
+
+
+body {
+	font-family: "Kode Mono", monospace;
+	font-size: 20px;
+	margin: 0px;
+	
+
+}
+
+a {
+	white-space: nowrap;
+}
+
+span {
+	text-align: left;	
+}
+
+.disabled {
+	color: #797979;
+}
+
+.additional {
+	color: #6b6b6a;
+	font-weight: normal;
+	font-size: 0.8em;
+}
+
+.big {
+	font-weight: bold;
+	font-size: 35px;
+}
+
+.departtime {
+		font-size: 70px;
+	}
+
+.navbar {
+	background-color: #000;
+	color: #fff;
+	height: 16px;
+	padding: 25px 16px 25px 16px;
+	font-size: 16px;
+	
+}
+
+.zerotable {
+	padding: 0px;
+	vertical-align: middle;
+}
+
+.aligner {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.tabs {
+	
+	float: left;
+}
+
+.iconbar {
+	float: right;
+}
+
+a {
+	color: #fff;
+	text-decoration: none;
+	margin: 10px 2px 10px 2px;
+		
+}
+	
+.active {
+	text-decoration: underline 3px;
+	text-underline-offset: 23px;
+	font-weight: bold;
+		
+}
+
+.home {
+	background-image: url('../station.jpg');
+	background-repeat: no-repeat;
+	background-attachment: fixed;  
+	background-size: cover;
+	background-color: #000;
+	background-position: right;
+	text-align: center;
+	color: #fff;
+}
+
+.searchcontainer {
+	width: 85%;
+	max-width: 700px;
+	background-color: #fff;
+	color: #000;
+	border-radius: 5px;
+	overflow-y:hidden;
+}
+
+.tripcontainer {
+	width: 80%;
+	background-color: #fff;
+	color: #000;
+	border-radius: 5px;
+	overflow-y:hidden;
+	text-align: left;
+}
+
+.searchbar {
+	font-size: 20px;
+	border: none;
+	font-family: "Kode Mono", monospace;
+	height: 40px;
+	background-image: url('.././icons/search.svg');
+	background-size: 25px;
+	background-position: left center;
+	background-repeat: no-repeat;
+	padding-left: 40px;
+	margin: 17px;
+	width: 100%;
+	
+}
+
+.searchbar:focus {
+	outline: none;
+}
+
+
+.switch-container {
+    display: flex;
+	border-radius: 10px;
+	margin: 17px;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+.coacheswrapper {
+	width: 100%;
+	overflow-x: scroll;
+	margin-top: 20px;
+	box-shadow: inset 0px -23px #d3d3d3;
+
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.coachescontent {
+	display: flex;
+	align-items: center;
+	animation-name: drivein;
+	animation-duration: 4s;
+	min-width: 200%;
+	height: 110px;
+	padding: 10px;
+	padding-left: 20px;
+	
+}
+
+@keyframes drivein {
+	0% {
+		margin-left: 100%;
+	}
+	
+	40% {
+		margin-left: 100%;
+	}
+	
+	100% {
+		margin-left: 0px;
+	}
+}
+
+.coach {
+	border: solid #414141;
+	border-width: 5px 3px 5px 3px;
+	width: 100px;
+	height: 55px;
+	margin-left: -5px;
+	padding-top: 7px;
+	background-color: #fff;
+	text-align: center;
+	font-size: 35px;
+	color: #414141;
+	font-weight: bold;
+	box-shadow: inset 0px -10px #cecece;
+	
+}
+
+.coach:first-child {
+	border-radius: 80px 0px 0px 10px;
+	border-width: 5px 3px 5px 5px;
+	margin-left: 5px;
+	background-image: url('.././icons/trainwindow.svg');
+	background-size: 30px;
+	background-position: left center;
+	background-repeat: no-repeat;
+
+}
+
+
+
+.coach:last-child {
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-width: 5px 5px 5px 3px;
+}
+
+
+
+@keyframes blink {
+  50% {
+    opacity: 0.0;
+  }
+}
+.blink {
+  animation: blink 1s step-start 0s infinite;
+}
+
+label {
+	width: 100%;
+    display: inline-block;
+    padding: 10px;
+    margin: 0;
+    cursor: pointer;
+    background-color: #f0f0f0;
+	color: #b9b9b9;
+	font-family: Arial;
+	font-size: 17px;	
+}
+
+.left {
+	border-radius: 10px 0px 0px 10px;
+}
+
+.right {
+	border-radius: 0px 10px 10px 0px;
+	overflow: hidden;
+	max-width: 100%;
+}
+
+#departure:checked + label {
+    background-color: #131313;
+    color: #fff;
+}
+
+#arrival:checked + label {
+    background-color: #131313;
+    color: #fff;
+}
+
+.switch-container {
+	border: solid 1px #b9b9b9;
+	
+}
+
+
+.container {
+display: flex;
+	flex-wrap: wrap;
+}
+
+.left-div {
+	flex: 1;
+	min-width: 200px;
+}
+
+.right-div {
+	flex: 1;
+	
+	order: -1; /* Ć„ndert die Reihenfolge, um nach oben zu gehen */
+}
+
+.lineview {
+	max-width: 250px;
+}
+
+
+
+       
+		
+
+table {
+	border: none;
+	border-spacing: 0px;
+	width: 100%;
+	
+}
+
+.boardcell {
+	font-weight: bold;
+	}
+
+td {
+	padding: 10px;
+	vertical-align: top;
+	padding: 10px 1px 25px 2px;
+	
+}
+
+.wide {
+	width: 100%;
+}
+
+.header, tr:nth-child(even) {
+	background-color: #D9D9D9;
+	
+}
+
+.header {
+	font-size: 15px;
+}
+
+.mini {
+	height: 35px;
+	padding-right: 15px;
+	
+}
+
+.suggestion {
+      display: flex;
+      justify-content: space-between;
+      padding: 17px; /* Optional padding for spacing */  
+	  
+}
+
+.topline {
+	vertical-align: middle;
+	padding: 0px;
+}
+
+.clockbox {
+	text-align: right;
+	
+}
+
+.black {
+	color: #000;
+}
+
+.suggestion:hover {
+	background-color: #e4e4e4;
+	
+}
+
+.bigicon {
+      height: 30px; 
+	  padding-left: 5px;
+}
+
+.megaicon {
+      height: 60px;
+	  padding: 10px;
+}
+
+.mediumicon {
+      height: 20px; 
+	  margin-right: 5px;
+}
+
+.linebadge {
+	width: 150px;
+	background-color: #041E42;
+	color: #fff;
+	text-align: center;
+	font-weight: bold;
+	padding 5px;
+
+}
+
+.biglinebadge {
+	width: 200px;
+	background-color: #041E42;
+	color: #fff;
+	text-align: center;
+	font-weight: bold;
+	padding 30px;
+	font-size: 22px;
+
+}
+
+
+
+
+@media (max-width: 600px) {
+	.stacktobottom {
+		order: 1; /* ZurĆ¼cksetzen der Reihenfolge auf den Standardwert */
+	}
+	
+	.left-div, .right-div {
+		min-width: 100%; /* Wenn der Platz nicht ausreicht, beide auf 100% setzen */
+	}
+			
+	.searchbar {
+		margin-top: 13px;
+		
+		width: -webkit-fill-available;
+	}
+	
+
+			
+	h2 {
+		display: none;
+	}
+			
+	td {
+		font-size: 15px;
+		
+		
+		
+	}
+	
+	.mini {
+		height: 25px;
+		
+	}
+	
+	
+	.biglinebadge {
+		width: 150px;
+		font-size: 17px;
+	
+	}
+	
+	
+			
+	.linebadge {
+		width: 80px;
+		padding-left: 0px 4px 0px 4px;
+	}
+	
+	.bigonly {
+		display: none;
+	}
+	
+	table tr td:nth-child(3)  {
+		overflow: hidden;
+		max-width: 90px;
+	}
+	
+	.megaicon {
+		height: 50px;
+	}
+	
+	.big {
+		font-size: 27px;
+	}
+	
+	.departtime {
+		font-size: 50px;
+	}
+	
+
+}
+
+@media (max-width: 400px) {
+		
+	.linebadge {
+		width: 60px!important;
+		word-wrap: break-word;
+	}
+	
+	.megaicon {
+		height: 40px;
+	}
+	
+	.big {
+		font-size: 23px;
+	}
+	
+	.departtime {
+		font-size: 46px;
+	}
+	
+
+	
+	
+}
+
+@media (min-width: 1300px) {
+		
+	td {
+		font-size: 1.2em;
+		padding: 20px;
+	}
+	
+	.topline {
+		padding: 15px;
+	}
+	
+	.megaicon {
+		height: 75px;
+	}
+	
+	.big {
+		font-size: 45px;
+	}
+	
+	.departtime {
+		font-size: 90px;
+	}
+	
+	.lineview {
+		max-width: 300px;
+	}
+	
+	.mini {
+	height: 45px;
+	
+}
+
+
+}

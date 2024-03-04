@@ -24,6 +24,8 @@ To ensure that your code will be accepted, it is recommended to start by contrib
 - Train Remarks
 - Optimise javascript and outsource it to single files to reduce clutter and storage space
 - Add Train Number (Zugnummer) to the trip informations tab (`trip.html`)
+- Improving accessibility
+- Better Optimisation for different screen sizes
 
 ℹ️ TIP: To play a little around with the `db-rest API` there are great sandboxes here: [db-rest | Swagger UI](https://petstore.swagger.io/?url=https%3A%2F%2Fv6.db.transport.rest%2F.well-known%2Fservice-desc%0A#/default/get_stops__id_)
 

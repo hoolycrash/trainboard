@@ -9,7 +9,7 @@ Check it out: [https://trainboard.de.cool/](https://trainboard.de.cool/)
 You can run this application locally by simply downloading it and opening it in a web browser of your choice.
 It's just JS :)
 
-Please not: You need a internet connection to fetch data.
+Please note: You need a internet connection to fetch data.
 ## Contribution
 If you wish to contribute to this project, please feel free to do so. However, it's important to keep in mind that the primary goal of this project is to faithfully replicate the "Mit-Tog" WebApplication offered by BaneDanmark. ([Reference](https://www.mit-tog.dk/en))
 

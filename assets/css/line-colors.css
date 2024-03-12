@@ -86,11 +86,19 @@ Individual design on Signets is limited to color to keep a consistent look. Plea
 .S41s-bahn-berlin {
 	background-color: #ad5937;
 	color: #fff;
+	
+}
+
+.S41s-bahn-berlin::after {
+	content: "\21BB";
 }
 
 .S42s-bahn-berlin {
 	background-color: #cb6418;
 	color: #fff;
+}
+
+.S42s-bahn-berlin::after {
 }
 
 .S45s-bahn-berlin {
@@ -677,4 +685,13 @@ Individual design on Signets is limited to color to keep a consistent look. Plea
 .SBBS6sbb-gmbh {
 	background-color: #f93f25;
 	color: #fff;
+}
+
+/* S-Bahn Helinki */
+.SIvr::after {
+	content: "\21BB";
+}
+
+.SPvr::after {
+	content: "\21BA";
 }

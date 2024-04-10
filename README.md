@@ -27,7 +27,7 @@ To ensure that your code will be accepted, it is recommended to start by contrib
 - Improving accessibility
 - Better Optimisation for different screen sizes
 
-ℹ️ TIP: To play a little around with the `db-rest API` there are great sandboxes here: [db-rest | Swagger UI](https://petstore.swagger.io/?url=https%3A%2F%2Fv6.db.transport.rest%2F.well-known%2Fservice-desc%0A#/default/get_stops__id_)
+:information_source: TIP: To play a little around with the `db-rest API` there are great sandboxes here: [db-rest | Swagger UI](https://petstore.swagger.io/?url=https%3A%2F%2Fv6.db.transport.rest%2F.well-known%2Fservice-desc%0A#/default/get_stops__id_)
 
 
 ## Follow me:

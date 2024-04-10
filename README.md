@@ -6,7 +6,7 @@ Trainboard is a departure/arrival board for trains that uses real-time data from
 Check it out: [https://trainboard.de.cool/](https://trainboard.de.cool/)
 
 ## Run this code
-You can run this application locally by simply downloading it and opening it in a web browser of your choice.
+You can run this application locally by simply downloading the newest version from [Release Tab](https://github.com/hoolycrash/trainboard/releases) and opening it in a web browser of your choice.
 It's just JS :)
 
 Please note: You need a internet connection to fetch data.

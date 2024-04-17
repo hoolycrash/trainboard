@@ -99,6 +99,7 @@ Individual design on Signets is limited to color to keep a consistent look. Plea
 }
 
 .S42s-bahn-berlin::after {
+	content: "\21BA"; /*Why does it also work without "content:"?*/
 }
 
 .S45s-bahn-berlin {

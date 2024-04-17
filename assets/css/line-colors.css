@@ -26,7 +26,7 @@ Please read comments carefully.
 	max-width: 100px;
 }
 
-.EN, .NJ, .EN, .ICN {
+.EN, .NJ, .ICN {
 	background-image: url('../stars.jpg');
 	background-size: 200px;
 	color: #fff ;
@@ -99,6 +99,7 @@ Individual design on Signets is limited to color to keep a consistent look. Plea
 }
 
 .S42s-bahn-berlin::after {
+	content: "\21BA"; /*Why does it also work without "content:"?*/
 }
 
 .S45s-bahn-berlin {
@@ -200,6 +201,34 @@ Individual design on Signets is limited to color to keep a consistent look. Plea
 
 .S47db-regio-ag-sudost {
 	background-color: #50af47;
+	color: #fff;
+}
+
+/* CityBahn Chemnitz (similar to S-Bahn) */
+/* Adaptation to the S-Bahn style */
+.CBC11city-bahn-chemnitz, .CBC13city-bahn-chemnitz, 
+.CBC14city-bahn-chemnitz, .CBC15city-bahn-chemnitz {
+	border-radius: 200px;
+	/*max-width: 100px;*/
+}
+
+.CBC11city-bahn-chemnitz {
+	background-color: #007946; /*VMS Green*/
+	color: #fff;
+}
+
+.CBC13city-bahn-chemnitz {
+	background-color: #CF2538; /*Chemnitz-Bahn-Logo Red*/
+	color: #fff;
+}
+
+.CBC14city-bahn-chemnitz {
+	background-color: #5d1339;
+	color: #fff;
+}
+
+.CBC15city-bahn-chemnitz {
+	background-color: #f6df00;
 	color: #fff;
 }
 

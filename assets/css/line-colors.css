@@ -203,6 +203,34 @@ Individual design on Signets is limited to color to keep a consistent look. Plea
 	color: #fff;
 }
 
+/* CityBahn Chemnitz (similar to S-Bahn) */
+/* Adaptation to the S-Bahn style */
+.CBC11city-bahn-chemnitz, .CBC13city-bahn-chemnitz, 
+.CBC14city-bahn-chemnitz, .CBC15city-bahn-chemnitz {
+	border-radius: 200px;
+	max-width: 100px;
+}
+
+.CBC11city-bahn-chemnitz {
+	background-color: #007946; /*VMS Green*/
+	color: #fff;
+}
+
+.CBC13city-bahn-chemnitz {
+	background-color: #CF2538; /*Chemnitz-Bahn-Logo Red*/
+	color: #fff;
+}
+
+.CBC14city-bahn-chemnitz {
+	background-color: #00a1e5;
+	color: #fff;
+}
+
+.CBC15city-bahn-chemnitz {
+	background-color: #f6df00;
+	color: #fff;
+}
+
 /* S-Bahn Rhein-Main */
 .S1db-regio-ag-s-bahn-rhein-main {
 	background-color: #0094d7;

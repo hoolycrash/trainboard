@@ -209,7 +209,7 @@ Individual design on Signets is limited to color to keep a consistent look. Plea
 .CBC11city-bahn-chemnitz, .CBC13city-bahn-chemnitz, 
 .CBC14city-bahn-chemnitz, .CBC15city-bahn-chemnitz {
 	border-radius: 200px;
-	max-width: 100px;
+	/*max-width: 100px;*/
 }
 
 .CBC11city-bahn-chemnitz {
@@ -223,7 +223,7 @@ Individual design on Signets is limited to color to keep a consistent look. Plea
 }
 
 .CBC14city-bahn-chemnitz {
-	background-color: #00a1e5;
+	background-color: #5d1339;
 	color: #fff;
 }
 

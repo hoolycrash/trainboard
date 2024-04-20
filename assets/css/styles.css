@@ -376,7 +376,7 @@ td {
 	color: #fff;
 	text-align: center;
 	font-weight: bold;
-	padding 5px;
+	padding: 5px;
 
 }
 
@@ -386,7 +386,7 @@ td {
 	color: #fff;
 	text-align: center;
 	font-weight: bold;
-	padding 30px;
+	padding: 30px;
 	font-size: 22px;
 
 }
@@ -483,10 +483,6 @@ td {
 	.departtime {
 		font-size: 46px;
 	}
-	
-
-	
-	
 }
 
 @media (min-width: 1300px) {
@@ -517,9 +513,35 @@ td {
 	}
 	
 	.mini {
-	height: 45px;
-	
+		height: 45px;	
+	}
 }
 
-
+.tooltip {
+	position: relative;
+	display: inline-block;
+	/*border-bottom: 1px dotted black;*/ /* If you want dots under the hoverable text */
+}
+  
+.tooltip .tooltiptext {
+	visibility: hidden;
+	width: 150px;
+	background-color: black;
+	color: #fff;
+	text-align: center;
+	border-radius: 6px;
+	padding: 5px 0;
+	font-size: 18px;
+	
+	/* Position the tooltip */
+	position: absolute;
+	z-index: 1;
+	top: 100%;
+	left: 50%;
+	margin-left: -60px;
+	
+}
+  
+.tooltip:hover .tooltiptext {
+	visibility: visible;
 }

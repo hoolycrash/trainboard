@@ -19,7 +19,7 @@ Additionally, please be aware that one of the significant advantages of this app
 
 To ensure that your code will be accepted, it is recommended to start by contributing to planned features listed below: 
 
-- Coach Position Indicator
+- Optimise Coach Position Indicator (`db-wagenreihung.html`)
 - Complete S-Bahn Signet styles in `/assets/css/line-colors.css`
 - Train Remarks
 - Optimise javascript and outsource it to single files to reduce clutter and storage space

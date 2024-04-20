@@ -45,6 +45,8 @@
 	</div>
 	
 	<i class="disabled">Wagenreihungen vllt. irgendwann verfügbar</i>	
+	
+	<div id="RemarkDiv"></div>
 
 </div>
 
@@ -66,6 +68,7 @@ async function fetchAndDisplayData() {
 		// Create the flowing text with the next stations of this trip
 		let flowText = "";
 		let foundStation = false;
+				
 
 		data.trip.stopovers.forEach(stopover => {
 			if (stopover.stop.id == stationId) {
@@ -91,7 +94,11 @@ async function fetchAndDisplayData() {
 				const formattedTime = `${time.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}`;
 				flowText += `${formattedTime} <b>${stopover.stop.name}</b> | `;
 			}
+			
+			
 		});
+		
+		
 
 		// Show the destination of the train in destinations div (the big title on top)
 		const destinationStopover = data.trip.stopovers.find(stopover => stopover.stop.id === data.trip.destination.id);
@@ -124,7 +131,11 @@ async function fetchAndDisplayData() {
 	} catch (error) {
 		console.error('Fehler beim Abrufen der Daten:', error);
 	}
+	
+	
 }
+
+
 
 fetchAndDisplayData();
 </script>

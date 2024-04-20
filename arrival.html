@@ -260,10 +260,6 @@ function updateTable(data) {
 	}
 
 	var wideCell2 = row.insertCell(2);
-	// Create link to the trip information tab
-	wideCell2.innerHTML = '<span class="additional">Von </span><a href="trip.html?id=' + entry.tripId + '&station=' + entry.stop.id + '" class="black">' + entry.provenance + '</a>';
-	wideCell2.className = 'wide';
-	wideCell2.classList.add('boardcell');
 	
 	// Check for Platform changes
 	if (entry.platform == entry.plannedPlatform){
@@ -277,10 +273,35 @@ function updateTable(data) {
 	}
 
 	var cell = row.insertCell(4);
+		// Show info-messages (the look on mobile needs to be improved)
+	if (entry.remarks.length > 0) {
+		var InfoMessage = ''; // = row.insertCell(5);
+		for (var i = 0; i < entry.remarks.length; i++) {
+			if (i > 0) { InfoMessage += " +++ ";}
+			InfoMessage += entry.remarks[i].text;
+		}
+		//console.log(entry.line.name + ": " + InfoMessage);
+		//row.insertCell(2).innerHTML = "<br><small> " + InfoMessage + "<small>";
+	}
+	
+
 	cell.innerHTML = abMessage;
 	cell.classList.add("zerotable");
-	});
+	
+	if (InfoMessage !== undefined) {
+	  	wideCell2.innerHTML = '<span class="additional">Von </span><a href="trip.html?id=' + entry.tripId + '&station=' + entry.stop.id + '" class="black">' + entry.provenance + '</a><br><span class="remark bigonly"> ' + InfoMessage + '</span><details class="smallonly remarkbox"><summary>Wichtige Hinweise</summary>' + InfoMessage + '</details></small>';
+
+	} else {
+			wideCell2.innerHTML = '<span class="additional">Von </span><a href="trip.html?id=' + entry.tripId + '&station=' + entry.stop.id + '" class="black">' + entry.provenance + '</a>';
+
+	}
+	
+	// Create link to the trip information tab
+	wideCell2.className = 'wide';
+	wideCell2.classList.add('boardcell');
+});
 }
+
 
 
 // Format time

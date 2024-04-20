@@ -86,6 +86,19 @@ a {
 		
 }
 
+.remark {
+	font-size: 17px;
+}
+
+.remarkbox {
+	background-color: #ffe02d;
+	border: solid 1px #000;
+	width:  90%;
+	padding: 5px;
+	border-radius: 5px;
+	
+}
+
 .home {
 	background-image: url('../station.jpg');
 	background-repeat: no-repeat;
@@ -388,6 +401,10 @@ td {
 
 }
 
+.smallonly {
+	display: none;
+}
+
 
 
 
@@ -440,6 +457,10 @@ td {
 	
 	.bigonly {
 		display: none;
+	}
+	
+	.smallonly {
+		display: inline;
 	}
 	
 	table tr td:nth-child(3)  {

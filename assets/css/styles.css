@@ -28,6 +28,10 @@ span {
 	color: #797979;
 }
 
+.hidden {
+	display: none;
+}
+
 .additional {
 	color: #6b6b6a;
 	font-weight: normal;
@@ -152,8 +156,8 @@ input[type="radio"] {
 .coacheswrapper {
 	width: 100%;
 	overflow-x: scroll;
+	height: 250px;
 	margin-top: 20px;
-	box-shadow: inset 0px -23px #d3d3d3;
 
 }
 

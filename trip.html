@@ -32,21 +32,26 @@
 			<div id="lineInfo"></div>
 			<br><br>
 		</div>
+		
+		
+	</div>
+	<span id="notice"></span>
+	
+	<br>
+	
+	<div class="coacheswrapper" id="coacheswrapper">
+		<div id="blocksContainer" class="coachescontent"></div>
 	</div>
 	
-	<div class="coacheswrapper">
-		<div class="coachescontent">
-			<div class="coach">?</div>
-			<div class="coach">?</div>
-			<div class="coach">?</div>
-			<div class="coach">?</div>
-			<div class="coach">?</div>
-		</div>
-	</div>
+	<b>Wagenreihung - KNOWN ISSUES:</b>
+	<ul>
+		<li>Only the first element in "allFahrzeugaustattung" for each carriage will be shown</li>
+		<li>If the train contains an locomotive nothing will be displayed</li>
+		<li>Not yet full icon set: Just open a Issue on GitHub if you find one missing.</li>
+	</ul>
+	<a href="https://github.com/hoolycrash/trainboard/blob/main/trip.html" style="color: #112053; "><u>View this page on GitHub.</u></a><br><br>
 	
-	<i class="disabled">Wagenreihungen vllt. irgendwann verfügbar</i>	
 	
-	<div id="RemarkDiv"></div>
 
 </div>
 
@@ -64,11 +69,14 @@ async function fetchAndDisplayData() {
 		// Load trip-data from API
 		const response = await fetch(`https://v6.db.transport.rest/trips/${tripId || ''}?stopovers=true&remarks=true&polyline=false&language=de`);
 		const data = await response.json();
+		
+		const tripid = data.trip.line.fahrtNr;
+		var zugnummer = tripid;//Train Nr (Zugnummer)
+		
 
 		// Create the flowing text with the next stations of this trip
 		let flowText = "";
 		let foundStation = false;
-				
 
 		data.trip.stopovers.forEach(stopover => {
 			if (stopover.stop.id == stationId) {
@@ -80,6 +88,78 @@ async function fetchAndDisplayData() {
 					const selectedTime = new Date(stopover.departure);
 					const selectedFormattedTime = `<b>${selectedTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</b>`;
 					selectedDepartureTimeDiv.innerHTML = selectedFormattedTime;
+					
+					// converting departing-time to YYYYMMDDHHMM format for the api request
+					const selecteddepartTime = new Date(stopover.plannedDeparture);
+					const year = selecteddepartTime.getFullYear();
+					const month = String(selecteddepartTime.getMonth() + 1).padStart(2, '0');
+					const day = String(selecteddepartTime.getDate()).padStart(2, '0');
+					const hours = String(selecteddepartTime.getHours()).padStart(2, '0');
+					const minutes = String(selecteddepartTime.getMinutes()).padStart(2, '0');
+					const convertedtime = `${year}${month}${day}${hours}${minutes}`;
+					var datetime = convertedtime;
+		
+		
+		fetch(`https://ist-wr.noncd.db.de/wagenreihung/1.0/${zugnummer}/${datetime}`)
+            .then(response => response.json())
+            .then(data => {
+			
+			// Check for valid JSON
+                if (data.error) {
+                    document.getElementById('notice').innerHTML = '<br><br>Wagenreihung für diesen Zug nicht verfügbar.<br><br>';
+					document.getElementById('coacheswrapper').classList.add('hidden');
+
+                }
+				
+				
+                const allFahrzeuggruppe = data.data.istformation.allFahrzeuggruppe;
+
+                
+                const firstElementsMap = new Map();
+                allFahrzeuggruppe.forEach(gruppe => {
+                    gruppe.allFahrzeug.forEach(fahrzeug => {
+                        const positioningruppe = fahrzeug.positioningruppe;
+                        if (!firstElementsMap.has(positioningruppe)) {
+                            firstElementsMap.set(positioningruppe, fahrzeug);
+                        }
+                    });
+                });
+
+                // Sort elements
+                const sortedFahrzeuge = Array.from(firstElementsMap.values()).sort((a, b) => {
+                    return parseInt(a.positioningruppe) - parseInt(b.positioningruppe);
+                });
+
+                const blocksContainer = document.getElementById('blocksContainer');
+
+                sortedFahrzeuge.forEach(fahrzeug => {
+                    const positioningruppe = fahrzeug.positioningruppe;
+					const wagenordnungsnummer = fahrzeug.wagenordnungsnummer;
+                    const ausstattung = fahrzeug.allFahrzeugausstattung[0];
+                    const ausstattungsart = ausstattung.ausstattungsart;
+                    const anzahl = ausstattung.anzahl;
+                    const bezeichnung = ausstattung.bezeichnung;
+                    const status = ausstattung.status;
+                    const kategorie = fahrzeug.kategorie;
+
+                    const ausstattungsDiv = document.createElement('div');
+                    ausstattungsDiv.classList.add('coach');
+
+                    if (ausstattungsart !== 'KLIMA') {
+                        ausstattungsDiv.innerHTML = `${wagenordnungsnummer}<br><img src="assets/icons/${kategorie}.svg"><img src="assets/icons/${ausstattungsart}.svg">`;
+                    } else {
+                        ausstattungsDiv.innerHTML = `${wagenordnungsnummer}<br><img src="assets/icons/${kategorie}.svg">`;
+                    }
+
+                    blocksContainer.appendChild(ausstattungsDiv);
+                });
+            })
+            .catch(error => {
+                console.error('Fehler beim Abrufen der Daten:', error);
+            });
+		
+					
+					
 				} else {
 					console.error('Div mit der ID "selectedDepartureTime" nicht gefunden.');
 				}
@@ -94,13 +174,10 @@ async function fetchAndDisplayData() {
 				const formattedTime = `${time.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}`;
 				flowText += `${formattedTime} <b>${stopover.stop.name}</b> | `;
 			}
-			
-			
 		});
-		
-		
 
 		// Show the destination of the train in destinations div (the big title on top)
+		
 		const destinationStopover = data.trip.stopovers.find(stopover => stopover.stop.id === data.trip.destination.id);
 		if (destinationStopover) {
 			const destinationDiv = document.getElementById('destination');
@@ -110,6 +187,13 @@ async function fetchAndDisplayData() {
 				console.error('Div mit der ID "destination" nicht gefunden.');
 			}
 		}
+		
+		
+		
+		
+		
+
+
 
 		// Push the flowing text to the div to show
 		const stopoversDiv = document.getElementById('stopovers');
@@ -128,6 +212,8 @@ async function fetchAndDisplayData() {
 		} else {
 			console.error('Div mit der ID "lineInfo" nicht gefunden.');
 		}
+		
+		
 	} catch (error) {
 		console.error('Fehler beim Abrufen der Daten:', error);
 	}
@@ -138,6 +224,11 @@ async function fetchAndDisplayData() {
 
 
 fetchAndDisplayData();
+
+//const zugnummer = jsonData.trip.line.fahrtNr;
+
+
+
 </script>
 
 </body>

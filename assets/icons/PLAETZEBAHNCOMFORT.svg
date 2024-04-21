@@ -1,16 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 34 34" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <g>
-        <path d="M34,17C34,26.383 26.383,34 17,34C7.617,34 0,26.383 0,17C0,7.617 7.617,0 17,0C26.383,0 34,7.617 34,17Z" style="fill:rgb(65,65,65);"/>
-        <g transform="matrix(0.190805,0,0,0.190805,-22.5952,-75.0292)">
-            <circle cx="172.6" cy="448.051" r="26.899" style="fill:rgb(235,235,235);"/>
-        </g>
-        <g transform="matrix(0.237957,0,0,0.237957,-18.6776,-91.121)">
-            <circle cx="172.6" cy="448.051" r="26.899" style="fill:rgb(235,235,235);"/>
-        </g>
-        <g transform="matrix(0.127424,0,0,0.127424,-6.15504,-31.8489)">
-            <circle cx="172.6" cy="448.051" r="26.899" style="fill:rgb(235,235,235);"/>
-        </g>
-    </g>
+<svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_163_48)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M34 17C34 26.383 26.383 34 17 34C7.617 34 0 26.383 0 17C0 7.617 7.617 0 17 0C26.383 0 34 7.617 34 17Z" fill="#414141"/>
+<path d="M10.3395 15.5931C13.1741 15.5931 15.472 13.2952 15.472 10.4606C15.472 7.626 13.1741 5.32812 10.3395 5.32812C7.50491 5.32812 5.20703 7.626 5.20703 10.4606C5.20703 13.2952 7.50491 15.5931 10.3395 15.5931Z" fill="white"/>
+<path d="M22.393 21.8973C25.9281 21.8973 28.7938 19.0316 28.7938 15.4965C28.7938 11.9614 25.9281 9.0957 22.393 9.0957C18.8579 9.0957 15.9922 11.9614 15.9922 15.4965C15.9922 19.0316 18.8579 21.8973 22.393 21.8973Z" fill="white"/>
+<path d="M15.8377 28.6716C17.7307 28.6716 19.2653 27.137 19.2653 25.244C19.2653 23.351 17.7307 21.8164 15.8377 21.8164C13.9447 21.8164 12.4102 23.351 12.4102 25.244C12.4102 27.137 13.9447 28.6716 15.8377 28.6716Z" fill="white"/>
+</g>
+<defs>
+<clipPath id="clip0_163_48">
+<rect width="34" height="34" fill="white"/>
+</clipPath>
+</defs>
 </svg>

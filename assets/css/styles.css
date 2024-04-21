@@ -194,7 +194,7 @@ input[type="radio"] {
 .coach {
 	border: solid #414141;
 	border-width: 5px 3px 5px 3px;
-	width: 100px;
+	min-width: 100px;
 	height: 55px;
 	margin-left: -5px;
 	padding-top: 7px;

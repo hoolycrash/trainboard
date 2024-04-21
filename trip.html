@@ -30,6 +30,7 @@
 		<div class="right-div lineview">
 			<div id="selectedDepartureTime" class="departtime"></div>
 			<div id="lineInfo"></div>
+			<span id="trainNr">Lade Fahrplandaten...</span>
 			<br><br>
 		</div>
 		
@@ -72,6 +73,9 @@ async function fetchAndDisplayData() {
 		
 		const tripid = data.trip.line.fahrtNr;
 		var zugnummer = tripid;//Train Nr (Zugnummer)
+		
+		document.getElementById('trainNr').innerHTML = '<b>Zugnummer:</b> ' + zugnummer;
+
 		
 
 		// Create the flowing text with the next stations of this trip

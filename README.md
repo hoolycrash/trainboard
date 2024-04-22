@@ -23,7 +23,6 @@ To ensure that your code will be accepted, it is recommended to start by contrib
 - Complete S-Bahn Signet styles in `/assets/css/line-colors.css`
 - Train Remarks, currently only available on large screens (`departures.html`,`arrivals.html`,`suburban.html`)
 - Optimise javascript and outsource it to single files to reduce clutter and storage space
-- Add Train Number (Zugnummer) to the trip informations tab (`trip.html`)
 - Improving accessibility
 - Better Optimisation for different screen sizes
 

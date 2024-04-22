@@ -211,7 +211,7 @@ async function fetchAndDisplayData() {
 		// Left div with departing train and linenumber
 		const lineInfoDiv = document.getElementById('lineInfo');
 		if (lineInfoDiv) {
-			lineInfoDiv.innerHTML = `<div class="biglinebadge ${data.trip.line.product}  ${data.trip.line.name.replace(/\s/g, '')}${data.trip.line.operator.id} ${data.trip.line.productName}"><a href="https://bahn.expert/details/?evaNumberAlongRoute=${stationId}">${data.trip.line.name}  </a></div>`;
+			lineInfoDiv.innerHTML = `<div class="biglinebadge ${data.trip.line.product}  ${data.trip.line.name.replace(/\s/g, '')}${data.trip.line.operator.id} ${data.trip.line.productName}"><a href="https://bahn.expert/details/${data.trip.line.name}/?evaNumberAlongRoute=${stationId}">${data.trip.line.name}  </a></div>`;
 
 		} else {
 			console.error('Div mit der ID "lineInfo" nicht gefunden.');

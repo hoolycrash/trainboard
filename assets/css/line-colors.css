@@ -8,10 +8,10 @@ Please read comments carefully.
 }
 
 .Bus {  /*THIS IS NEEDED because rail replacement busses exist :) */
-	background-color: #8c097a!important;
+	background-color: #9b1a60!important; /*#8c097a*/
 }
 
-.nationalExpress, .national {
+.nationalExpress, .national, .westbahn.WB {
 	background-color: #ec0016;
 	color: #fff;
 }
@@ -26,7 +26,7 @@ Please read comments carefully.
 	max-width: 100px;
 }
 
-.EN, .NJ, .ICN {
+.EN, .NJ, .ICN, .ES{
 	background-image: url('../stars.jpg');
 	background-size: 200px;
 	color: #fff ;
@@ -37,14 +37,14 @@ Please read comments carefully.
 	color: #fff ;
 }
 
-.IRE {
+.IRE, .RE, .MEX, .TLX, .REX, .CJX {
 	background-color: #1455c0;
 	color: #fff;
 }
 
-.MEX {
+.RE.db-fernverkehr-ag {
 	background-color: #fdcc00;
-	color: #3a4044;
+	color: #000;
 }
 
 
@@ -487,7 +487,10 @@ Individual design on Signets is limited to color to keep a consistent look. Plea
 }
 
 /* S-Bahnen Österreich */
-.S1osterreichische-bundesbahnen {
+
+.S1osterreichische-bundesbahnen,
+.S1salzburger-lokalbahnen,
+.S11salzburger-lokalbahnen {
 	background-color: #139cd8;
 	color: #fff;
 }
@@ -503,6 +506,16 @@ Individual design on Signets is limited to color to keep a consistent look. Plea
 }
 
 .S4osterreichische-bundesbahnen {
+	background-color: #139cd8;
+	color: #fff;
+}
+
+.S5osterreichische-bundesbahnen {
+	background-color: #139cd8;
+	color: #fff;
+}
+
+.S6osterreichische-bundesbahnen {
 	background-color: #139cd8;
 	color: #fff;
 }

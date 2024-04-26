@@ -158,7 +158,6 @@ input[type="radio"] {
 	overflow-x: scroll;
 	height: 250px;
 	margin-top: 20px;
-
 }
 
 ::-webkit-scrollbar {
@@ -207,26 +206,65 @@ input[type="radio"] {
 	
 }
 
-.coach:first-child {
+.coach.steuerHead {
 	border-radius: 80px 0px 0px 10px;
 	border-width: 5px 3px 5px 5px;
-	margin-left: 5px;
+	margin-left: 1px;
 	background-image: url('.././icons/trainwindow.svg');
 	background-size: 30px;
 	background-position: left center;
 	background-repeat: no-repeat;
-
 }
 
+.coach.head {
+	border-radius: 10px 0px 0px 10px;
+	border-width: 5px 3px 5px 5px;
+	margin-left: 1px;
+	background-size: 30px;
+	background-position: left center;
+	background-repeat: no-repeat;
+}
 
+.coach.single {
+	border-radius: 80px 80px 10px 10px;
+	border-width: 5px 3px 5px 3px;
+	margin-left: 1px;
+	background-image: url('.././icons/trainwindow.svg');
+	background-size: 30px;
+	background-position: left center;
+	background-repeat: no-repeat;
+}
 
-.coach:last-child {
-	border-top-right-radius: 10px;
-	border-bottom-right-radius: 10px;
+.coach.lok {
+	border-radius: 30px 30px 10px 10px;
+	border-width: 5px 3px 5px 3px;
+	margin-left: 1px;
+	margin-right: 1px;
+	/*background-image: url('.././icons/trainwindow.svg');*/
+	background-size: 30px;
+	background-position: left center;
+	background-repeat: no-repeat;
+}
+
+.coach.back {
+	border-radius: 0px 10px 10px 0px;
 	border-width: 5px 5px 5px 3px;
+	margin-right: 1px;
+	background-size: 30px;
+	background-position: left center;
+	background-repeat: no-repeat;
 }
 
-
+.coach.steuerBack /*:not(.steuerHead)*/ {
+	border-radius: 0px 80px 10px 0px;
+	border-width: 5px 5px 5px 3px;	
+	margin-right: 1px;
+	/*
+	background-image: url('.././icons/trainwindow-mirror.svg');
+	background-size: 30px;
+	background-position: right center;
+	background-repeat: no-repeat;*/
+}
 
 @keyframes blink {
   50% {

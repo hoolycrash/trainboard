@@ -91,7 +91,15 @@ async function fetchAndDisplayData() {
 				if (selectedDepartureTimeDiv) {
 					const selectedTime = new Date(stopover.departure);
 					const selectedFormattedTime = `<b>${selectedTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</b>`;
-					selectedDepartureTimeDiv.innerHTML = selectedFormattedTime;
+					
+					const selectedplannedTime = new Date(stopover.plannedDeparture);
+					const selectedFormattedPlannedTime = `<b>${selectedplannedTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</b>`;
+					
+					if (stopover.departure == stopover.plannedDeparture) {
+						selectedDepartureTimeDiv.innerHTML = selectedFormattedTime;
+					} else {
+						selectedDepartureTimeDiv.innerHTML = "<s class='disabled'>" + selectedFormattedPlannedTime + "</s><br>" + selectedFormattedTime;
+					}
 					
 					// converting departing-time to YYYYMMDDHHMM format for the api request
 					const selecteddepartTime = new Date(stopover.plannedDeparture);
@@ -157,16 +165,8 @@ async function fetchAndDisplayData() {
 
                     blocksContainer.appendChild(ausstattungsDiv);
                 });
-            })
-            .catch(error => {
-                console.error('Fehler beim Abrufen der Daten:', error);
             });
-		
-					
-					
-				} else {
-					console.error('Div mit der ID "selectedDepartureTime" nicht gefunden.');
-				}
+				} 
 
 				return;
 			}

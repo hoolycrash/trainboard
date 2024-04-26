@@ -251,11 +251,13 @@ function updateTable(data) {
 		}	}
 	} else {
 		if (entry.when !== null) {
-			if (delayDifference > 5) { //delay more then 5 minutes -> time in red & delay in minutes (planned time in Hovertext)
+			//if (delayDifference > 5) { //delay more then 5 minutes -> time in red & delay in minutes (planned time in Hovertext)
 				
-				countdownCell.innerHTML = `<s>${formatTime(entry.plannedWhen)}</s> <span style='color: #ec0016;'>${formatTime(entry.when)} <i class="additional" style='color: #ec0016;'>(+${delayDifference})</i></span>`;
-			} else if (delayDifference > 0) { //short delay -> time in orange (planned time and delay in minutes in Hovertext)	
-				countdownCell.innerHTML = `<s>${formatTime(entry.plannedWhen)}</s> <span style='color: #ff6600;'>${formatTime(entry.when)}</span>`;
+			//	countdownCell.innerHTML = `<s>${formatTime(entry.plannedWhen)}</s> <span style='color: #ec0016;'>${formatTime(entry.when)} <i class="additional" style='color: #ec0016;'>(+${delayDifference})</i></span>`;
+			//} else 
+				
+			if (delayDifference > 0) { //short delay -> time in orange (planned time and delay in minutes in Hovertext)	
+				countdownCell.innerHTML = `<nobr class='mobilebreak'><s class='disabled'>${formatTime(entry.plannedWhen)}</s> ${formatTime(entry.when)}</nobr>`;
 			} else {
 					countdownCell.textContent = formatTime(entry.when);
 			}
@@ -278,7 +280,7 @@ function updateTable(data) {
 		if (entry.plannedPlatform === null) { //some Trains have no planned platform
 			row.insertCell(3).innerHTML = "<span style='color: #ec0016;'> " + entry.platform + "</span>";
 		} else {
-			row.insertCell(3).innerHTML = "<s>" + entry.plannedPlatform + "</s><span style='color: #ec0016;'> " + entry.platform + "</span>";
+			row.insertCell(3).innerHTML = "<nobr class='mobilebreak'><s class='disabled'>" + entry.plannedPlatform + "</s> " + entry.platform + "</nobr>";
 		}
 	}
 

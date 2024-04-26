@@ -458,6 +458,12 @@ td {
 		display: inline;
 	}
 	
+	.mobilebreak {
+		white-space: normal!important;
+	}
+	
+	
+	
 	table tr td:nth-child(3)  {
 		overflow: hidden;
 		max-width: 90px;

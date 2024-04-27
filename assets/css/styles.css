@@ -240,7 +240,7 @@ input[type="radio"] {
 	border-width: 5px 3px 5px 3px;
 	margin-left: 1px;
 	margin-right: 1px;
-	/*background-image: url('.././icons/trainwindow.svg');*/
+	background-image: url(.././icons/trainwindow.svg);
 	background-size: 30px;
 	background-position: left center;
 	background-repeat: no-repeat;

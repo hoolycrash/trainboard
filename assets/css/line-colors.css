@@ -8,10 +8,10 @@ Please read comments carefully.
 }
 
 .Bus {  /*THIS IS NEEDED because rail replacement busses exist :) */
-	background-color: #8c097a!important;
+	background-color: #9b1a60!important; /*#8c097a*/
 }
 
-.nationalExpress, .national {
+.nationalExpress, .national, .westbahn.WB, .regiojet.IC {
 	background-color: #ec0016;
 	color: #fff;
 }
@@ -26,7 +26,7 @@ Please read comments carefully.
 	max-width: 100px;
 }
 
-.EN, .NJ, .ICN {
+.EN, .NJ, .ICN, .ES{
 	background-image: url('../stars.jpg');
 	background-size: 200px;
 	color: #fff ;
@@ -37,14 +37,14 @@ Please read comments carefully.
 	color: #fff ;
 }
 
-.IRE {
+.IRE, .RE, .MEX, .TLX, .REX, .CJX, .FEX {
 	background-color: #1455c0;
 	color: #fff;
 }
 
-.MEX {
+.RE.db-fernverkehr-ag {
 	background-color: #fdcc00;
-	color: #3a4044;
+	color: #000;
 }
 
 
@@ -56,6 +56,10 @@ Then we can manually style thos signets here.
 Individual design on Signets is limited to color to keep a consistent look. Please do not style Shape, Size, Font etc...
 */
 
+.SDG.sdg-sachsische-dampfeisenbahngesellschaft-mbh {
+	background-color: #6c4b3a;
+	color: #fff;
+}
 
 /* S-Bahn Berlin */
 .S1s-bahn-berlin {
@@ -487,7 +491,10 @@ Individual design on Signets is limited to color to keep a consistent look. Plea
 }
 
 /* S-Bahnen Österreich */
-.S1osterreichische-bundesbahnen {
+
+.S1osterreichische-bundesbahnen,
+.S1salzburger-lokalbahnen,
+.S11salzburger-lokalbahnen {
 	background-color: #139cd8;
 	color: #fff;
 }
@@ -503,6 +510,16 @@ Individual design on Signets is limited to color to keep a consistent look. Plea
 }
 
 .S4osterreichische-bundesbahnen {
+	background-color: #139cd8;
+	color: #fff;
+}
+
+.S5osterreichische-bundesbahnen {
+	background-color: #139cd8;
+	color: #fff;
+}
+
+.S6osterreichische-bundesbahnen {
 	background-color: #139cd8;
 	color: #fff;
 }

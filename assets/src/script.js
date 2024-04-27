@@ -141,13 +141,17 @@ function loadData() {
 
 // Rendering departures or arrivals
 function updateTable(data) {
-	var tableBody = document.getElementById('tableBody');
-	tableBody.innerHTML = ''; // delete everything before  rewrite table content
+	// Handle null response 
+	if (data == null) {
+		console.log(formatTime(new Date()), 'Data Error:', data);
+		return;
+	}
 
+	/*
 	// Looking for departing products "suburban"
 	var hasSuburbanDeparture = data.some(function(entry) {
 		return entry.line.product === "suburban";
-	});
+	});*/
 
 	// sorts the entries by when or plannedwhen
 	data.sort(function(a, b) {
@@ -155,6 +159,9 @@ function updateTable(data) {
         var timeB = b.when !== null ? b.when : b.plannedWhen;
         return new Date(timeA) - new Date(timeB);
     });
+
+	var tableBody = document.getElementById('tableBody');
+	tableBody.innerHTML = ''; // delete everything before  rewrite table content
 
 	data.forEach(function(entry) {
 		// If product is bus, ferry, subway, tram or taxi
@@ -170,152 +177,155 @@ function updateTable(data) {
 		}
 
 		// Check is S-Bahn view
-		if (siteType === 'S') {  //skip everything except S-Bahn
-			if (entry.line.product !== "suburban") {return;}
-		} else { //skip S-Bahn
-			if (entry.line.product === "suburban") {return;} 
+		if ((siteType === 'S' && entry.line.product !== "suburban") ||
+        (siteType !== 'S' && entry.line.product === "suburban")) {
+        	return; // skip everything except S-Bahn OR skip S-Bahn
+    	}
+
+		// if trip is cancelled
+		var isCancelled = entry.remarks.some(function(remark) {
+			return remark.type === "status" && remark.code === "cancelled";
+		});
+
+		// Is trip more than 10 mins ago?
+		var plannedDepartureTime = new Date(entry.plannedWhen);
+		var now = new Date();
+		var diffPlannedMinutes = Math.round((now - plannedDepartureTime) / (1000 * 60));
+
+		// If entry is cancelled and more than 10 mins ago skip (not neccesary to skip cancelled trips which should have been departed already. may increase or decrease the time 
+		if (isCancelled && diffPlannedMinutes > 0) {
+			return;
 		}
 
-	// if trip is cancelled
-	var isCancelled = entry.remarks.some(function(remark) {
-		return remark.type === "status" && remark.code === "cancelled";
-	});
-
-	// Is trip more than 10 mins ago?
-	var plannedDepartureTime = new Date(entry.plannedWhen);
-	var now = new Date();
-	var diffPlannedMinutes = Math.round((now - plannedDepartureTime) / (1000 * 60));
-
-	// If entry is cancelled and more than 10 mins ago skip (not neccesary to skip cancelled trips which should have been departed already. may increase or decrease the time 
-	if (isCancelled && diffPlannedMinutes > 0) {
-		return;
-	}
-
-	var row = tableBody.insertRow();
-	row.classList.add('boardcell');
-    
-	// set style to line-trough if cancelled
-	if (isCancelled) {
-		row.style.textDecoration = "line-through";
-	}
-    
-	// Format time stemps to actual readable format
-	//var formattedWhen = formatTime(entry.when);
-	//var formattedPlannedWhen = formatTime(entry.plannedWhen);
-	
-	// add clossing door gif (only when not cancelled)
-	var abMessage = (isCancelled) ? "" : getAbMessage(entry.when);
-
-	row.insertCell(0).innerHTML = '<div class="linebadge '+ entry.line.product + ' ' + entry.line.name.replace(/\s/g, '') + entry.line.operator.id + ' ' + entry.line.operator.id + ' ' + entry.line.productName +'">'+ entry.line.name +'</div>';
-	
-	// Calculate minutes from time now - departing time (needed for the countdown in sbahn tab)
-	var now = new Date();
-	var departureTime = new Date(entry.when);
-	var timediff = Math.round((departureTime - now) / (1000 * 60));
-    	
-	var countdownCell = row.insertCell(1);
-
-	// Calculate delay in minutes
-    var delayDifference = Math.abs(departureTime - plannedDepartureTime) / (1000 * 60);
-	
-	if (siteType === 'S' && timediff <= 60) {
-		if (entry.when !== null) {
-			if (timediff <= 0) {
-				countdownCell.textContent = 'jetzt';
+		var row = tableBody.insertRow();
+		row.classList.add('boardcell');
 		
-				setInterval(function() {
-					timediff = Math.round((departureTime - new Date()) / (1000 * 60));
-					if (timediff <= 60) {
-						countdownCell.textContent = timediff + ' min.';
+		// set style to line-trough if cancelled
+		if (isCancelled) {
+			row.style.textDecoration = "line-through";
+		}
+		
+		// Format time stemps to actual readable format
+		//var formattedWhen = formatTime(entry.when);
+		//var formattedPlannedWhen = formatTime(entry.plannedWhen);
+		
+		// add clossing door gif (only when not cancelled)
+		var abMessage = (isCancelled) ? "" : getAbMessage(entry.when);
+
+		let linebadge = `<div class="linebadge ${entry.line.product} ${entry.line.name.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}">`;
+		if (entry.line.operator.id === 'freiberger-eisenbahngesellschaft') {
+			linebadge += "FEG</div>"; //RB 83
+		} else if (entry.line.productName === "FEX") {
+			linebadge += "FEX</div>"; //Flughafen-Express Berlin
+		} else{
+			linebadge += `${entry.line.name}</div>`;
+		}
+		
+		row.insertCell(0).innerHTML = linebadge;
+		
+		// Calculate minutes from time now - departing time (needed for the countdown in sbahn tab)
+		var now = new Date();
+		var departureTime = new Date(entry.when);
+		var timediff = Math.round((departureTime - now) / (1000 * 60));
+			
+		var countdownCell = row.insertCell(1);
+
+		// Calculate delay in minutes
+		var delayDifference = Math.abs(departureTime - plannedDepartureTime) / (1000 * 60);
+		
+		if (siteType === 'S' && timediff <= 60) {
+			if (entry.when !== null) {
+				if (timediff <= 0) {
+					countdownCell.textContent = 'jetzt';
+			
+					setInterval(function() {
+						timediff = Math.round((departureTime - new Date()) / (1000 * 60));
+						if (timediff <= 60) {
+							countdownCell.textContent = timediff + ' min.';
+						} else {
+							countdownCell.textContent = formatTime(entry.when);
+						}
+					}, 60000);
+				} else if (timediff <= 60) {
+					// Show countdown instead of departing times when departing time is <= 60 min away from now
+					if (delayDifference > 5) { //delay more then 5 minutes -> time in red
+						countdownCell.innerHTML = "<span style='color: #ec0016;'>" + timediff + '<span class="additional">&nbsp;min.</span></span>'; 
 					} else {
-						countdownCell.textContent = formatTime(entry.when);
+						countdownCell.innerHTML = timediff + '<span class="additional">&nbsp;min.</span>';
 					}
-				}, 60000);
-			} else if (timediff <= 60) {
-				// Show countdown instead of departing times when departing time is <= 60 min away from now
-				if (delayDifference > 5) { //delay more then 5 minutes -> time in red
-					countdownCell.innerHTML = "<span style='color: #ec0016;'>" + timediff + '<span class="additional">&nbsp;min.</span></span>'; 
+					
+					// Reload every 60 secs
+					setInterval(function() {
+						timediff = Math.round((departureTime - new Date()) / (1000 * 60));
+						if (timediff <= 60) {
+							countdownCell.textContent = timediff + ' min.';
+						} else {
+							countdownCell.textContent = formatTime(entry.when);
+						}
+					}, 60000);
+			}	}
+		} else {
+			if (entry.when !== null) {
+				/*if (delayDifference > 5) { //delay more then 5 minutes -> time in red & delay in minutes (planned time in Hovertext)		
+					countdownCell.innerHTML = `<nobr class='mobilebreak'><s class='disabled'>${formatTime(entry.plannedWhen)}</s> <span style='color: #ec0016;'>${formatTime(entry.when)} <i class="additional" style='color: #ec0016;'>(+${delayDifference})</i></span></nobr>`;
+				} else*/ 		
+				if (delayDifference > 0) { //short delay -> time in orange (planned time and delay in minutes in Hovertext)	
+					//countdownCell.innerHTML = `<nobr class='mobilebreak'><s class='disabled'>${formatTime(entry.plannedWhen)}</s> <span style='color: #ff6600;'>${formatTime(entry.when)}</span></nobr>`;
+					countdownCell.innerHTML = `<nobr class='mobilebreak'><s class='disabled'>${formatTime(entry.plannedWhen)}</s> ${formatTime(entry.when)}</nobr>`;
 				} else {
-					countdownCell.innerHTML = timediff + '<span class="additional">&nbsp;min.</span>';
-				}
-				
-				// Reload every 60 secs
-				setInterval(function() {
-					timediff = Math.round((departureTime - new Date()) / (1000 * 60));
-					if (timediff <= 60) {
-						countdownCell.textContent = timediff + ' min.';
-					} else {
-						countdownCell.textContent = formatTime(entry.when);
-					}
-				}, 60000);
-		}	}
-	} else {
-		if (entry.when !== null) {
-			//if (delayDifference > 5) { //delay more then 5 minutes -> time in red & delay in minutes (planned time in Hovertext)
-				
-			//	countdownCell.innerHTML = `<s>${formatTime(entry.plannedWhen)}</s> <span style='color: #ec0016;'>${formatTime(entry.when)} <i class="additional" style='color: #ec0016;'>(+${delayDifference})</i></span>`;
-			//} else 
-				
-			if (delayDifference > 0) { //short delay -> time in orange (planned time and delay in minutes in Hovertext)	
-				countdownCell.innerHTML = `<nobr class='mobilebreak'><s class='disabled'>${formatTime(entry.plannedWhen)}</s> ${formatTime(entry.when)}</nobr>`;
-			} else {
 					countdownCell.textContent = formatTime(entry.when);
+				}
+			} else {
+				countdownCell.textContent = formatTime(entry.plannedWhen);
 			}
+		}
+
+		// Template for tooltip (Hovertext) (maybe showing timediff in Hovertext)
+		/*
+		countdownCell.innerHTML = "<span class=tooltip style='color: #ec0016;'>" + formatTime(entry.when) + " <i>(+" + timeDifference + ")</i><span class=tooltiptext>" + formatTime(entry.plannedWhen) + "</span></span>";
+		*/ 
+		
+		var wideCell2 = row.insertCell(2);
+		
+		// Check for Platform changes
+		if (entry.platform == entry.plannedPlatform){
+			row.insertCell(3).textContent = entry.plannedPlatform;
+		} else { 
+			if (entry.plannedPlatform === null) { //some Trains have no planned platform
+				row.insertCell(3).innerHTML = `<span style='color: #ec0016;'> ${entry.platform}</span>`;
+			} else {
+				row.insertCell(3).innerHTML = `<nobr class='mobilebreak'><s class='disabled'>${entry.plannedPlatform}</s><span style='color: #ec0016;'> ${entry.platform}</span></nobr>`;
+			}
+		}
+
+		var cell = row.insertCell(4);
+
+		// Show info-messages (the look on mobile needs to be improved)
+		if (entry.remarks.length > 0) {
+			var InfoMessage = '';
+			for (var i = 0; i < entry.remarks.length; i++) {
+				if (i > 0) { InfoMessage += " +++ ";}
+				InfoMessage += entry.remarks[i].text;
+			}
+		}
+		
+		cell.innerHTML = abMessage;
+		cell.classList.add("zerotable");
+		
+		if (siteType !== 'A') {
+			wideCell2.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}" class="black">${entry.direction}</a>`;
 		} else {
-			countdownCell.textContent = formatTime(entry.plannedWhen);
+			wideCell2.innerHTML = `<span class="additional">Von </span><a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}" class="black">${entry.provenance}</a>`;
 		}
-	}
 
-	// Template for tooltip (Hovertext) (maybe showing timediff in Hovertext)
-	/*
-	countdownCell.innerHTML = "<span class=tooltip style='color: #ec0016;'>" + formatTime(entry.when) + " <i>(+" + timeDifference + ")</i><span class=tooltiptext>" + formatTime(entry.plannedWhen) + "</span></span>";
-	*/ 
-	
-	var wideCell2 = row.insertCell(2);
-	
-	// Check for Platform changes
-	if (entry.platform == entry.plannedPlatform){
-		row.insertCell(3).textContent = entry.plannedPlatform;
-	} else { 
-		if (entry.plannedPlatform === null) { //some Trains have no planned platform
-			row.insertCell(3).innerHTML = "<span style='color: #ec0016;'> " + entry.platform + "</span>";
-		} else {
-			row.insertCell(3).innerHTML = "<nobr class='mobilebreak'><s class='disabled'>" + entry.plannedPlatform + "</s> " + entry.platform + "</nobr>";
-		}
-	}
-
-	var cell = row.insertCell(4);
-
-	// Show info-messages (the look on mobile needs to be improved)
-	if (entry.remarks.length > 0) {
-		var InfoMessage = '';
-		for (var i = 0; i < entry.remarks.length; i++) {
-			if (i > 0) { InfoMessage += " +++ ";}
-			InfoMessage += entry.remarks[i].text;
-		}
-	}
-	
-	cell.innerHTML = abMessage;
-	cell.classList.add("zerotable");
-	
-	if (siteType !== 'A') {
 		if (InfoMessage !== undefined) {
-			wideCell2.innerHTML = '<a href="trip.html?id=' + entry.tripId + '&station=' + entry.stop.id + '" class="black">' + entry.direction + '</a><br><span class="remark bigonly"> ' + InfoMessage + '</span>';
-	  } else {
-			  wideCell2.innerHTML = '<a href="trip.html?id=' + entry.tripId + '&station=' + entry.stop.id + '" class="black">' + entry.direction + '</a>';
-	  }
-	} else {
-		if (InfoMessage !== undefined) {
-			wideCell2.innerHTML = '<span class="additional">Von </span><a href="trip.html?id=' + entry.tripId + '&station=' + entry.stop.id + '" class="black">' + entry.provenance + '</a><br><span class="remark bigonly"> ' + InfoMessage + '</span>';
-	  } else {
-			  wideCell2.innerHTML = '<span class="additional">Von </span><a href="trip.html?id=' + entry.tripId + '&station=' + entry.stop.id + '" class="black">' + entry.provenance + '</a>';
-	  }
-	}
-	
-	// Create link to the trip information tab
-	wideCell2.className = 'wide';
-	wideCell2.classList.add('boardcell');
-});
+			wideCell2.innerHTML += `<br><span class="remark bigonly">${InfoMessage}</span>`;
+		}
+		
+		// Create link to the trip information tab
+		wideCell2.className = 'wide';
+		wideCell2.classList.add('boardcell');
+	});
 }
 
 

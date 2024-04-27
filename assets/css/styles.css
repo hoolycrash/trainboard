@@ -152,6 +152,7 @@ input[type="radio"] {
 	overflow-x: scroll;
 	height: 250px;
 	margin-top: 20px;
+	padding-left: 10%;
 }
 
 ::-webkit-scrollbar {

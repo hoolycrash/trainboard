@@ -334,7 +334,7 @@ function rendertraincomposition(data) {
 				ausstattungsDiv.innerHTML = `${wagenordnungsnummer}<br><img src="${imgpath}/${kategorie}.svg">`;
 				let countausstatt = 0;
 				fahrzeug.allFahrzeugausstattung.forEach(ausstattung => {						
-					if (countausstatt < 2 && !["KLIMA", "RUHE", "PLAETZEROLLSTUHL", "ROLLSTUHLTOILETTE", "FAMILIE", "PLAETZEFAHRRAD"].includes(ausstattung.ausstattungsart)) {
+					if (countausstatt < 2 && !["KLIMA"].includes(ausstattung.ausstattungsart)) {
 						countausstatt++;
 						ausstattungsDiv.innerHTML += `<img src="${imgpath}/${ausstattung.ausstattungsart}.svg">`;
 					}

@@ -12,8 +12,6 @@ body {
 	font-family: "Kode Mono", monospace;
 	font-size: 20px;
 	margin: 0px;
-	
-
 }
 
 a {
@@ -53,7 +51,6 @@ span {
 	height: 16px;
 	padding: 25px 16px 25px 16px;
 	font-size: 16px;
-	
 }
 
 .zerotable {
@@ -68,7 +65,6 @@ span {
 }
 
 .tabs {
-	
 	float: left;
 }
 
@@ -87,7 +83,6 @@ a {
 	text-decoration: underline 3px;
 	text-underline-offset: 23px;
 	font-weight: bold;
-		
 }
 
 .remark {
@@ -135,7 +130,6 @@ a {
 	padding-left: 40px;
 	margin: 17px;
 	width: 100%;
-	
 }
 
 .searchbar:focus {
@@ -173,7 +167,6 @@ input[type="radio"] {
 	height: 110px;
 	padding: 10px;
 	padding-left: 20px;
-	
 }
 
 @keyframes drivein {
@@ -203,7 +196,6 @@ input[type="radio"] {
 	color: #414141;
 	font-weight: bold;
 	box-shadow: inset 0px -10px #cecece;
-	
 }
 
 .coach.steuerHead {
@@ -271,6 +263,7 @@ input[type="radio"] {
     opacity: 0.0;
   }
 }
+
 .blink {
   animation: blink 1s step-start 0s infinite;
 }
@@ -309,9 +302,7 @@ label {
 
 .switch-container {
 	border: solid 1px #b9b9b9;
-	
 }
-
 
 .container {
 display: flex;
@@ -333,27 +324,19 @@ display: flex;
 	max-width: 250px;
 }
 
-
-
-       
-		
-
 table {
 	border: none;
 	border-spacing: 0px;
 	width: 100%;
-	
 }
 
 .boardcell {
 	font-weight: bold;
-	}
+}
 
 td {
-	padding: 10px;
-	vertical-align: top;
-	padding: 10px 1px 25px 2px;
-	
+	padding: 15px;
+	vertical-align: top
 }
 
 .wide {
@@ -362,7 +345,6 @@ td {
 
 .header, tr:nth-child(even) {
 	background-color: #D9D9D9;
-	
 }
 
 .header {
@@ -372,14 +354,12 @@ td {
 .mini {
 	height: 35px;
 	padding-right: 15px;
-	
 }
 
 .suggestion {
       display: flex;
       justify-content: space-between;
       padding: 17px; /* Optional padding for spacing */  
-	  
 }
 
 .topline {
@@ -398,7 +378,6 @@ td {
 
 .suggestion:hover {
 	background-color: #e4e4e4;
-	
 }
 
 .bigicon {
@@ -431,17 +410,14 @@ td {
 	text-align: center;
 	font-weight: bold;
 	font-size: 22px;
-
 }
 
 .smallonly {
 	display: none;
 }
 
+@media (max-width: 700px) {
 
-
-
-@media (max-width: 600px) {
 	.stacktobottom {
 		order: 1; /* ZurĆ¼cksetzen der Reihenfolge auf den Standardwert */
 	}
@@ -452,36 +428,26 @@ td {
 			
 	.searchbar {
 		margin-top: 13px;
-		
 		width: -webkit-fill-available;
 	}
-	
 
-			
 	h2 {
 		display: none;
 	}
 			
 	td {
 		font-size: 15px;
-		
-		
-		
+		padding: 10px;	
 	}
 	
 	.mini {
 		height: 25px;
-		
 	}
-	
 	
 	.biglinebadge {
 		width: 150px;
 		font-size: 17px;
-	
 	}
-	
-	
 			
 	.linebadge {
 		width: 80px;
@@ -500,8 +466,6 @@ td {
 		white-space: normal!important;
 	}
 	
-	
-	
 	table tr td:nth-child(3)  {
 		overflow: hidden;
 		max-width: 90px;
@@ -518,8 +482,6 @@ td {
 	.departtime {
 		font-size: 50px;
 	}
-	
-
 }
 
 @media (max-width: 400px) {
@@ -539,6 +501,10 @@ td {
 	
 	.departtime {
 		font-size: 46px;
+	}
+	
+	td {
+		padding: 10px 1px 25px 2px;
 	}
 }
 
@@ -596,7 +562,6 @@ td {
 	top: 100%;
 	left: 50%;
 	margin-left: -60px;
-	
 }
   
 .tooltip:hover .tooltiptext {

@@ -77,7 +77,6 @@ async function fetchAndDisplayData() {
 		const data = await response.json();
 		
 		const zugnummer = data.trip.line.fahrtNr; //Train Nr (Zugnummer)
-		
 
 		// Create the flowing text with the next stations of this trip
 		let flowText = "";
@@ -158,7 +157,16 @@ async function fetchAndDisplayData() {
 		// Left div with departing train and linenumber
 		const lineInfoDiv = document.getElementById('lineInfo');
 		if (lineInfoDiv) {
-			lineInfoDiv.innerHTML = `<div class="biglinebadge ${data.trip.line.product}  ${data.trip.line.name.replace(/\s/g, '')}${data.trip.line.operator.id} ${data.trip.line.productName}"><a href="https://bahn.expert/details/${zugnummer}/?evaNumberAlongRoute=${stationId}">${data.trip.line.name}  </a></div>`;
+				let entry = data.trip;
+				let linebadge = `<div class="biglinebadge ${entry.line.product} ${entry.line.name.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}"><a href="https://bahn.expert/details/${zugnummer}/?evaNumberAlongRoute=${stationId}">`;
+				if (entry.line.operator.id === 'freiberger-eisenbahngesellschaft') {
+					linebadge += "FEG</a></div>"; //RB 83
+				} else if (entry.line.productName === "FEX") {
+					linebadge += "FEX</a></div>"; //Flughafen-Express Berlin
+				} else{
+					linebadge += `${entry.line.name}</div>`;
+				}
+			lineInfoDiv.innerHTML = linebadge;
 
 		} else {
 			console.error('Div mit der ID "lineInfo" nicht gefunden.');
@@ -229,9 +237,7 @@ function rendertraincomposition(data) {
 	let vehiclename = "";
 	const imgpath = 'assets/icons/carriage';
 	const allFahrzeuggruppe = data.allFahrzeuggruppe;
-	console.log(data);
-
-	console.log(data.halt.evanummer);
+	console.log("Wagenreihung:", data);
 				
 	// several trains -> every train
 	for (let i = 0; i < allFahrzeuggruppe.length; i++) {
@@ -328,7 +334,7 @@ function rendertraincomposition(data) {
 				ausstattungsDiv.innerHTML = `${wagenordnungsnummer}<br><img src="${imgpath}/${kategorie}.svg">`;
 				let countausstatt = 0;
 				fahrzeug.allFahrzeugausstattung.forEach(ausstattung => {						
-					if (countausstatt < 2 && !["KLIMA", "RUHE", "PLAETZEROLLSTUHL", "ROLLSTUHLTOILETTE", "FAMILIE"].includes(ausstattung.ausstattungsart)) {
+					if (countausstatt < 2 && !["KLIMA", "RUHE", "PLAETZEROLLSTUHL", "ROLLSTUHLTOILETTE", "FAMILIE", "PLAETZEFAHRRAD"].includes(ausstattung.ausstattungsart)) {
 						countausstatt++;
 						ausstattungsDiv.innerHTML += `<img src="${imgpath}/${ausstattung.ausstattungsart}.svg">`;
 					}
@@ -401,10 +407,10 @@ function getVehicleType(fahrzeugbezeichnung) {
         }
     }
     if (fahrzeugbezeichnung.startsWith("ICK")) {
-        type = "IC 2 KISS";
+        type = "IC2 KISS";
     }
     if (fahrzeugbezeichnung.startsWith("ICD")) {
-        type = "IC 2";
+        type = "IC2";
     }
 	if (fahrzeugbezeichnung.startsWith("T0442")) {
 		type = "Talent 2";

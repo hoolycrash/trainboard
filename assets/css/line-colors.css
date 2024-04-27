@@ -11,7 +11,7 @@ Please read comments carefully.
 	background-color: #9b1a60!important; /*#8c097a*/
 }
 
-.nationalExpress, .national, .westbahn.WB {
+.nationalExpress, .national, .westbahn.WB, .regiojet.IC {
 	background-color: #ec0016;
 	color: #fff;
 }
@@ -37,7 +37,7 @@ Please read comments carefully.
 	color: #fff ;
 }
 
-.IRE, .RE, .MEX, .TLX, .REX, .CJX {
+.IRE, .RE, .MEX, .TLX, .REX, .CJX, .FEX {
 	background-color: #1455c0;
 	color: #fff;
 }
@@ -56,6 +56,10 @@ Then we can manually style thos signets here.
 Individual design on Signets is limited to color to keep a consistent look. Please do not style Shape, Size, Font etc...
 */
 
+.SDG.sdg-sachsische-dampfeisenbahngesellschaft-mbh {
+	background-color: #6c4b3a;
+	color: #fff;
+}
 
 /* S-Bahn Berlin */
 .S1s-bahn-berlin {

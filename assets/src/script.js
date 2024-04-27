@@ -147,7 +147,6 @@ function updateTable(data) {
 		return;
 	}
 
-
 	/*
 	// Looking for departing products "suburban"
 	var hasSuburbanDeparture = data.some(function(entry) {
@@ -213,7 +212,16 @@ function updateTable(data) {
 		// add clossing door gif (only when not cancelled)
 		var abMessage = (isCancelled) ? "" : getAbMessage(entry.when);
 
-		row.insertCell(0).innerHTML = `<div class="linebadge ${entry.line.product} ${entry.line.name.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}">${entry.line.name}</div>`;
+		let linebadge = `<div class="linebadge ${entry.line.product} ${entry.line.name.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}">`;
+		if (entry.line.operator.id === 'freiberger-eisenbahngesellschaft') {
+			linebadge += "FEG</div>"; //RB 83
+		} else if (entry.line.productName === "FEX") {
+			linebadge += "FEX</div>"; //Flughafen-Express Berlin
+		} else{
+			linebadge += `${entry.line.name}</div>`;
+		}
+		
+		row.insertCell(0).innerHTML = linebadge;
 		
 		// Calculate minutes from time now - departing time (needed for the countdown in sbahn tab)
 		var now = new Date();

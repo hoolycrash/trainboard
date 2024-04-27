@@ -167,6 +167,13 @@ input[type="radio"] {
 	height: 110px;
 	padding: 10px;
 	padding-left: 20px;
+	padding-top: 24px;
+}
+
+.sector {
+	top: -55px;
+    position: absolute;
+    width: 100%;
 }
 
 @keyframes drivein {
@@ -186,7 +193,7 @@ input[type="radio"] {
 .coach {
 	border: solid #414141;
 	border-width: 5px 3px 5px 3px;
-	min-width: 100px;
+	width: 150px;
 	height: 55px;
 	margin-left: -5px;
 	padding-top: 7px;
@@ -196,6 +203,7 @@ input[type="radio"] {
 	color: #414141;
 	font-weight: bold;
 	box-shadow: inset 0px -10px #cecece;
+	position: relative;
 }
 
 .coach.steuerHead {

@@ -331,7 +331,10 @@ function rendertraincomposition(data) {
 			}
 
 			if (showIMG) {
-				ausstattungsDiv.innerHTML = `${wagenordnungsnummer}<br><img src="${imgpath}/${kategorie}.svg">`;
+			
+				ausstattungsDiv.innerHTML = `<div class='sector'>${fahrzeug.fahrzeugsektor}<br>`;
+
+				ausstattungsDiv.innerHTML += `${wagenordnungsnummer}<br><img src="${imgpath}/${kategorie}.svg">`;
 				//let countausstatt = 0;
 				fahrzeug.allFahrzeugausstattung.forEach(ausstattung => {						
 					if (
@@ -342,7 +345,7 @@ function rendertraincomposition(data) {
 					}
 					//TODO: Optimize which AUSSTATTUNG are shown
 				});	
-				ausstattungsDiv.innerHTML += `<br>${fahrzeug.fahrzeugsektor}`;
+				
 			}
 			blocksContainer.appendChild(ausstattungsDiv);
 			//Next Coach

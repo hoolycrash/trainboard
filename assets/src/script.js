@@ -315,7 +315,7 @@ function updateTable(data) {
 		if (siteType !== 'A') {
 			wideCell2.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}" class="black">${entry.direction}</a>`;
 		} else {
-			wideCell2.innerHTML = `<span class="additional">Von </span><a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}" class="black">${entry.provenance}</a>`;
+			wideCell2.innerHTML = `<span class="additional">Von&nbsp;</span><a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}" class="black">${entry.provenance}</a>`;
 		}
 
 		if (InfoMessage !== undefined) {

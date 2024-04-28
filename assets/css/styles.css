@@ -14,10 +14,6 @@ body {
 	margin: 0px;
 }
 
-a {
-	white-space: nowrap;
-}
-
 span {
 	text-align: left;	
 }
@@ -28,6 +24,10 @@ span {
 
 .hidden {
 	display: none;
+}	
+
+.wrap {
+	white-space: normal;	
 }
 
 .additional {
@@ -53,6 +53,18 @@ span {
 	font-size: 16px;
 }
 
+.isle {
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+	background-color: #fff;	
+	color: #000;
+	font-size: 15px;
+	border-radius: 3px;
+	padding: 5px;
+	margin: 10px;
+}
+
 .zerotable {
 	padding: 0px;
 	vertical-align: middle;
@@ -76,7 +88,7 @@ a {
 	color: #fff;
 	text-decoration: none;
 	margin: 10px 2px 10px 2px;
-		
+	white-space: nowrap;
 }
 	
 .active {
@@ -109,7 +121,7 @@ a {
 	overflow-y:hidden;
 }
 
-.tripcontainer {
+.tripcontainer, .blanktext {
 	width: 80%;
 	background-color: #fff;
 	color: #000;
@@ -386,6 +398,14 @@ td {
 	color: #000;
 }
 
+.green {
+	color: #2f9d12;
+}
+
+.underlined {
+	text-decoration: underline;
+}
+
 .suggestion:hover {
 	background-color: #e4e4e4;
 }
@@ -403,6 +423,11 @@ td {
 .mediumicon {
       height: 20px; 
 	  margin-right: 5px;
+}
+
+.avatar {
+	height: 25px;
+	border-radius: 100px;
 }
 
 .linebadge {

@@ -41,6 +41,10 @@ span {
 	font-size: 35px;
 }
 
+span#clock {
+	padding: 10px;
+}
+
 .departtime {
 		font-size: 70px;
 	}

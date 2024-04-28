@@ -55,10 +55,8 @@
 fetch('https://api.github.com/repos/hoolycrash/trainboard/contributors')
   .then(response => response.json())
   .then(data => {
-    // Daten erhalten, jetzt für jeden Contributor ein Div erstellen
     const contributorsDiv = document.getElementById('contributors');
     data.forEach(contributor => {
-      // Ein anklickbares Div-Element erstellen
       const div = document.createElement('div');
       div.innerHTML = `
         <a href="${contributor.html_url}" class="black">
@@ -67,7 +65,7 @@ fetch('https://api.github.com/repos/hoolycrash/trainboard/contributors')
           <span class="green"> +${contributor.contributions}</span>
         </a>
       `;
-      // Das Div-Element dem contributorsDiv hinzufügen
+      
       contributorsDiv.appendChild(div);
     });
   })

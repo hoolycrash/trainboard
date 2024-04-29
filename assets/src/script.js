@@ -36,7 +36,7 @@ if (notouch === "no") {
 
 
 const stationID = urlParams.get('station');
-
+let hasSuburban;
 // Load station Data
 fetchStationData(stationID);
 
@@ -91,6 +91,7 @@ function processStationInfo(data, station) {
                 <a href="arrival.html?station=${station}"class="${siteType === 'A' ? 'active' : ''}">&nbsp;Ankunft&nbsp;</a>
                 <a href="suburban.html?station=${station}"class="${siteType === 'S' ? 'active' : ''}">&nbsp;S-Bahn&nbsp;</a>
             </div>`;
+			hasSuburban = true;
 	}
 	
 	// S-Bahn only station
@@ -195,6 +196,7 @@ function updateTable(data) {
 	var tableBody = document.getElementById('tableBody');
 	tableBody.innerHTML = ''; // delete everything before  rewrite table content
 
+	let findtrain = 0;
 	data.forEach(function(entry) {
 		// If product is bus, ferry, subway, tram or taxi
 		if (
@@ -229,6 +231,7 @@ function updateTable(data) {
 			return;
 		}
 
+		findtrain++;
 		var row = tableBody.insertRow();
 		row.classList.add('boardcell');
 		
@@ -364,6 +367,11 @@ function updateTable(data) {
 		wideCell2.className = 'wide';
 		wideCell2.classList.add('boardcell');
 	});
+	//Switch to S-Bahn or departure if there are no trains in the list 
+	if (findtrain == 0) {
+		console.log(findtrain);
+		if (hasSuburban == true) {document.location = `${siteType === 'S' ? 'departure' : 'suburban'}.html?station=${stationID}`;}
+	}
 }
 
 

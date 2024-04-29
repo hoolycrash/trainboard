@@ -1,8 +1,40 @@
+
 // Save Site Type
 const siteType = getSiteTypeFromURL();
 
 // Save URL detail
 const urlParams = new URLSearchParams(window.location.search);
+
+//EXPERT MODE
+//Hide Navbar
+var hiddennavbar = urlParams.get('navbar');
+
+if (hiddennavbar === "hide") {
+	document.getElementById('navbar').classList.add('hidden');
+}
+
+//Hide Clock
+var hiddenclock = urlParams.get('clock');
+
+if (hiddenclock === "hide") {
+	document.getElementById('clock').classList.add('hidden');
+}
+
+
+//Show Trainnumber
+var hiddentrainnumbers = urlParams.get('trainnumbers');
+var trainnumberson; 
+
+//Prevent Touch
+var notouch = urlParams.get('touch');
+
+if (notouch === "no") {
+	document.getElementById('notouch').classList.remove('hidden');
+}
+
+//END EXPERTMODE
+
+
 const stationID = urlParams.get('station');
 
 // Load station Data
@@ -211,6 +243,12 @@ function updateTable(data) {
 		
 		// add clossing door gif (only when not cancelled)
 		var abMessage = (isCancelled) ? "" : getAbMessage(entry.when);
+		
+		if (hiddentrainnumbers === "show") {
+			var trainnnnumber = `<br>(${entry.line.fahrtNr})`;
+		} else {
+			var trainnnnumber = ``;
+		}
 
 		let linebadge = `<div class="linebadge ${entry.line.product} ${entry.line.name.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}">`;
 		if (entry.line.operator.id === 'freiberger-eisenbahngesellschaft') {
@@ -218,7 +256,7 @@ function updateTable(data) {
 		} else if (entry.line.productName === "FEX") {
 			linebadge += "FEX</div>"; //Flughafen-Express Berlin
 		} else{
-			linebadge += `${entry.line.name}</div>`;
+			linebadge += `${entry.line.name} ${trainnnnumber}</div>`;
 		}
 		
 		row.insertCell(0).innerHTML = linebadge;

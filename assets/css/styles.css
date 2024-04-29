@@ -14,6 +14,13 @@ body {
 	margin: 0px;
 }
 
+.notouch {
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	top: 0px;
+}
+
 span {
 	text-align: left;	
 }
@@ -296,14 +303,26 @@ input[type="radio"] {
 
 label {
 	width: 100%;
-    display: inline-block;
     padding: 10px;
     margin: 0;
     cursor: pointer;
-    background-color: #f0f0f0;
-	color: #b9b9b9;
 	font-family: Arial;
-	font-size: 17px;	
+	font-size: 17px;
+}
+
+.switchlabel {
+	display: inline-block;
+	background-color: #f0f0f0;
+	color: #b9b9b9;
+}
+
+.leftalign {
+	text-align: left;
+}
+
+input.checkbox {
+	transform: scale(1.5);
+	margin: 20px;
 }
 
 .left {
@@ -317,13 +336,18 @@ label {
 }
 
 #departure:checked + label {
-    background-color: #131313;
-    color: #fff;
+	background-color: #131313;
+	color: #fff;
 }
 
 #arrival:checked + label {
-    background-color: #131313;
-    color: #fff;
+	background-color: #131313;
+	color: #fff;
+}
+
+#suburban:checked + label {
+	background-color: #131313;
+	color: #fff;
 }
 
 .switch-container {
@@ -383,9 +407,9 @@ td {
 }
 
 .suggestion {
-      display: flex;
-      justify-content: space-between;
-      padding: 17px; /* Optional padding for spacing */  
+	display: flex;
+	justify-content: space-between;
+	padding: 17px; /* Optional padding for spacing */
 }
 
 .topline {
@@ -415,18 +439,18 @@ td {
 }
 
 .bigicon {
-      height: 30px; 
-	  padding-left: 5px;
+	height: 30px; 
+	padding-left: 5px;
 }
 
 .megaicon {
-      height: 60px;
-	  padding: 10px;
+	height: 60px;
+	padding: 10px;
 }
 
 .mediumicon {
-      height: 20px; 
-	  margin-right: 5px;
+	height: 20px; 
+	margin-right: 5px;
 }
 
 .avatar {
@@ -505,7 +529,7 @@ td {
 		white-space: normal!important;
 	}
 	
-	table tr td:nth-child(3)  {
+	table tr td:nth-child(3) {
 		overflow: hidden;
 		max-width: 90px;
 	}

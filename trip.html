@@ -80,7 +80,7 @@ async function fetchAndDisplayData() {
 		// Load trip-data from API
 		const response = await fetch(`https://v6.db.transport.rest/trips/${tripId || ''}?stopovers=true&remarks=true&polyline=false&language=de`);
 		const data = await response.json();
-		
+
 		const zugnummer = data.trip.line.fahrtNr; //Train Nr (Zugnummer)
 
 		// Create the flowing text with the next stations of this trip
@@ -131,11 +131,15 @@ async function fetchAndDisplayData() {
 			}
 
 			if (foundStation) {
-				// Create an item in the flowing text
-				const time = stopover.arrival ? new Date(stopover.arrival) : new Date(stopover.departure);
-				const timeType = stopover.arrival ? 'ARRIVAL' : 'DEPARTURE';
-				const formattedTime = `${time.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}`;		
-				flowText += `<a href="departure.html?station=${stopover.stop.id}" class="black">${formattedTime} <b>${stopover.stop.name}</b></a> | `;
+				if (stopover.cancelled == true && stopover.arrival == null && stopover.departure == null) {
+					flowText += `<a href="departure.html?station=${stopover.stop.id}" class="black" style='color: #ec0016;'><b>${stopover.stop.name}</b> entfällt</a> | `;
+				} else {
+					// Create an item in the flowing text
+					const time = stopover.arrival ? new Date(stopover.arrival) : new Date(stopover.departure);
+					const timeType = stopover.arrival ? 'ARRIVAL' : 'DEPARTURE';
+					const formattedTime = `${time.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}`;		
+					flowText += `<a href="departure.html?station=${stopover.stop.id}" class="black">${formattedTime} <b>${stopover.stop.name}</b></a> | `;	
+				}
 			}
 		});
 
@@ -389,7 +393,7 @@ function getVehicleType(fahrzeugbezeichnung) {
 				type = "ICE 3";
 				series = "407";
                 break;
-			case "48":
+			case "80":
 				type = "ICE 3";
 				series = "408";
                 break;
@@ -425,6 +429,10 @@ function getVehicleType(fahrzeugbezeichnung) {
 	if (fahrzeugbezeichnung.startsWith("T0442")) {
 		type = "Talent 2";
 		series = "442";
+	}
+	if (fahrzeugbezeichnung.startsWith("T1442")) {
+		type = "Talent 2";
+		series = "1442";
 	}
 	if (fahrzeugbezeichnung.startsWith("D0650")) {
 		type = "RS1";

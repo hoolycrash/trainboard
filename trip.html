@@ -132,7 +132,7 @@ async function fetchAndDisplayData() {
 
 			if (foundStation) {
 				if (stopover.cancelled == true && stopover.arrival == null && stopover.departure == null) {
-					flowText += `<a href="departure.html?station=${stopover.stop.id}" class="black" style='color: #ec0016;'><b>${stopover.stop.name}</b> entfällt</a> | `;
+					flowText += `<a href="departure.html?station=${stopover.stop.id}" class="red"><b>${stopover.stop.name}</b> entfällt</a> | `;
 				} else {
 					// Create an item in the flowing text
 					const time = stopover.arrival ? new Date(stopover.arrival) : new Date(stopover.departure);

@@ -32,6 +32,8 @@ if (notouch === "no") {
 	document.getElementById('notouch').classList.remove('hidden');
 }
 
+
+var showsuburban = urlParams.get('suburban');
 //END EXPERTMODE
 
 
@@ -212,9 +214,11 @@ function updateTable(data) {
 
 		// Check is S-Bahn view
 		if ((siteType === 'S' && entry.line.product !== "suburban") ||
-        (siteType !== 'S' && entry.line.product === "suburban")) {
+        (siteType !== 'S' && entry.line.product === "suburban" && showsuburban !== 'show')) {
         	return; // skip everything except S-Bahn OR skip S-Bahn
     	}
+		
+		
 
 		// if trip is cancelled
 		var isCancelled = entry.remarks.some(function(remark) {

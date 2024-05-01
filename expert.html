@@ -59,6 +59,10 @@
 		<br><br>
 		<input type="checkbox" class="checkbox" id="disableTouchCheckbox" onchange="searchLocations()">
 		<label for="disableTouchCheckbox">Deaktiviere Toucheingabe</label>
+		
+		<br><br>
+		<input type="checkbox" class="checkbox" id="showSuburbans" onchange="searchLocations()">
+		<label for="showSuburbans">Zeige S-Bahnen in Abfahrt / Ankunft</label>
 
 		<br><br>
 	</div>
@@ -95,14 +99,18 @@
             apiUrl += '&touch=no';
         }
 		
+		if (showSuburbans) {
+            apiUrl += '&suburban=show';
+        }
+		
 
         fetch(apiUrl)
         .then(response => response.json())
-        .then(data => displayResults(data, searchType, hideNavbar, hideClock, showTrainnumbers, disableTouch))
+        .then(data => displayResults(data, searchType, hideNavbar, hideClock, showTrainnumbers, disableTouch, showSuburbans))
         .catch(error => console.error('Error fetching data:', error));
     }
 
-    function displayResults(data, searchType, hideNavbar, hideClock, showTrainnumbers, disableTouch) {
+    function displayResults(data, searchType, hideNavbar, hideClock, showTrainnumbers, disableTouch, showSuburbans) {
         const resultsContainer = document.getElementById('results');
         resultsContainer.innerHTML = ''; // Clear previous results
 
@@ -154,6 +162,10 @@
 				
 				if (disableTouch) {
                     link.href += '&touch=no';
+                }
+				
+				if (showSuburbans) {
+                    link.href += '&suburban=show';
                 }
 				
 

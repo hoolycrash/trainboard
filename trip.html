@@ -132,7 +132,7 @@ async function fetchAndDisplayData() {
 
 			if (foundStation) {
 				if (stopover.cancelled == true && stopover.arrival == null && stopover.departure == null) {
-					flowText += `<a href="departure.html?station=${stopover.stop.id}" class="red"><b>${stopover.stop.name}</b> entfällt</a> | `;
+					flowText += `<a href="departure.html?station=${stopover.stop.id}" class="red"><s><b>${stopover.stop.name}</b></s></a> | `;
 				} else {
 					// Create an item in the flowing text
 					const time = stopover.arrival ? new Date(stopover.arrival) : new Date(stopover.departure);
@@ -195,6 +195,8 @@ function fetchtraincomposition(zugnummer, datetime, stationId) {
 	fetch(`https://ist-wr.noncd.db.de/wagenreihung/1.0/${zugnummer}/${datetime}`)
 		.then(response => response.json())
 		.then(data => {
+		
+			
 				
 			// Check for valid JSON
 			if (data.error) {
@@ -342,8 +344,13 @@ function rendertraincomposition(data) {
 			if (showIMG) {
 			
 				ausstattungsDiv.innerHTML = `<div class='sector'>${fahrzeug.fahrzeugsektor}<br>`;
-
-				ausstattungsDiv.innerHTML += `${wagenordnungsnummer}<br><img src="${imgpath}/${kategorie}.svg">`;
+				
+				if (kategorie !== "STEUERWAGENZWEITEKLASSE" && kategorie !== "REISEZUGWAGENZWEITEKLASSE" && kategorie !== "DOPPELSTOCKSTEUERWAGENZWEITEKLASSE" && kategorie !== "DOPPELSTOCKWAGENZWEITEKLASSE") {
+					ausstattungsDiv.innerHTML += `${wagenordnungsnummer}<br><img src="${imgpath}/${kategorie}.svg">`;
+				} else {
+					ausstattungsDiv.innerHTML += `${wagenordnungsnummer}<br>`;
+				};
+				
 				//let countausstatt = 0;
 				fahrzeug.allFahrzeugausstattung.forEach(ausstattung => {						
 					if (

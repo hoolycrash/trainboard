@@ -135,8 +135,6 @@ a {
 
 .tripcontainer, .blanktext {
 	width: 80%;
-	background-color: #fff;
-	color: #000;
 	border-radius: 5px;
 	overflow-y:hidden;
 	text-align: left;
@@ -218,8 +216,8 @@ input[type="radio"] {
 .coach {
 	border: solid #414141;
 	border-width: 5px 3px 5px 3px;
-	min-width: 120px;
-	max-width: 120px;
+	min-width: 140px;
+	max-width: 140px;
 	height: 55px;
 	margin-left: -5px;
 	padding-top: 7px;

@@ -6,6 +6,7 @@
 	<title>Zuginformationen</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="./assets/css/styles.css">
+	<link rel="stylesheet" href="./assets/css/dark-styles.css">
 	<link rel="stylesheet" href="./assets/css/line-colors.css">
 	<link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
 	<link rel="manifest" href="/manifest.json" type="application/json" >
@@ -54,7 +55,7 @@
 			<li>Not yet full icon set: Just open a Issue on GitHub if you find one missing.</li>
 			<li>Find Bug -> <u id="git-error">Open new Issue on GitHub</u></li>
 		</ul>
-		<a href="https://github.com/hoolycrash/trainboard/blob/main/trip.html" style="color: #112053; "><u>View this page on GitHub.</u></a><br><br>
+		<a href="https://github.com/hoolycrash/trainboard/blob/main/trip.html" class="black"><u>View this page on GitHub.</u></a><br><br>
 	</div>
 	
 
@@ -209,11 +210,11 @@ function fetchtraincomposition(zugnummer, datetime, stationId) {
 				document.getElementById('coacheswrapper').classList.add('hidden');
 				document.getElementById('git-info').className = '';
 				//Create direct link for Issue report on GitHub
-				document.getElementById('git-error').innerHTML = `<a href="https://github.com/hoolycrash/trainboard/issues/new?title=Bug%20Wagenreihung:&body=Train:${zugnummer}%20Datetime:${datetime}%20Station:${stationId}" target="_blank" style="color: #112053;">Open new Issue with Train data on Github</a>`;
+				document.getElementById('git-error').innerHTML = `<a href="https://github.com/hoolycrash/trainboard/issues/new?title=Bug%20Wagenreihung:&body=Train:${zugnummer}%20Datetime:${datetime}%20Station:${stationId}" target="_blank" class="black">Open new Issue with Train data on Github</a>`;
 				return;
 			}
 			document.getElementById('git-info').className = '';
-			document.getElementById('git-error').innerHTML = `<a href="https://github.com/hoolycrash/trainboard/issues/new?title=Bug%20Wagenreihung:&body=Train:${zugnummer}%20Datetime:${datetime}%20Station:${stationId}" target="_blank" style="color: #112053;">Open new Issue with Train data on Github</a>`;
+			document.getElementById('git-error').innerHTML = `<a href="https://github.com/hoolycrash/trainboard/issues/new?title=Bug%20Wagenreihung:&body=Train:${zugnummer}%20Datetime:${datetime}%20Station:${stationId}" target="_blank" class="black">Open new Issue with Train data on Github</a>`;
 			rendertraincomposition(data.data.istformation);	
 		});
 }

@@ -62,6 +62,8 @@ function getSiteTypeFromURL() {
         return "A";
     } else if (url.includes("suburban.html")) {
         return "S";
+    } else if (url.includes("local.html")) {
+        return "L";
     }
     // Default site type
     return "D";
@@ -84,6 +86,14 @@ function processStationInfo(data, station) {
 	
     const navbarDiv = document.getElementById('navbar');
     let navbarContent = '';
+	
+	// Local Services
+	if (siteType === 'L') {
+		navbarContent += `
+			<div class="tabs">
+				<a href="#"class="active">&nbsp;Nahverkehr&nbsp;</a>
+			</div>`;		
+	} else
 
 	// Normal station 
     if ((data.products.nationalExpress || data.products.national || data.products.regionalExpress || data.products.regional) && data.products.suburban === true) {
@@ -94,7 +104,7 @@ function processStationInfo(data, station) {
                 <a href="suburban.html?station=${station}"class="${siteType === 'S' ? 'active' : ''}">&nbsp;S-Bahn&nbsp;</a>
             </div>`;
 			hasSuburban = true;
-	}
+	} else
 	
 	// S-Bahn only station
 	if (data.products.suburban === true && data.products.regional === false) {
@@ -102,7 +112,7 @@ function processStationInfo(data, station) {
 		navbarDiv.innerHTML +='<a href="#" class="disabled">&nbsp;Abfahrt&nbsp;</a>' +
 		'<a href="#" class="disabled">&nbsp;Ankunft&nbsp;</a>' + 
 		'<a href="suburban.html?station=' + station + '" class="active">&nbsp;S-Bahn&nbsp;</a>';
-	}
+	} else
 
 	// Station without S-Bahn
     if ((data.products.nationalExpress || data.products.national || data.products.regionalExpress || data.products.regional) && data.products.suburban === false) {
@@ -114,8 +124,8 @@ function processStationInfo(data, station) {
 	}
 		
     navbarContent += `
-        <div class="iconbar bigonly"><a href="index.html">Stationssuche</a></div>
-        <div class="iconbar"><a href="index.html"><img src="./assets/icons/search.svg" class="mediumicon"></a></div>`;
+        <div class="iconbar bigonly"><a href="${siteType === 'L' ? 'localsearch' : 'index'}.html">${siteType === 'L' ? 'Haltestellen' : 'Stations'}suche</a></div>
+        <div class="iconbar"><a href="${siteType === 'L' ? 'localsearch' : 'index'}.html"><img src="./assets/icons/search.svg" class="mediumicon"></a></div>`;
                                    
     navbarDiv.innerHTML = navbarContent;
 
@@ -201,7 +211,9 @@ function updateTable(data) {
 	let findtrain = 0;
 	data.forEach(function(entry) {
 		// If product is bus, ferry, subway, tram or taxi
-		if (
+		
+		if (siteType !== 'L') {
+			if (
 			entry.line.product === "bus" ||
 			entry.line.product === "ferry" ||
 			entry.line.product === "subway" ||
@@ -211,10 +223,24 @@ function updateTable(data) {
 			// skip this entry (not needed for a TRAIN ONLY board)
 			return;
 		}
+			
+		}
+		
+		if (siteType === 'L') {
+			if (
+			entry.line.product === "national" ||
+			entry.line.product === "nationalExpress" 
+		) {
+			// skip this entry (not needed for a LOCAL SERVICES ONLY board)
+			return;
+		}
+			
+		}
+		
 
 		// Check is S-Bahn view
 		if ((siteType === 'S' && entry.line.product !== "suburban") ||
-        (siteType !== 'S' && entry.line.product === "suburban" && showsuburban !== 'show')) {
+        ((siteType !== 'S' && siteType !== 'L') && entry.line.product === "suburban" && showsuburban !== 'show')) {
         	return; // skip everything except S-Bahn OR skip S-Bahn
     	}
 		
@@ -278,7 +304,7 @@ function updateTable(data) {
 		// Calculate delay in minutes
 		var delayDifference = Math.abs(departureTime - plannedDepartureTime) / (1000 * 60);
 		
-		if (siteType === 'S' && timediff <= 60) {
+		if ((siteType === 'S' || siteType === 'L') && timediff <= 60) {
 			if (entry.when !== null) {
 				if (timediff <= 0) {
 					countdownCell.textContent = 'jetzt';

@@ -5,10 +5,23 @@ Please read comments carefully.
 /* The following classes create standard signets for different types of public transport. You may not change them */
 .suburban {
 	background-color: #639830;
+	border-radius: 200px;
 }
 
 .Bus {  /*THIS IS NEEDED because rail replacement busses exist :) */
 	background-color: #9b1a60!important; /*#8c097a*/
+}
+
+.tram {
+	background-color: #dd0b2f!important; 
+}
+
+.U {
+	background-color: #006cb3!important;
+}
+
+.ferry {
+	background-color: #00a5df!important;
 }
 
 .nationalExpress, .national, .westbahn.WB, .regiojet.IC {
@@ -19,11 +32,6 @@ Please read comments carefully.
 .regional {
 	background-color: #00a099;
 	color: #fff;
-}
-
-.suburban {
-	border-radius: 200px;
-	max-width: 100px;
 }
 
 .EN, .NJ, .ICN, .ES{

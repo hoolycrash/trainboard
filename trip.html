@@ -270,6 +270,7 @@ function rendertraincomposition(data) {
 			let fahrzeug = fahrzeuggruppe.allFahrzeug[j];
 
 			const wagenordnungsnummer = fahrzeug.wagenordnungsnummer;
+			const fahrzeugnummer = 'fzg' + fahrzeug.fahrzeugnummer;
 			const kategorie = fahrzeug.kategorie;
 			const ausstattungsDiv = document.createElement('div');
 			ausstattungsDiv.classList.add('coach');
@@ -277,6 +278,9 @@ function rendertraincomposition(data) {
 			let showIMG = true;
 				
 			//check TrainSET has LOK -> Add Head on Coach
+			
+			ausstattungsDiv.classList.add(fahrzeugnummer);
+			
 			if (setLOK === true) {
 				ausstattungsDiv.classList.add('head');
 				setLOK = false;

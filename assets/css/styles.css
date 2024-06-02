@@ -438,6 +438,7 @@ td {
 	display: flex;
 	justify-content: space-between;
 	padding: 17px; /* Optional padding for spacing */
+	cursor: pointer;
 }
 
 .topline {

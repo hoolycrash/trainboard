@@ -316,9 +316,9 @@ function updateTable(data) {
 				} else if (timediff <= 60) {
 					// Show countdown instead of departing times when departing time is <= 60 min away from now
 					if (delayDifference > 5) { //delay more then 5 minutes -> time in red
-						countdownCell.innerHTML = "<span style='color: #ec0016;'>" + timediff + '<span class="additional">&nbsp;min.</span></span>'; 
+						countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><span style="color: #ec0016;">` + timediff + `<span class="additional">&nbsp;min.</span></span></a>`; 
 					} else {
-						countdownCell.innerHTML = timediff + '<span class="additional">&nbsp;min.</span>';
+						countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">` + timediff + '<span class="additional">&nbsp;min.</span></a>';
 					}
 					
 					// Reload every 60 secs
@@ -382,7 +382,7 @@ function updateTable(data) {
 		if (siteType !== 'A') {
 			wideCell2.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.direction}</a>`;
 		} else {
-			wideCell2.innerHTML = `<span class="additional">Von&nbsp;</span><a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.provenance}</a>`;
+			wideCell2.innerHTML = `<span class="prefix">Von&nbsp;</span><a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.provenance}</a>`;
 		}
 
 		if (InfoMessage !== undefined) {

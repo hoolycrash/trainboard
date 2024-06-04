@@ -46,6 +46,12 @@ span {
 
 .additional {
 	color: #6b6b6a;
+	font-weight: normal;
+	font-size: 0.8em;
+}
+
+.prefix {
+	color: #6b6b6a;
 	float: left;
 	font-weight: normal;
 	font-size: 0.8em;
@@ -209,16 +215,18 @@ input[type="radio"] {
 .coachescontent {
 	display: flex;
 	align-items: center;
-	animation-name: drivein;
-	animation-delay: 200ms;
-	animation-duration: 3s;
-	animation-timing-function: ease-out;
 	min-width: 200%;
 	height: 110px;
 	padding: 10px;
 	padding-left: 20px;
 	padding-top: 24px;
 	position: relative;
+	@media (prefers-reduced-motion: no-preference) {
+		animation-name: drivein;
+		animation-delay: 200ms;
+		animation-duration: 3s;
+		animation-timing-function: ease-out;
+	}
 }
 
 .sector {

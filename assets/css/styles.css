@@ -80,9 +80,6 @@ span#clock {
 	padding: 25px 16px 25px 16px;
 	font-size: 16px;
 }
-.home #navbar {
-	background-color: #000;
-}
 
 .navsearch:before {
 	background-image: url("../icons/search.svg");

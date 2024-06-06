@@ -1,12 +1,1 @@
-<svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0_200_2)">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M500 250C500 112.1 387.9 0 250 0C112.1 0 0 112.1 0 250C0 387.9 112.1 500 250 500C387.9 500 500 387.9 500 250Z" fill="black"/>
-<rect x="61" y="61" width="378" height="378" rx="189" stroke="white" stroke-width="30"/>
-<path d="M190 357V250M190 143V250M190 250H310M310 250V143M310 250V357" stroke="white" stroke-width="30"/>
-</g>
-<defs>
-<clipPath id="clip0_200_2">
-<rect width="500" height="500" fill="white"/>
-</clipPath>
-</defs>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" fill="none"><g clip-path="url(#a)"><path fill="#000" fill-rule="evenodd" d="M500 250C500 112.1 387.9 0 250 0S0 112.1 0 250s112.1 250 250 250 250-112.1 250-250Z" clip-rule="evenodd"/><rect width="378" height="378" x="61" y="61" stroke="#fff" stroke-width="30" rx="189"/><path stroke="#fff" stroke-width="30" d="M190 357V250m0-107v107m0 0h120m0 0V143m0 107v107"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h500v500H0z"/></clipPath></defs></svg>

@@ -1,4 +1,3 @@
-
 // Save Site Type
 const siteType = getSiteTypeFromURL();
 
@@ -124,8 +123,7 @@ function processStationInfo(data, station) {
 	}
 		
     navbarContent += `
-        <div class="iconbar bigonly"><a href="${siteType === 'L' ? 'localsearch' : 'index'}.html">${siteType === 'L' ? 'Haltestellen' : 'Stations'}suche</a></div>
-        <div class="iconbar"><a href="${siteType === 'L' ? 'localsearch' : 'index'}.html"><img src="./assets/icons/search.svg" class="mediumicon"></a></div>`;
+        <div class="iconbar"><a class="navsearch" href="${siteType === 'L' ? 'localsearch' : 'index'}.html">${siteType === 'L' ? 'Haltestellen' : 'Stations'}suche</a></div>`;
                                    
     navbarDiv.innerHTML = navbarContent;
 
@@ -206,7 +204,7 @@ function updateTable(data) {
     });
 
 	var tableBody = document.getElementById('tableBody');
-	tableBody.innerHTML = ''; // delete everything before  rewrite table content
+	tableBody.innerHTML = ''; // delete everything before rewrite table content
 
 	let findtrain = 0;
 	data.forEach(function(entry) {
@@ -237,15 +235,12 @@ function updateTable(data) {
 			
 		}
 		
-
 		// Check is S-Bahn view
 		if ((siteType === 'S' && entry.line.product !== "suburban") ||
         ((siteType !== 'S' && siteType !== 'L') && entry.line.product === "suburban" && showsuburban !== 'show')) {
         	return; // skip everything except S-Bahn OR skip S-Bahn
     	}
 		
-		
-
 		// if trip is cancelled
 		var isCancelled = entry.remarks.some(function(remark) {
 			return remark.type === "status" && remark.code === "cancelled";
@@ -263,11 +258,11 @@ function updateTable(data) {
 
 		findtrain++;
 		var row = tableBody.insertRow();
-		row.classList.add('boardcell');
+		//row.classList.add('boardrow');
 		
 		// set style to line-trough if cancelled
 		if (isCancelled) {
-			row.style.textDecoration = "line-through";
+			row.classList.add('cancelled');
 		}
 		
 		// Format time stemps to actual readable format
@@ -278,19 +273,20 @@ function updateTable(data) {
 		var abMessage = (isCancelled) ? "" : getAbMessage(entry.when);
 		
 		if (hiddentrainnumbers === "show") {
-			var trainnnnumber = `<br>(${entry.line.fahrtNr})`;
+			var trainnumber = `<br>(${entry.line.fahrtNr})`;
 		} else {
-			var trainnnnumber = ``;
+			var trainnumber = ``;
 		}
 
-		let linebadge = `<div class="linebadge ${entry.line.product} ${entry.line.name.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}">`;
+		let linebadge = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><div class="linebadge ${entry.line.product} ${entry.line.name.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}">`;
 		if (entry.line.operator.id === 'freiberger-eisenbahngesellschaft') {
 			linebadge += "FEG</div>"; //RB 83
 		} else if (entry.line.productName === "FEX") {
 			linebadge += "FEX</div>"; //Flughafen-Express Berlin
 		} else{
-			linebadge += `${entry.line.name} ${trainnnnumber}</div>`;
+			linebadge += `${entry.line.name} ${trainnumber}</div>`;
 		}
+		linebadge += `</a>`;
 		
 		row.insertCell(0).innerHTML = linebadge;
 		
@@ -307,7 +303,7 @@ function updateTable(data) {
 		if ((siteType === 'S' || siteType === 'L') && timediff <= 60) {
 			if (entry.when !== null) {
 				if (timediff <= 0) {
-					countdownCell.textContent = 'jetzt';
+					countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">jetzt</a>`;
 			
 					setInterval(function() {
 						timediff = Math.round((departureTime - new Date()) / (1000 * 60));
@@ -320,18 +316,18 @@ function updateTable(data) {
 				} else if (timediff <= 60) {
 					// Show countdown instead of departing times when departing time is <= 60 min away from now
 					if (delayDifference > 5) { //delay more then 5 minutes -> time in red
-						countdownCell.innerHTML = "<span style='color: #ec0016;'>" + timediff + '<span class="additional">&nbsp;min.</span></span>'; 
+						countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><span style="color: #ec0016;">` + timediff + `<span class="additional">&nbsp;min.</span></span></a>`; 
 					} else {
-						countdownCell.innerHTML = timediff + '<span class="additional">&nbsp;min.</span>';
+						countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">` + timediff + '<span class="additional">&nbsp;min.</span></a>';
 					}
 					
 					// Reload every 60 secs
 					setInterval(function() {
 						timediff = Math.round((departureTime - new Date()) / (1000 * 60));
 						if (timediff <= 60) {
-							countdownCell.textContent = timediff + ' min.';
+							countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${timediff} min.</a>`;
 						} else {
-							countdownCell.textContent = formatTime(entry.when);
+							countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${formatTime(entry.when)}</a>`;
 						}
 					}, 60000);
 			}	}
@@ -342,12 +338,12 @@ function updateTable(data) {
 				} else*/ 		
 				if (delayDifference > 0) { //short delay -> time in orange (planned time and delay in minutes in Hovertext)	
 					//countdownCell.innerHTML = `<nobr class='mobilebreak'><s class='disabled'>${formatTime(entry.plannedWhen)}</s> <span style='color: #ff6600;'>${formatTime(entry.when)}</span></nobr>`;
-					countdownCell.innerHTML = `<nobr class='mobilebreak'><s class='disabled'>${formatTime(entry.plannedWhen)}</s> ${formatTime(entry.when)}</nobr>`;
+					countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><nobr class='mobilebreak'><s class='disabled'>${formatTime(entry.plannedWhen)}</s> ${formatTime(entry.when)}</nobr></a>`;
 				} else {
-					countdownCell.textContent = formatTime(entry.when);
+					countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${formatTime(entry.when)}</a>`;
 				}
 			} else {
-				countdownCell.textContent = formatTime(entry.plannedWhen);
+				countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${formatTime(entry.plannedWhen)}</a>`;
 			}
 		}
 
@@ -359,13 +355,13 @@ function updateTable(data) {
 		var wideCell2 = row.insertCell(2);
 		
 		// Check for Platform changes
-		if (entry.platform == entry.plannedPlatform){
-			row.insertCell(3).textContent = entry.plannedPlatform;
-		} else { 
-			if (entry.plannedPlatform === null) { //some Trains have no planned platform
-				row.insertCell(3).innerHTML = `<span style='color: #ec0016;'> ${entry.platform}</span>`;
+		if (entry.plannedPlatform === null) { //some Trains have no planned platform
+			row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"> </a>`;
+		} else {
+			if (entry.platform == entry.plannedPlatform){
+				row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.plannedPlatform}</a>`;
 			} else {
-				row.insertCell(3).innerHTML = `<nobr class='mobilebreak'><s class='disabled'>${entry.plannedPlatform}</s><span style='color: #ec0016;'> ${entry.platform}</span></nobr>`;
+				row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><nobr class='mobilebreak'><s class='disabled'>${entry.plannedPlatform}</s><span style='color: #ec0016;'> ${entry.platform}</span></nobr></a>`;
 			}
 		}
 
@@ -384,18 +380,18 @@ function updateTable(data) {
 		cell.classList.add("zerotable");
 		
 		if (siteType !== 'A') {
-			wideCell2.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}" class="black">${entry.direction}</a>`;
+			wideCell2.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.direction}</a>`;
 		} else {
-			wideCell2.innerHTML = `<span class="additional">Von&nbsp;</span><a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}" class="black">${entry.provenance}</a>`;
+			wideCell2.innerHTML = `<span class="prefix">Von&nbsp;</span><a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.provenance}</a>`;
 		}
 
 		if (InfoMessage !== undefined) {
-			wideCell2.innerHTML += `<br><span class="remark bigonly">${InfoMessage}</span>`;
+			wideCell2.innerHTML += `<div class="remark bigonly">${InfoMessage}</div>`;
 		}
 		
 		// Create link to the trip information tab
-		wideCell2.className = 'wide';
-		wideCell2.classList.add('boardcell');
+		//wideCell2.className = 'wide';
+		//wideCell2.classList.add('boardcell');
 	});
 	//Switch to S-Bahn or departure if there are no trains in the list 
 	if (findtrain == 0) {
@@ -417,7 +413,7 @@ function formatTime(dateTimeString) {
 	return hours + ':' + minutes;
 }
 
-// Create cloosing doors icon when needed
+// Create closing doors icon when needed
 function getAbMessage(dateTimeString) {
 	var dateTime = new Date(dateTimeString);
 	var now = new Date();

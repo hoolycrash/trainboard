@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Zuginformationen</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="./assets/css/styles.css">
 	<link rel="stylesheet" href="./assets/css/dark-styles.css">
 	<link rel="stylesheet" href="./assets/css/line-colors.css">
@@ -19,7 +18,7 @@
 <center>
 <noscript> You need to enable JavaScript to run this app. </noscript>
 
-<div class="navbar" id="navbar"><div class="tabs"><span class="active">&nbsp;Zuginformationen&nbsp;</a></div><div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div><div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg" class="mediumicon"></a></div></div>
+<nav id="navbar"><div class="tabs"><span class="active">&nbsp;Zuginformationen&nbsp;</a></div><div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div><div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg" class="mediumicon"></a></div></nav>
 
 <br>
 
@@ -348,7 +347,7 @@ function rendertraincomposition(data) {
 
 			if (showIMG) {
 			
-				ausstattungsDiv.innerHTML = `<div class='sector'>${fahrzeug.fahrzeugsektor}<br>`;
+				ausstattungsDiv.innerHTML = `<div class='sector'>${fahrzeug.fahrzeugsektor}`;
 				
 				if (kategorie !== "STEUERWAGENZWEITEKLASSE" && kategorie !== "REISEZUGWAGENZWEITEKLASSE" && kategorie !== "DOPPELSTOCKSTEUERWAGENZWEITEKLASSE" && kategorie !== "DOPPELSTOCKWAGENZWEITEKLASSE") {
 					ausstattungsDiv.innerHTML += `${wagenordnungsnummer}<br><img src="${imgpath}/${kategorie}.svg">`;

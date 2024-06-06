@@ -7,6 +7,12 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Kode+Mono&display=swap');
 
+:root {
+	--switch-color: #5F5F5F;
+	--switch-bg-color: #f0f0f0;
+	--disabled-color: #797979;
+	--cellpadding: 15px;
+}
 
 body {
 	font-family: "Kode Mono", monospace;
@@ -27,7 +33,7 @@ span {
 }
 
 .disabled {
-	color: #797979;
+	color: var(--disabled-color);
 }
 
 .hidden {
@@ -44,6 +50,16 @@ span {
 	font-size: 0.8em;
 }
 
+.prefix {
+	color: #6b6b6a;
+	float: left;
+	font-weight: normal;
+	font-size: 0.8em;
+	line-height: 1.9em;
+	padding-left: var(--cellpadding);
+	padding-top: var(--cellpadding);
+}
+
 .big {
 	font-weight: bold;
 	font-size: 35px;
@@ -57,12 +73,23 @@ span#clock {
 		font-size: 70px;
 	}
 
-.navbar {
+#navbar {
 	background-color: #000;
 	color: #fff;
 	height: 16px;
 	padding: 25px 16px 25px 16px;
 	font-size: 16px;
+}
+
+.navsearch:before {
+	background-image: url("../icons/search.svg");
+	background-size: cover;
+	content: "";
+	display: inline-block;
+	width: 20px;
+	aspect-ratio: 1;
+	margin-right: 10px;
+    vertical-align: bottom;
 }
 
 .isle {
@@ -110,7 +137,9 @@ a {
 }
 
 .remark {
+	display: block;
 	font-size: 17px;
+    margin: calc(0px - (var(--cellpadding) / 2)) var(--cellpadding) var(--cellpadding);
 }
 
 .home {
@@ -130,13 +159,13 @@ a {
 	background-color: #fff;
 	color: #000;
 	border-radius: 5px;
-	overflow-y:hidden;
+	overflow-y: hidden;
 }
 
 .tripcontainer, .blanktext {
 	width: 80%;
 	border-radius: 5px;
-	overflow-y:hidden;
+	overflow-y: hidden;
 	text-align: left;
 }
 
@@ -157,7 +186,6 @@ a {
 .searchbar:focus {
 	outline: none;
 }
-
 
 .switch-container {
     display: flex;
@@ -184,13 +212,18 @@ input[type="radio"] {
 .coachescontent {
 	display: flex;
 	align-items: center;
-	animation-name: drivein;
-	animation-duration: 4s;
 	min-width: 200%;
 	height: 110px;
 	padding: 10px;
 	padding-left: 20px;
 	padding-top: 24px;
+	position: relative;
+	@media (prefers-reduced-motion: no-preference) {
+		animation-name: drivein;
+		animation-delay: 200ms;
+		animation-duration: 3s;
+		animation-timing-function: ease-out;
+	}
 }
 
 .sector {
@@ -200,11 +233,10 @@ input[type="radio"] {
 }
 
 
-
 /* Germany ICE Costum Strip */
 .fzg938058120578, .fzg938024128572, .fzg938024125578, .fzg938024127574, .fzg938048120571, .fzg938024123573, .fzg938024120579, .fzg938098120570, .fzg938064120570, .fzg938088120572, .fzg938014120571, .fzg938018120577, .fzg938008120579 {
 	box-shadow: none !important;
-	background-image: url(..//strips/germany.svg) !important;
+	background-image: url(.././strips/germany.svg) !important;
 	background-size: 12.5px !important;
 	background-position: bottom !important;
 	background-repeat: repeat-x !important;
@@ -213,7 +245,7 @@ input[type="radio"] {
 /* Europe ICE Costum Strip */
 .fzg938054065017, .fzg938054066015, .fzg938054067013, .fzg938054068011, .fzg938054063012, .fzg938054062014, .fzg938054061016, .fzg938054060018 {
 	box-shadow: none !important;
-	background-image: url(..//strips/europe.svg) !important;
+	background-image: url(.././strips/europe.svg) !important;
 	background-size: 12.5px !important;
 	background-position: bottom !important;
 	background-repeat: repeat-x !important;
@@ -222,13 +254,13 @@ input[type="radio"] {
 /* Pride ICE Costum Strip */
 .fzg938054035044, .fzg938054036042, .fzg938054037040, .fzg938054038048, .fzg938054033049, .fzg938054032041, .fzg938054031100, .fzg938054030268 {
 	box-shadow: none !important;
-	background-image: url(..//strips/pride.svg) !important;
+	background-image: url(.././strips/pride.svg) !important;
 	background-size: 12.5px !important;
 	background-position: bottom !important;
 	background-repeat: repeat-x !important;
 }
 
-@keyframes drivein {
+/* @keyframes drivein {
 	0% {
 		margin-left: 100%;
 	}
@@ -239,6 +271,16 @@ input[type="radio"] {
 	
 	100% {
 		margin-left: 0px;
+	}
+} */
+@keyframes drivein {
+	0% {
+		left: 100%;
+		opacity: 0;
+	}
+	100% {
+		left: 0px;
+		opacity: 1;
 	}
 }
 
@@ -326,7 +368,11 @@ input[type="radio"] {
 }
 
 .blink {
-  animation: blink 1s step-start 0s infinite;
+	animation: blink 1s step-start 0s infinite;
+}
+
+.cancelled a {
+	text-decoration: line-through;
 }
 
 label {
@@ -339,9 +385,9 @@ label {
 }
 
 .switchlabel {
-	display: inline-block;
-	background-color: #f0f0f0;
-	color: #b9b9b9;
+	background-color: var(--switch-bg-color);
+	border: solid 1px var(--switch-color);
+	color: var(--switch-color);
 }
 
 .leftalign {
@@ -378,10 +424,6 @@ input.checkbox {
 	color: #fff;
 }
 
-.switch-container {
-	border: solid 1px #b9b9b9;
-}
-
 .container {
 display: flex;
 	flex-wrap: wrap;
@@ -394,8 +436,7 @@ display: flex;
 
 .right-div {
 	flex: 1;
-	
-	order: -1; /* Ć„ndert die Reihenfolge, um nach oben zu gehen */
+	order: -1; /* Ändert die Reihenfolge, um nach oben zu gehen */
 }
 
 .lineview {
@@ -408,13 +449,24 @@ table {
 	width: 100%;
 }
 
-.boardcell {
+tr {
 	font-weight: bold;
 }
 
+th {
+	font-weight: normal;
+	padding: var(--cellpadding);
+	text-align: left;
+}
+
 td {
-	padding: 15px;
-	vertical-align: top
+	vertical-align: top;
+	a {
+		color: #000;
+		display: block;
+		margin: 0;
+		padding: var(--cellpadding);
+	}
 }
 
 .wide {
@@ -513,9 +565,12 @@ td {
 }
 
 @media (max-width: 700px) {
+	:root {
+		--cellpadding: 10px;
+	}
 
 	.stacktobottom {
-		order: 1; /* ZurĆ¼cksetzen der Reihenfolge auf den Standardwert */
+		order: 1; /* Zurücksetzen der Reihenfolge auf den Standardwert */
 	}
 	
 	.left-div, .right-div {
@@ -527,13 +582,23 @@ td {
 		width: -webkit-fill-available;
 	}
 
+	.navsearch {
+		font-size: 0;
+	}
+
 	h2 {
 		display: none;
+	}
+
+	th {
+		/* padding: 10px;*/
 	}
 			
 	td {
 		font-size: 15px;
-		padding: 10px;	
+		a {
+			/* padding: 10px;*/
+		}
 	}
 	
 	.mini {
@@ -546,8 +611,8 @@ td {
 	}
 			
 	.linebadge {
+		text-wrap: pretty;
 		width: 80px;
-		padding-left: 0px 4px 0px 4px;
 	}
 	
 	.bigonly {
@@ -599,16 +664,27 @@ td {
 		font-size: 46px;
 	}
 	
-	td {
+	th,
+	td a {
 		padding: 10px 1px 25px 2px;
 	}
 }
 
 @media (min-width: 1300px) {
-		
+	:root {
+		--cellpadding: 20px;
+	}
+
+	th {
+		font-size: 1.2em;
+		/* padding: 20px; */
+	}
+
 	td {
 		font-size: 1.2em;
-		padding: 20px;
+		a {
+			/* padding: 20px; */
+		}
 	}
 	
 	.topline {

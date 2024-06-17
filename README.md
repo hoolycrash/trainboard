@@ -3,13 +3,13 @@
 
 Trainboard is a departure/arrival board for trains that uses real-time data from Deutsche Bahn. It is supposed to stand out by a clear user interface that is strongly inspired by its Danish competitor "Mit Tog".
 
-Check it out: [https://trainboard.de.cool/](https://trainboard.de.cool/)
+Check it out at [https://trainboard.de.cool/](https://trainboard.de.cool/)
 
 ## Run this code
 You can run this application locally by simply downloading the newest version from [Release Tab](https://github.com/hoolycrash/trainboard/releases) and opening it in a web browser of your choice.
 It's just JS :)
 
-Please note: You need a internet connection to fetch data.
+Please note: You need an internet connection to fetch data.
 ## Contribution
 If you wish to contribute to this project, please feel free to do so. However, it's important to keep in mind that the primary goal of this project is to faithfully replicate the "Mit-Tog" WebApplication offered by BaneDanmark. ([Reference](https://www.mit-tog.dk/en))
 
@@ -32,4 +32,4 @@ To ensure that your code will be accepted, it is recommended to start by contrib
 ## Follow me:
 [![linkedin](https://img.shields.io/badge/twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/SBahnFahrer)
 
-[☕ Buy me a coffe](https://www.buymeacoffee.com/felixnietzold)
+[☕ Buy me a coffee](https://www.buymeacoffee.com/felixnietzold)

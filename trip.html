@@ -91,7 +91,7 @@
         try {
 
             // Load trip-data from API
-            const response = await fetch(`https://v6.db.transport.rest/trips/${tripId || ''}?stopovers=true&remarks=true&polyline=false&language=de`);
+            const response = await fetch(`https://v6.db.transport.rest/trips/${encodeURIComponent(tripId)|| ''}?stopovers=true&remarks=true&polyline=false&language=de`);
             const data = await response.json();
 
             const zugnummer = data.trip.line.fahrtNr; //Train Nr (Zugnummer)

@@ -1,457 +1,494 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Zuginformationen</title>
-	<link rel="stylesheet" href="./assets/css/styles.css">
-	<link rel="stylesheet" href="./assets/css/dark-styles.css">
-	<link rel="stylesheet" href="./assets/css/line-colors.css">
-	<link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
-	<link rel="manifest" href="/manifest.json" type="application/json" >
-	<meta name="theme-color" content="#000">
-	<meta name="robots" content="noindex">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zuginformationen</title>
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/dark-styles.css">
+    <link rel="stylesheet" href="./assets/css/line-colors.css">
+    <link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
+    <link rel="manifest" href="/manifest.json" type="application/json">
+    <meta name="theme-color" content="#000">
+    <meta name="robots" content="noindex">
 </head>
 
 <body>
 
 <center>
-<noscript> You need to enable JavaScript to run this app. </noscript>
+    <noscript> You need to enable JavaScript to run this app.</noscript>
 
-<nav id="navbar"><div class="tabs"><span class="active">&nbsp;Zuginformationen&nbsp;</a></div><div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div><div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg" class="mediumicon"></a></div></nav>
+    <nav id="navbar">
+        <div class="tabs"><span class="active">&nbsp;Zuginformationen&nbsp;</span></div>
+        <div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div>
+        <div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg"
+                                                                       class="mediumicon"></a></div>
+    </nav>
 
-<br>
+    <br>
 
-<div class="tripcontainer">
-	<div class="container">
-		<div class="left-div">
-			<div id="destination" class="big"></div>
-			<div id="stopovers"></div>
-		</div>
-		<div class="right-div lineview">
-			<div id="selectedDepartureTime" class="departtime"></div>
-			<div id="lineInfo"></div>
-			<span id="trainNr">Lade Fahrplandaten...</span>
-			<br><br>
-		</div>
-		
-		
-	</div>
-	<span id="notice"></span>
-	
-	<br>
-	
-	</div>
-	
-	<a href="symbolkey.html" class="wrap">
-	<div class="coacheswrapper" id="coacheswrapper">
-		<div id="blocksContainer" class="coachescontent"></div>
-	</div>
-	</a>
-	<div class="hidden" id="git-info">
-		<b>Wagenreihung - KNOWN ISSUES:</b>
-		<ul>
-			<li>Not yet full icon set: Just open a Issue on GitHub if you find one missing.</li>
-			<li>Find Bug -> <u id="git-error">Open new Issue on GitHub</u></li>
-		</ul>
-		<a href="https://github.com/hoolycrash/trainboard/blob/main/trip.html" class="black"><u>View this page on GitHub.</u></a><br><br>
-	</div>
-	
+    <div class="tripcontainer">
+        <div class="container">
+            <div class="left-div">
+                <div id="destination" class="big"></div>
+                <div id="stopovers"></div>
+            </div>
+            <div class="right-div lineview">
+                <div id="selectedDepartureTime" class="departtime"></div>
+                <div id="lineInfo"></div>
+                <span id="trainNr">Lade Fahrplandaten...</span>
+                <br><br>
+            </div>
 
 
-<br><br><br>
+        </div>
+        <span id="notice"></span>
+
+        <br>
+
+    </div>
+
+    <a href="symbolkey.html" class="wrap">
+        <div class="coacheswrapper" id="coacheswrapper">
+            <div id="blocksContainer" class="coachescontent"></div>
+        </div>
+    </a>
+    <div class="hidden" id="git-info">
+        <b>Wagenreihung - KNOWN ISSUES:</b>
+        <ul>
+            <li>Not yet full icon set: Just open a Issue on GitHub if you find one missing.</li>
+            <li>Find Bug -> <u id="git-error">Open new Issue on GitHub</u></li>
+        </ul>
+        <a href="https://github.com/hoolycrash/trainboard/blob/main/trip.html" class="black"><u>View this page on
+            GitHub.</u></a><br><br>
+    </div>
+
+
+    <br><br><br>
 
 </center>
 
 <script>
 
-fetchAndDisplayData();
+    function getTripIdFromUrl(url) {
+        const queryParams = url.split("?")[1];
+        return queryParams.split("&")[0].replace("id=", "");
+    }
 
-// ---------------------------- Functions ----------------------------
+    fetchAndDisplayData();
 
-// This whole thing loads data from db-rest/stops/{id}/departures
-async function fetchAndDisplayData() {
-	// Extract params from url
-	const urlParams = new URLSearchParams(window.location.search);
-	const tripId = urlParams.get('id'); //trip id needed to identify the train
-	const stationId = urlParams.get('station'); //station id to identify the station which the user came from when clicking a train (hope you understand this phahahahaha)
+    // ---------------------------- Functions ----------------------------
 
-	try {
-		// Load trip-data from API
-		const response = await fetch(`https://v6.db.transport.rest/trips/${tripId || ''}?stopovers=true&remarks=true&polyline=false&language=de`);
-		const data = await response.json();
+    // This whole thing loads data from db-rest/stops/{id}/departures
+    async function fetchAndDisplayData() {
+        // Extract params from url
+        const urlParams = new URLSearchParams(window.location.search);
+        const tripId = getTripIdFromUrl(window.location.href); //trip id needed to identify the train
+        const stationId = urlParams.get('station'); //station id to identify the station which the user came from when clicking a train (hope you understand this phahahahaha)
 
-		const zugnummer = data.trip.line.fahrtNr; //Train Nr (Zugnummer)
+        console.log(tripId);
 
-		// Create the flowing text with the next stations of this trip
-		let flowText = "";
-		let foundStation = false;
-		
-		data.trip.stopovers.forEach(stopover => {
-			if (stopover.stop.id == stationId) {
-				foundStation = true;
-				
-				// Departure time at the stop from where you clicked on the train
-				const selectedDepartureTimeDiv = document.getElementById('selectedDepartureTime');
-				if (selectedDepartureTimeDiv) { // If the Element exists
-					let selectedTime = new Date(stopover.departure);
-					if (stopover.departure == null) { //If no departure time is available, use arrival time
-						selectedTime = new Date(stopover.arrival);
-					}
+        try {
 
-					const selectedFormattedTime = `<b>${selectedTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</b>`;
-					let selectedplannedTime = new Date(stopover.plannedDeparture);
-					if (stopover.plannedDeparture == null) { //If no departure time is available, use arrival time
-						selectedplannedTime = new Date(stopover.plannedArrival);
-					}
-					const selectedFormattedPlannedTime = `<b>${selectedplannedTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</b>`;
+            // Load trip-data from API
+            const response = await fetch(`https://v6.db.transport.rest/trips/${tripId || ''}?stopovers=true&remarks=true&polyline=false&language=de`);
+            const data = await response.json();
 
-					// If the train is on time
-					if (stopover.departure == stopover.plannedDeparture && stopover.departure !== null 
-						|| stopover.arrival == stopover.plannedArrival && stopover.departure === null) {
-						selectedDepartureTimeDiv.innerHTML = selectedFormattedTime;
-					} else {
-						selectedDepartureTimeDiv.innerHTML = "<s class='disabled'>" + selectedFormattedPlannedTime + "</s><br>" + selectedFormattedTime;
-					}
-					
-					// converting departing-time to YYYYMMDDHHMM format for the api request
-					const selecteddepartTime = new Date(stopover.plannedDeparture);
-					const year = selecteddepartTime.getFullYear();
-					const month = String(selecteddepartTime.getMonth() + 1).padStart(2, '0');
-					const day = String(selecteddepartTime.getDate()).padStart(2, '0');
-					const hours = String(selecteddepartTime.getHours()).padStart(2, '0');
-					const minutes = String(selecteddepartTime.getMinutes()).padStart(2, '0');
-					const convertedtime = `${year}${month}${day}${hours}${minutes}`;
-					let datetime = convertedtime;
-					
-					//Start loading train composition
-					fetchtraincomposition(zugnummer, datetime, stationId);
-				} 
-				return;
-			}
+            const zugnummer = data.trip.line.fahrtNr; //Train Nr (Zugnummer)
 
-			if (foundStation) {
-				if (stopover.cancelled == true && stopover.arrival == null && stopover.departure == null) {
-					flowText += `<a href="departure.html?station=${stopover.stop.id}" class="red"><s><b>${stopover.stop.name}</b></s></a> | `;
-				} else {
-					// Create an item in the flowing text
-					const time = stopover.arrival ? new Date(stopover.arrival) : new Date(stopover.departure);
-					const timeType = stopover.arrival ? 'ARRIVAL' : 'DEPARTURE';
-					const formattedTime = `${time.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}`;		
-					flowText += `<a href="departure.html?station=${stopover.stop.id}" class="black">${formattedTime} <b>${stopover.stop.name}</b></a> | `;	
-				}
-			}
-		});
+            // Create the flowing text with the next stations of this trip
+            let flowText = "";
+            let foundStation = false;
 
-		// Show the destination of the train in destinations div (the big title on top)
-		const destinationStopover = data.trip.stopovers.find(stopover => stopover.stop.id === data.trip.destination.id);
-		if (destinationStopover) {
-			const destinationDiv = document.getElementById('destination');
-			if (destinationDiv) {
-				destinationDiv.innerHTML = `<div>&#10132; ${destinationStopover.stop.name}</div>`;
-			} else {
-				console.error('Div mit der ID "destination" nicht gefunden.');
-			}
-		}
-		
-		// Push the flowing text to the div to show
-		const stopoversDiv = document.getElementById('stopovers');
-		if (stopoversDiv) {
-			//Remove the last ' | ' because its not needed due there is no following station
-			stopoversDiv.innerHTML = flowText.slice(0, -2);
-		} else {
-			console.error('Div mit der ID "stopovers" nicht gefunden.');
-		}
+            data.trip.stopovers.forEach(stopover => {
+                if (stopover.stop.id == stationId) {
+                    foundStation = true;
 
-		// Left div with departing train and linenumber
-		const lineInfoDiv = document.getElementById('lineInfo');
-		if (lineInfoDiv) {
-				let entry = data.trip;
-				let linebadge = `<div class="biglinebadge ${entry.line.product} ${entry.line.name.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}"><a href="https://bahn.expert/details/${zugnummer}/?evaNumberAlongRoute=${stationId}">`;
-				if (entry.line.operator.id === 'freiberger-eisenbahngesellschaft') {
-					linebadge += "FEG</a></div>"; //RB 83
-				} else if (entry.line.productName === "FEX") {
-					linebadge += "FEX</a></div>"; //Flughafen-Express Berlin
-				} else{
-					linebadge += `${entry.line.name}</div>`;
-				}
-			lineInfoDiv.innerHTML = linebadge;
+                    // Departure time at the stop from where you clicked on the train
+                    const selectedDepartureTimeDiv = document.getElementById('selectedDepartureTime');
+                    if (selectedDepartureTimeDiv) { // If the Element exists
+                        let selectedTime = new Date(stopover.departure);
+                        if (stopover.departure == null) { //If no departure time is available, use arrival time
+                            selectedTime = new Date(stopover.arrival);
+                        }
 
-		} else {
-			console.error('Div mit der ID "lineInfo" nicht gefunden.');
-		}
-		
-		document.getElementById('trainNr').innerHTML = `<a href="https://bahn.expert/details/${zugnummer}/?evaNumberAlongRoute=${stationId}" class="black"><b>Zugnummer:</b> <u>${zugnummer}</u></a>`;
-		
-		
-		
-	} catch (error) {
-		console.error('Fehler beim Abrufen der Daten:', error);
-	}
-	
-}
+                        const selectedFormattedTime = `<b>${selectedTime.toLocaleTimeString('de-DE', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}</b>`;
+                        let selectedplannedTime = new Date(stopover.plannedDeparture);
+                        if (stopover.plannedDeparture == null) { //If no departure time is available, use arrival time
+                            selectedplannedTime = new Date(stopover.plannedArrival);
+                        }
+                        const selectedFormattedPlannedTime = `<b>${selectedplannedTime.toLocaleTimeString('de-DE', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}</b>`;
 
-function fetchtraincomposition(zugnummer, datetime, stationId) {
-	fetch(`https://ist-wr.noncd.db.de/wagenreihung/1.0/${zugnummer}/${datetime}`)
-		.then(response => response.json())
-		.then(data => {
-		
-			
-				
-			// Check for valid JSON
-			if (data.error) {
-				document.getElementById('notice').innerHTML = '<br><br>Wagenreihung für diesen Zug nicht verfügbar.<br><br>';
-				document.getElementById('coacheswrapper').classList.add('hidden');
-				return;
-			} if (data.data.istformation.halt.evanummer !== stationId) { //Check if Wagenreihung is for the right station
-				console.log("StationID does not match:", stationId, data.data.istformation); 
-				document.getElementById('notice').innerHTML = '<br><br>Wagenreihung für diesen Zug nicht verfügbar.<br><br>';
-				document.getElementById('coacheswrapper').classList.add('hidden');
-				document.getElementById('git-info').className = '';
-				//Create direct link for Issue report on GitHub
-				document.getElementById('git-error').innerHTML = `<a href="https://github.com/hoolycrash/trainboard/issues/new?title=Bug%20Wagenreihung:&body=Train:${zugnummer}%20Datetime:${datetime}%20Station:${stationId}" target="_blank" class="black">Open new Issue with Train data on Github</a>`;
-				return;
-			}
-			document.getElementById('git-info').className = '';
-			document.getElementById('git-error').innerHTML = `<a href="https://github.com/hoolycrash/trainboard/issues/new?title=Bug%20Wagenreihung:&body=Train:${zugnummer}%20Datetime:${datetime}%20Station:${stationId}" target="_blank" class="black">Open new Issue with Train data on Github</a>`;
-			rendertraincomposition(data.data.istformation);	
-		});
-}
+                        // If the train is on time
+                        if (stopover.departure == stopover.plannedDeparture && stopover.departure !== null
+                            || stopover.arrival == stopover.plannedArrival && stopover.departure === null) {
+                            selectedDepartureTimeDiv.innerHTML = selectedFormattedTime;
+                        } else {
+                            selectedDepartureTimeDiv.innerHTML = "<s class='disabled'>" + selectedFormattedPlannedTime + "</s><br>" + selectedFormattedTime;
+                        }
 
-function rendertraincomposition(data) {
-	
-	/* //Did not work with more then one train set
-	const allFahrzeuggruppe = data.allFahrzeuggruppe;
-	const firstElementsMap = new Map();
-	for (let i = 0; i < allFahrzeuggruppe.length; i++) {
-		let fahrzeuggruppe = allFahrzeuggruppe[i];
-		for ( let j = 0; j < fahrzeuggruppe.allFahrzeug.length; j++) {
-			const fahrzeug = fahrzeuggruppe.allFahrzeug[j];
-			const positioningruppe = fahrzeug.positioningruppe;
-			if (!firstElementsMap.has(positioningruppe)) {
-				firstElementsMap.set(positioningruppe, fahrzeug);
-			} else {
-				console.log("Already set", positioningruppe, fahrzeug);
-				//const existingFahrzeuge = firstElementsMap.get(positioningruppe);
-				//existingFahrzeuge.push(fahrzeug);
-				//firstElementsMap.set(positioningruppe, existingFahrzeuge);
-	}	}	}
+                        // converting departing-time to YYYYMMDDHHMM format for the api request
+                        const selecteddepartTime = new Date(stopover.plannedDeparture);
+                        const year = selecteddepartTime.getFullYear();
+                        const month = String(selecteddepartTime.getMonth() + 1).padStart(2, '0');
+                        const day = String(selecteddepartTime.getDate()).padStart(2, '0');
+                        const hours = String(selecteddepartTime.getHours()).padStart(2, '0');
+                        const minutes = String(selecteddepartTime.getMinutes()).padStart(2, '0');
+                        const convertedtime = `${year}${month}${day}${hours}${minutes}`;
+                        let datetime = convertedtime;
 
-	// Sort elements
-	const sortedFahrzeuge = Array.from(firstElementsMap.values()).sort((a, b) => {
-		return parseInt(a.positioningruppe) - parseInt(b.positioningruppe);
-	});
-	console.log(firstElementsMap);
-	*/
+                        //Start loading train composition
+                        fetchtraincomposition(zugnummer, datetime, stationId);
+                    }
+                    return;
+                }
 
-	const blocksContainer = document.getElementById('blocksContainer');
-	let vehiclename = "";
-	const imgpath = 'assets/icons/carriage';
-	const allFahrzeuggruppe = data.allFahrzeuggruppe;
-	console.log("Wagenreihung:", data);
-				
-	// several trains -> every train
-	for (let i = 0; i < allFahrzeuggruppe.length; i++) {
-		let fahrzeuggruppe = allFahrzeuggruppe[i];
-		let setLOK = false; //Boolean TrainSet has LOK
-		
-		//
-		let vehicletype;
-		let getvehicleType = getVehicleType(fahrzeuggruppe.fahrzeuggruppebezeichnung);
-		if (getvehicleType[2] !== "") {
-			vehicletype = getvehicleType[1] + " (BR" + getvehicleType[2] + ")";
-		} else {vehicletype = getvehicleType[1];}
-		if (vehicletype !== ""){console.log(vehicletype);}
-		vehiclename =+ vehicletype;
+                if (foundStation) {
+                    if (stopover.cancelled == true && stopover.arrival == null && stopover.departure == null) {
+                        flowText += `<a href="departure.html?station=${stopover.stop.id}" class="red"><s><b>${stopover.stop.name}</b></s></a> | `;
+                    } else {
+                        // Create an item in the flowing text
+                        const time = stopover.arrival ? new Date(stopover.arrival) : new Date(stopover.departure);
+                        const timeType = stopover.arrival ? 'ARRIVAL' : 'DEPARTURE';
+                        const formattedTime = `${time.toLocaleTimeString('de-DE', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}`;
+                        flowText += `<a href="departure.html?station=${stopover.stop.id}" class="black">${formattedTime} <b>${stopover.stop.name}</b></a> | `;
+                    }
+                }
+            });
 
-		//one train set -> every coach ("Wagon")
-		for ( let j = 0; j < fahrzeuggruppe.allFahrzeug.length; j++) {
-			let fahrzeug = fahrzeuggruppe.allFahrzeug[j];
+            // Show the destination of the train in destinations div (the big title on top)
+            const destinationStopover = data.trip.stopovers.find(stopover => stopover.stop.id === data.trip.destination.id);
+            if (destinationStopover) {
+                const destinationDiv = document.getElementById('destination');
+                if (destinationDiv) {
+                    destinationDiv.innerHTML = `<div>&#10132; ${destinationStopover.stop.name}</div>`;
+                } else {
+                    console.error('Div mit der ID "destination" nicht gefunden.');
+                }
+            }
 
-			const wagenordnungsnummer = fahrzeug.wagenordnungsnummer;
-			const fahrzeugnummer = 'fzg' + fahrzeug.fahrzeugnummer;
-			const kategorie = fahrzeug.kategorie;
-			const ausstattungsDiv = document.createElement('div');
-			ausstattungsDiv.classList.add('coach');
-			//Boolean for Show IMG
-			let showIMG = true;
-				
-			//check TrainSET has LOK -> Add Head on Coach
-			
-			ausstattungsDiv.classList.add(fahrzeugnummer);
-			
-			if (setLOK === true) {
-				ausstattungsDiv.classList.add('head');
-				setLOK = false;
-			}
+            // Push the flowing text to the div to show
+            const stopoversDiv = document.getElementById('stopovers');
+            if (stopoversDiv) {
+                //Remove the last ' | ' because its not needed due there is no following station
+                stopoversDiv.innerHTML = flowText.slice(0, -2);
+            } else {
+                console.error('Div mit der ID "stopovers" nicht gefunden.');
+            }
 
-			if (kategorie === "LOK") {
-				ausstattungsDiv.classList.add('lok');
-				ausstattungsDiv.innerHTML = `LOK`;
-				setLOK = true;
-				showIMG = false;
-			}
-			
-			if (j === 0 && kategorie !== "LOK") {
-				if (kategorie === "TRIEBKOPF" || kategorie.includes("STEUERWAGEN")) {
-					ausstattungsDiv.classList.add('steuerHead');
-					if (kategorie === "TRIEBKOPF" ) {showIMG = false}
-				} else {
-					ausstattungsDiv.classList.add('head');
-			}	} 
+            // Left div with departing train and linenumber
+            const lineInfoDiv = document.getElementById('lineInfo');
+            if (lineInfoDiv) {
+                let entry = data.trip;
+                let linebadge = `<div class="biglinebadge ${entry.line.product} ${entry.line.name.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}"><a href="https://bahn.expert/details/${zugnummer}/?evaNumberAlongRoute=${stationId}">`;
+                if (entry.line.operator.id === 'freiberger-eisenbahngesellschaft') {
+                    linebadge += "FEG</a></div>"; //RB 83
+                } else if (entry.line.productName === "FEX") {
+                    linebadge += "FEX</a></div>"; //Flughafen-Express Berlin
+                } else {
+                    linebadge += `${entry.line.name}</div>`;
+                }
+                lineInfoDiv.innerHTML = linebadge;
 
-			if (j === (fahrzeuggruppe.allFahrzeug.length-1) && kategorie !== "LOK" && !(i === 0 && j === 0)) {
-				if (kategorie === "TRIEBKOPF" || kategorie.includes("STEUERWAGEN")) {
-					ausstattungsDiv.classList.add('steuerBack');
-					if (kategorie === "TRIEBKOPF" ) {showIMG = false}
-				} else {
-					ausstattungsDiv.classList.add('back');
-			}	}
+            } else {
+                console.error('Div mit der ID "lineInfo" nicht gefunden.');
+            }
 
-			//if next coach == LOK -> Back
-			if (j === (fahrzeuggruppe.allFahrzeug.length-2) 
-			&& fahrzeuggruppe.allFahrzeug[j+1].kategorie === "LOK") {
-				ausstattungsDiv.classList.add('back');
-			}
-			
-			//single Coach in Train  
-			if (j === 0 && (fahrzeuggruppe.allFahrzeug.length-1) === 0) {
-				//Train-Set has only one Coach or is BR650 (RS1)
-				if (i === 0 && (allFahrzeuggruppe.length-1) === 0 || getvehicleType[2] === "650") {
-					ausstattungsDiv.className = 'coach';
-					ausstattungsDiv.classList.add('single');
-				} else {
-					if (i > 0 && kategorie !== "LOK") {
-						ausstattungsDiv.className = 'coach';
-						//if 2th vehicle after LOK 
-						if (i === 1 && allFahrzeuggruppe[0].allFahrzeug[0].kategorie === "LOK") {
-							ausstattungsDiv.classList.add('head');
-						}
-						//if last Coach befor LOK
-						if (i === (allFahrzeuggruppe.length-2) && allFahrzeuggruppe[i+1].allFahrzeug[0].kategorie === "LOK") {
-							ausstattungsDiv.classList.add('back');
-						}
-						// if Last Coach
-						if (i === (allFahrzeuggruppe.length-1) && kategorie !== "LOK") {
-							if (kategorie.includes("STEUERWAGEN")) {
-								ausstattungsDiv.classList.add('steuerBack');
-							} else {
-								ausstattungsDiv.classList.add('back');
-			} 	} 	} 	} 	}
-
-			if (fahrzeug.status === "GESCHLOSSEN") {
-				ausstattungsDiv.innerHTML = `x`;
-				showIMG = false;
-				//ausstattungsDiv.innerHTML += `<br><br>${fahrzeug.fahrzeugsektor}`;
-			}
-
-			if (showIMG) {
-			
-				ausstattungsDiv.innerHTML = `<div class='sector'>${fahrzeug.fahrzeugsektor}`;
-				
-				if (kategorie !== "STEUERWAGENZWEITEKLASSE" && kategorie !== "REISEZUGWAGENZWEITEKLASSE" && kategorie !== "DOPPELSTOCKSTEUERWAGENZWEITEKLASSE" && kategorie !== "DOPPELSTOCKWAGENZWEITEKLASSE") {
-					ausstattungsDiv.innerHTML += `${wagenordnungsnummer}<br><img src="${imgpath}/${kategorie}.svg">`;
-				} else {
-					ausstattungsDiv.innerHTML += `${wagenordnungsnummer}<br>`;
-				};
-				
-				//let countausstatt = 0;
-				fahrzeug.allFahrzeugausstattung.forEach(ausstattung => {						
-					if (
-					//countausstatt < 2 && 
-					!["KLIMA"].includes(ausstattung.ausstattungsart)) {
-						//countausstatt++;
-						ausstattungsDiv.innerHTML += `<img src="${imgpath}/${ausstattung.ausstattungsart}.svg">`;
-					}
-					//TODO: Optimize which AUSSTATTUNG are shown
-				});	
-				
-			}
-			blocksContainer.appendChild(ausstattungsDiv);
-			//Next Coach
-		}
-		//Next Train
-}	}
+            document.getElementById('trainNr').innerHTML = `<a href="https://bahn.expert/details/${zugnummer}/?evaNumberAlongRoute=${stationId}" class="black"><b>Zugnummer:</b> <u>${zugnummer}</u></a>`;
 
 
-function getVehicleType(fahrzeugbezeichnung) {
-	let type = "";
-	let series = "";
-	let name = "";
-    if (fahrzeugbezeichnung.startsWith("ICE")) {
-        let name = fahrzeugbezeichnung.substring(0, 3);
-        let number = fahrzeugbezeichnung.substring(3);
-        let firstnum = number.substring(0,2);
-        let lastnum = number.substring(2);
-        switch(firstnum) {
-            case "01": 
-                type = "ICE 1";
-				series = "401";
-                break;
-            case "02": 
-				type = "ICE 2";
-				series = "402";
-				break;
-			case "03":
-				type = "ICE 3";
-				series = "403";
-                break;
-			case "46":
-				type = "ICE 3";
-				series = "406";
-                break;
-			case "47":
-				type = "ICE 3";
-				series = "407";
-                break;
-			case "80":
-				type = "ICE 3";
-				series = "408";
-                break;
-			case "90":
-				type = "ICE 4";
-				series = "412.0";
-                break;
-			case "92":
-				type = "ICE 4";
-				series = "412.2";
-                break;
-			case "94":
-				type = "ICE 4";
-				series = "412.4";
-                break;
-            case "11":
-				type = "ICE T";
-				series = "411";
-                break;
-            case "15":
-                type = "ICE T";
-				series = "415";
-                break;
-            default:
+        } catch (error) {
+            console.error('Fehler beim Abrufen der Daten:', error);
+        }
+
+    }
+
+    function fetchtraincomposition(zugnummer, datetime, stationId) {
+        fetch(`https://ist-wr.noncd.db.de/wagenreihung/1.0/${zugnummer}/${datetime}`)
+            .then(response => response.json())
+            .then(data => {
+
+
+                // Check for valid JSON
+                if (data.error) {
+                    document.getElementById('notice').innerHTML = '<br><br>Wagenreihung für diesen Zug nicht verfügbar.<br><br>';
+                    document.getElementById('coacheswrapper').classList.add('hidden');
+                    return;
+                }
+                if (data.data.istformation.halt.evanummer !== stationId) { //Check if Wagenreihung is for the right station
+                    console.log("StationID does not match:", stationId, data.data.istformation);
+                    document.getElementById('notice').innerHTML = '<br><br>Wagenreihung für diesen Zug nicht verfügbar.<br><br>';
+                    document.getElementById('coacheswrapper').classList.add('hidden');
+                    document.getElementById('git-info').className = '';
+                    //Create direct link for Issue report on GitHub
+                    document.getElementById('git-error').innerHTML = `<a href="https://github.com/hoolycrash/trainboard/issues/new?title=Bug%20Wagenreihung:&body=Train:${zugnummer}%20Datetime:${datetime}%20Station:${stationId}" target="_blank" class="black">Open new Issue with Train data on Github</a>`;
+                    return;
+                }
+                document.getElementById('git-info').className = '';
+                document.getElementById('git-error').innerHTML = `<a href="https://github.com/hoolycrash/trainboard/issues/new?title=Bug%20Wagenreihung:&body=Train:${zugnummer}%20Datetime:${datetime}%20Station:${stationId}" target="_blank" class="black">Open new Issue with Train data on Github</a>`;
+                rendertraincomposition(data.data.istformation);
+            });
+    }
+
+    function rendertraincomposition(data) {
+
+        /* //Did not work with more then one train set
+        const allFahrzeuggruppe = data.allFahrzeuggruppe;
+        const firstElementsMap = new Map();
+        for (let i = 0; i < allFahrzeuggruppe.length; i++) {
+            let fahrzeuggruppe = allFahrzeuggruppe[i];
+            for ( let j = 0; j < fahrzeuggruppe.allFahrzeug.length; j++) {
+                const fahrzeug = fahrzeuggruppe.allFahrzeug[j];
+                const positioningruppe = fahrzeug.positioningruppe;
+                if (!firstElementsMap.has(positioningruppe)) {
+                    firstElementsMap.set(positioningruppe, fahrzeug);
+                } else {
+                    console.log("Already set", positioningruppe, fahrzeug);
+                    //const existingFahrzeuge = firstElementsMap.get(positioningruppe);
+                    //existingFahrzeuge.push(fahrzeug);
+                    //firstElementsMap.set(positioningruppe, existingFahrzeuge);
+        }	}	}
+
+        // Sort elements
+        const sortedFahrzeuge = Array.from(firstElementsMap.values()).sort((a, b) => {
+            return parseInt(a.positioningruppe) - parseInt(b.positioningruppe);
+        });
+        console.log(firstElementsMap);
+        */
+
+        const blocksContainer = document.getElementById('blocksContainer');
+        let vehiclename = "";
+        const imgpath = 'assets/icons/carriage';
+        const allFahrzeuggruppe = data.allFahrzeuggruppe;
+        console.log("Wagenreihung:", data);
+
+        // several trains -> every train
+        for (let i = 0; i < allFahrzeuggruppe.length; i++) {
+            let fahrzeuggruppe = allFahrzeuggruppe[i];
+            let setLOK = false; //Boolean TrainSet has LOK
+
+            //
+            let vehicletype;
+            let getvehicleType = getVehicleType(fahrzeuggruppe.fahrzeuggruppebezeichnung);
+            if (getvehicleType[2] !== "") {
+                vehicletype = getvehicleType[1] + " (BR" + getvehicleType[2] + ")";
+            } else {
+                vehicletype = getvehicleType[1];
+            }
+            if (vehicletype !== "") {
+                console.log(vehicletype);
+            }
+            vehiclename = +vehicletype;
+
+            //one train set -> every coach ("Wagon")
+            for (let j = 0; j < fahrzeuggruppe.allFahrzeug.length; j++) {
+                let fahrzeug = fahrzeuggruppe.allFahrzeug[j];
+
+                const wagenordnungsnummer = fahrzeug.wagenordnungsnummer;
+                const fahrzeugnummer = 'fzg' + fahrzeug.fahrzeugnummer;
+                const kategorie = fahrzeug.kategorie;
+                const ausstattungsDiv = document.createElement('div');
+                ausstattungsDiv.classList.add('coach');
+                //Boolean for Show IMG
+                let showIMG = true;
+
+                //check TrainSET has LOK -> Add Head on Coach
+
+                ausstattungsDiv.classList.add(fahrzeugnummer);
+
+                if (setLOK === true) {
+                    ausstattungsDiv.classList.add('head');
+                    setLOK = false;
+                }
+
+                if (kategorie === "LOK") {
+                    ausstattungsDiv.classList.add('lok');
+                    ausstattungsDiv.innerHTML = `LOK`;
+                    setLOK = true;
+                    showIMG = false;
+                }
+
+                if (j === 0 && kategorie !== "LOK") {
+                    if (kategorie === "TRIEBKOPF" || kategorie.includes("STEUERWAGEN")) {
+                        ausstattungsDiv.classList.add('steuerHead');
+                        if (kategorie === "TRIEBKOPF") {
+                            showIMG = false
+                        }
+                    } else {
+                        ausstattungsDiv.classList.add('head');
+                    }
+                }
+
+                if (j === (fahrzeuggruppe.allFahrzeug.length - 1) && kategorie !== "LOK" && !(i === 0 && j === 0)) {
+                    if (kategorie === "TRIEBKOPF" || kategorie.includes("STEUERWAGEN")) {
+                        ausstattungsDiv.classList.add('steuerBack');
+                        if (kategorie === "TRIEBKOPF") {
+                            showIMG = false
+                        }
+                    } else {
+                        ausstattungsDiv.classList.add('back');
+                    }
+                }
+
+                //if next coach == LOK -> Back
+                if (j === (fahrzeuggruppe.allFahrzeug.length - 2)
+                    && fahrzeuggruppe.allFahrzeug[j + 1].kategorie === "LOK") {
+                    ausstattungsDiv.classList.add('back');
+                }
+
+                //single Coach in Train
+                if (j === 0 && (fahrzeuggruppe.allFahrzeug.length - 1) === 0) {
+                    //Train-Set has only one Coach or is BR650 (RS1)
+                    if (i === 0 && (allFahrzeuggruppe.length - 1) === 0 || getvehicleType[2] === "650") {
+                        ausstattungsDiv.className = 'coach';
+                        ausstattungsDiv.classList.add('single');
+                    } else {
+                        if (i > 0 && kategorie !== "LOK") {
+                            ausstattungsDiv.className = 'coach';
+                            //if 2th vehicle after LOK
+                            if (i === 1 && allFahrzeuggruppe[0].allFahrzeug[0].kategorie === "LOK") {
+                                ausstattungsDiv.classList.add('head');
+                            }
+                            //if last Coach befor LOK
+                            if (i === (allFahrzeuggruppe.length - 2) && allFahrzeuggruppe[i + 1].allFahrzeug[0].kategorie === "LOK") {
+                                ausstattungsDiv.classList.add('back');
+                            }
+                            // if Last Coach
+                            if (i === (allFahrzeuggruppe.length - 1) && kategorie !== "LOK") {
+                                if (kategorie.includes("STEUERWAGEN")) {
+                                    ausstattungsDiv.classList.add('steuerBack');
+                                } else {
+                                    ausstattungsDiv.classList.add('back');
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (fahrzeug.status === "GESCHLOSSEN") {
+                    ausstattungsDiv.innerHTML = `x`;
+                    showIMG = false;
+                    //ausstattungsDiv.innerHTML += `<br><br>${fahrzeug.fahrzeugsektor}`;
+                }
+
+                if (showIMG) {
+
+                    ausstattungsDiv.innerHTML = `<div class='sector'>${fahrzeug.fahrzeugsektor}`;
+
+                    if (kategorie !== "STEUERWAGENZWEITEKLASSE" && kategorie !== "REISEZUGWAGENZWEITEKLASSE" && kategorie !== "DOPPELSTOCKSTEUERWAGENZWEITEKLASSE" && kategorie !== "DOPPELSTOCKWAGENZWEITEKLASSE") {
+                        ausstattungsDiv.innerHTML += `${wagenordnungsnummer}<br><img src="${imgpath}/${kategorie}.svg">`;
+                    } else {
+                        ausstattungsDiv.innerHTML += `${wagenordnungsnummer}<br>`;
+                    }
+                    ;
+
+                    //let countausstatt = 0;
+                    fahrzeug.allFahrzeugausstattung.forEach(ausstattung => {
+                        if (
+                            //countausstatt < 2 &&
+                            !["KLIMA"].includes(ausstattung.ausstattungsart)) {
+                            //countausstatt++;
+                            ausstattungsDiv.innerHTML += `<img src="${imgpath}/${ausstattung.ausstattungsart}.svg">`;
+                        }
+                        //TODO: Optimize which AUSSTATTUNG are shown
+                    });
+
+                }
+                blocksContainer.appendChild(ausstattungsDiv);
+                //Next Coach
+            }
+            //Next Train
         }
     }
-    if (fahrzeugbezeichnung.startsWith("ICK")) {
-        type = "IC2 KISS";
-    }
-    if (fahrzeugbezeichnung.startsWith("ICD")) {
-        type = "IC2";
-    }
-	if (fahrzeugbezeichnung.startsWith("T0442")) {
-		type = "Talent 2";
-		series = "442";
-	}
-	if (fahrzeugbezeichnung.startsWith("T1442")) {
-		type = "Talent 2";
-		series = "1442";
-	}
-	if (fahrzeugbezeichnung.startsWith("D0650")) {
-		type = "RS1";
-		series = "650";
-	}
 
-    return [fahrzeugbezeichnung, type, series, name];
-}
+
+    function getVehicleType(fahrzeugbezeichnung) {
+        let type = "";
+        let series = "";
+        let name = "";
+        if (fahrzeugbezeichnung.startsWith("ICE")) {
+            let name = fahrzeugbezeichnung.substring(0, 3);
+            let number = fahrzeugbezeichnung.substring(3);
+            let firstnum = number.substring(0, 2);
+            let lastnum = number.substring(2);
+            switch (firstnum) {
+                case "01":
+                    type = "ICE 1";
+                    series = "401";
+                    break;
+                case "02":
+                    type = "ICE 2";
+                    series = "402";
+                    break;
+                case "03":
+                    type = "ICE 3";
+                    series = "403";
+                    break;
+                case "46":
+                    type = "ICE 3";
+                    series = "406";
+                    break;
+                case "47":
+                    type = "ICE 3";
+                    series = "407";
+                    break;
+                case "80":
+                    type = "ICE 3";
+                    series = "408";
+                    break;
+                case "90":
+                    type = "ICE 4";
+                    series = "412.0";
+                    break;
+                case "92":
+                    type = "ICE 4";
+                    series = "412.2";
+                    break;
+                case "94":
+                    type = "ICE 4";
+                    series = "412.4";
+                    break;
+                case "11":
+                    type = "ICE T";
+                    series = "411";
+                    break;
+                case "15":
+                    type = "ICE T";
+                    series = "415";
+                    break;
+                default:
+            }
+        }
+        if (fahrzeugbezeichnung.startsWith("ICK")) {
+            type = "IC2 KISS";
+        }
+        if (fahrzeugbezeichnung.startsWith("ICD")) {
+            type = "IC2";
+        }
+        if (fahrzeugbezeichnung.startsWith("T0442")) {
+            type = "Talent 2";
+            series = "442";
+        }
+        if (fahrzeugbezeichnung.startsWith("T1442")) {
+            type = "Talent 2";
+            series = "1442";
+        }
+        if (fahrzeugbezeichnung.startsWith("D0650")) {
+            type = "RS1";
+            series = "650";
+        }
+
+        return [fahrzeugbezeichnung, type, series, name];
+    }
 
 </script>
 

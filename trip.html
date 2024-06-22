@@ -74,8 +74,8 @@
         const queryParams = url.split("?")[1];
         return queryParams.split("&")[0].replace("id=", "");
     }
+	
 
-    fetchAndDisplayData();
 
     // ---------------------------- Functions ----------------------------
 
@@ -84,7 +84,27 @@
         // Extract params from url
         const urlParams = new URLSearchParams(window.location.search);
         const tripId = getTripIdFromUrl(window.location.href); //trip id needed to identify the train
-        const stationId = urlParams.get('station'); //station id to identify the station which the user came from when clicking a train (hope you understand this phahahahaha)
+        
+		
+		const currentUrl = window.location.href;
+		
+		function getParameterByName(name, url) {
+		    if (!url) url = window.location.href;
+		    name = name.replace(/[\[\]]/g, '\\$&');
+		    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+		    const results = regex.exec(url);
+		    if (!results) return null;
+		    if (!results[2]) return '';
+		    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+		}
+		
+		const stationValue = getParameterByName('station', currentUrl);
+		
+		
+		const stationId = stationValue;
+		
+var encodedTripId = `Formatted TripId: ${encodeURIComponent(tripId)|| ''}`;
+
 
         try {
 
@@ -93,6 +113,10 @@
             const data = await response.json();
 
             const zugnummer = data.trip.line.fahrtNr; //Train Nr (Zugnummer)
+			
+			console.log(zugnummer);
+			
+			
 
             // Create the flowing text with the next stations of this trip
             let flowText = "";
@@ -143,6 +167,8 @@
 
                         //Start loading train composition
                         fetchtraincomposition(zugnummer, datetime, stationId);
+						
+						
                     }
                     return;
                 }
@@ -211,6 +237,8 @@
     }
 
     function fetchtraincomposition(zugnummer, datetime, stationId) {
+	
+	
         fetch(`https://ist-wr.noncd.db.de/wagenreihung/1.0/${zugnummer}/${datetime}`)
             .then(response => response.json())
             .then(data => {
@@ -487,6 +515,9 @@
 
         return [fahrzeugbezeichnung, type, series, name];
     }
+
+
+    fetchAndDisplayData();
 
 </script>
 

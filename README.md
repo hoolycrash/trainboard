@@ -9,7 +9,14 @@ Check it out at [https://trainboard.de.cool/](https://trainboard.de.cool/)
 You can run this application locally by simply downloading the newest version from [Release Tab](https://github.com/hoolycrash/trainboard/releases) and opening it in a web browser of your choice.
 It's just JS :)
 
-Please note: You need an internet connection to fetch data.
+You need an internet connection to fetch data.
+
+```
+⚠️ PLEASE NOTE ⚠️
+Trainboard v0.8 or higher is mandatory to run the application successfully. 
+Older version might not longer work, due to changes in the requested APIs.
+```
+
 ## Contribution
 If you wish to contribute to this project, please feel free to do so. However, it's important to keep in mind that the primary goal of this project is to faithfully replicate the "Mit-Tog" WebApplication offered by BaneDanmark. ([Reference](https://www.mit-tog.dk/en))
 

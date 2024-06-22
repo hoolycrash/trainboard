@@ -1,143 +1,158 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Abfahrten und Ankünfte</title>
-	<link rel="stylesheet" href="./assets/css/styles.css">
-	<link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
-	<link rel="manifest" href="/manifest.json" type="application/json" >
-	<meta name="theme-color" content="#000">
-	<meta name="description" content="Abfahrts- und Ankunftstafel für Deutsche Bahnhöfe.">
-	<meta name="keywords" content="bahn, db, bahnhof, deutschebahn, trainboard, abfahrtstafel, train, abfahrt, ankunft" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abfahrten und Ankünfte</title>
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
+    <link rel="manifest" href="/manifest.json" type="application/json">
+    <meta name="theme-color" content="#000">
+    <meta name="description" content="Abfahrts- und Ankunftstafel für Deutsche Bahnhöfe.">
+    <meta name="keywords"
+          content="bahn, db, bahnhof, deutschebahn, trainboard, abfahrtstafel, train, abfahrt, ankunft"/>
 </head>
 
 <body class="home">
 
 <center>
 
-	<nav id="navbar">
-            <div class="tabs">
-                <span class="active">&nbsp;Zugtafel&nbsp;</span>
-                <a href="expert.html" class="">&nbsp;Erweitert&nbsp;</a>
-                <a href="localsearch.html" class="">&nbsp;Nahverkehr&nbsp;</a>
+    <nav id="navbar">
+        <div class="tabs">
+            <span class="active">&nbsp;Zugtafel&nbsp;</span>
+            <a href="expert.html" class="">&nbsp;Erweitert&nbsp;</a>
+            <a href="localsearch.html" class="">&nbsp;Nahverkehr&nbsp;</a>
+        </div>
+    </nav>
+
+    <br> <br class="bigonly">
+
+    <h1 class="bigonly">trainboard.de.cool</h1>
+
+    <div class="searchcontainer">
+        <div class="container">
+            <div class="left-div">
+                <div class="switch-container">
+                    <input type="radio" name="searchType" id="departure" value="departure" checked>
+                    <label for="departure" class="left switchlabel">Abfahrt</label>
+
+                    <input type="radio" name="searchType" id="arrival" value="arrival">
+                    <label for="arrival" class="right switchlabel">Ankunft</label>
+                </div>
             </div>
-     </nav>
-	 
-	<br> <br class="bigonly">
+            <div class="right-div stacktobottom">
+                <input class="searchbar" type="text" autocomplete="off" id="searchInput"
+                       placeholder="Suche nach Station" pattern="[a-zA-Z]*" oninput="searchLocations()" autofocus>
+            </div>
+        </div>
 
-	<h1 class="bigonly">trainboard.de.cool</h1>
-		
-	<div class="searchcontainer">
-		<div class="container">
-			<div class="left-div">
-				<div class="switch-container">
-					<input type="radio" name="searchType" id="departure" value="departure" checked>
-					<label for="departure" class="left switchlabel">Abfahrt</label>
-			        
-					<input type="radio" name="searchType" id="arrival" value="arrival">
-					<label for="arrival" class="right switchlabel">Ankunft</label>
-			    </div>	
-			</div>
-			<div class="right-div stacktobottom">
-				<input class="searchbar" type="text" autocomplete="off" id="searchInput" placeholder="Suche nach Station" pattern="[a-zA-Z]*" oninput="searchLocations()" autofocus>
-			</div>
-		</div>
-	
-		
-		<div id="results"></div>
 
-  </div>
-  
-  <br>
-  
-  <div class="isle"><a href="about.html" class="black">About</a> | <a href="https://github.com/hoolycrash/trainboard" class="black">Github</a></div>
+        <div id="results"></div>
 
-<script>
-	function searchLocations() {
-		const userInput = document.getElementById('searchInput').value;
-		const searchType = document.querySelector('input[name="searchType"]:checked').value;
-		const apiUrl = `https://v6.db.transport.rest/locations?query=${userInput}&fuzzy=true&results=5&stops=true&addresses=true&poi=true&linesOfStops=false&language=de`;
+    </div>
 
-		fetch(apiUrl)
-		.then(response => response.json())
-		.then(data => displayResults(data, searchType))
-		.catch(error => console.error('Error fetching data:', error));
-	}
+    <br>
 
-	function displayResults(data, searchType) {
-		const resultsContainer = document.getElementById('results');
-		resultsContainer.innerHTML = ''; // Clear previous results
+    <div class="isle"><a href="about.html" class="black">About</a> | <a href="https://github.com/hoolycrash/trainboard"
+                                                                        class="black">Github</a></div>
 
-		data.forEach(entry => {
-			// Check if suburban is true
-			const isSuburban = entry.products.suburban === true;
-		
-			const isRegional = entry.products.regional || entry.products.regionalexpress;		
-		
-			if (
-				entry.products.nationalExpress ||
-				entry.products.national ||
-				entry.products.regionalExpress ||
-				entry.products.regional ||
-				entry.products.suburban
-			) {
-		
-				// Create a div with class "suggestion"
-				const suggestionDiv = document.createElement('div');
-				suggestionDiv.classList.add('suggestion');
+    <script>
+        async function searchLocations() {
+            const userInput = document.getElementById('searchInput').value;
+            const searchType = document.querySelector('input[name="searchType"]:checked').value;
+            const apiUrl = `https://v6.db.transport.rest/locations?query=${userInput}&fuzzy=true&results=5&stops=true&addresses=true&poi=true&linesOfStops=false&language=de`;
 
-				// Create a span for the name
-				const nameSpan = document.createElement('span');
-				nameSpan.textContent = entry.name;
+            const response = await fetch(apiUrl, {
+                method: "GET",
+                mode: "cors"
+            });
 
-				// Create an anchor element with a link based on the selected search type (departure or arrival)
-				const link = document.createElement('a');
-				link.href = (searchType === 'departure')
-				? `departure.html?station=${entry.id}`
-				: `arrival.html?station=${entry.id}`;
+            await response.json().then(value => {
+                displayResults(value, searchType);
+            }).catch(reason => {
+                console.log('Error fetching data: ', reason)
+            });
 
-				// If suburban is true, append an image to the link with class "bigicon"
-				if (isSuburban) {
-					const img = document.createElement('img');
-					img.src = './assets/icons/sbahn.svg';
-					img.alt = 'Suburban Icon';
-					img.classList.add('bigicon');
-					link.appendChild(img);
-				}
-				
-				if (isRegional) {
-					const img = document.createElement('img');
-					img.src = './assets/icons/rail.svg';
-					img.alt = 'Rail Icon';
-					img.classList.add('bigicon');
-					link.appendChild(img);
-				}
-		
-        // Append the nameSpan and link to the suggestionDiv
-        suggestionDiv.appendChild(nameSpan);
-        suggestionDiv.appendChild(link);
+            /*.then(response => {
+                console.log(response.json())
+                response.json()
+            })
+            .then(data => displayResults(data, searchType))
+            .catch(error => console.error('Error fetching data:', error));*/
+        }
 
-        // Add a click event listener to the suggestionDiv
-        suggestionDiv.addEventListener('click', () => {
-          window.location.href = link.href; // Redirect to the link when the div is clicked
+        function displayResults(data, searchType) {
+            const resultsContainer = document.getElementById('results');
+            resultsContainer.innerHTML = ''; // Clear previous results
+
+            data.forEach(entry => {
+                // Check if suburban is true
+                const isSuburban = entry.products.suburban === true;
+
+                const isRegional = entry.products.regional || entry.products.regionalexpress;
+
+                if (
+                    entry.products.nationalExpress ||
+                    entry.products.national ||
+                    entry.products.regionalExpress ||
+                    entry.products.regional ||
+                    entry.products.suburban
+                ) {
+
+                    // Create a div with class "suggestion"
+                    const suggestionDiv = document.createElement('div');
+                    suggestionDiv.classList.add('suggestion');
+
+                    // Create a span for the name
+                    const nameSpan = document.createElement('span');
+                    nameSpan.textContent = entry.name;
+
+                    // Create an anchor element with a link based on the selected search type (departure or arrival)
+                    const link = document.createElement('a');
+                    link.href = (searchType === 'departure')
+                        ? `departure.html?station=${entry.id}`
+                        : `arrival.html?station=${entry.id}`;
+
+                    // If suburban is true, append an image to the link with class "bigicon"
+                    if (isSuburban) {
+                        const img = document.createElement('img');
+                        img.src = './assets/icons/sbahn.svg';
+                        img.alt = 'Suburban Icon';
+                        img.classList.add('bigicon');
+                        link.appendChild(img);
+                    }
+
+                    if (isRegional) {
+                        const img = document.createElement('img');
+                        img.src = './assets/icons/rail.svg';
+                        img.alt = 'Rail Icon';
+                        img.classList.add('bigicon');
+                        link.appendChild(img);
+                    }
+
+                    // Append the nameSpan and link to the suggestionDiv
+                    suggestionDiv.appendChild(nameSpan);
+                    suggestionDiv.appendChild(link);
+
+                    // Add a click event listener to the suggestionDiv
+                    suggestionDiv.addEventListener('click', () => {
+                        window.location.href = link.href; // Redirect to the link when the div is clicked
+                    });
+
+                    // Append the suggestionDiv to the results container
+                    resultsContainer.appendChild(suggestionDiv);
+                }
+            });
+
+        }
+
+
+        window.addEventListener("load", () => {
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker.register("service-worker.js");
+            }
         });
-
-        // Append the suggestionDiv to the results container
-        resultsContainer.appendChild(suggestionDiv);}
-      });
-	  
-    }
-	
-	
-	
-	
-	window.addEventListener("load", () => {
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("service-worker.js");
-  }
-});
-  </script>
+    </script>
 </center>
 </body>
 </html>

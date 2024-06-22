@@ -86,12 +86,10 @@
         const tripId = getTripIdFromUrl(window.location.href); //trip id needed to identify the train
         const stationId = urlParams.get('station'); //station id to identify the station which the user came from when clicking a train (hope you understand this phahahahaha)
 
-        console.log(tripId);
-
         try {
 
             // Load trip-data from API
-            const response = await fetch(`https://v6.db.transport.rest/trips/${tripId || ''}?stopovers=true&remarks=true&polyline=false&language=de`);
+            const response = await fetch(`https://v6.db.transport.rest/trips/${encodeURIComponent(tripId)|| ''}?stopovers=true&remarks=true&polyline=false&language=de`);
             const data = await response.json();
 
             const zugnummer = data.trip.line.fahrtNr; //Train Nr (Zugnummer)

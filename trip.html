@@ -55,7 +55,7 @@
     </a>
     <div class="hidden" id="git-info">
         <b>Wagenreihung - KNOWN ISSUES:</b>
-        <ul>
+        <ul style="list-style: none">
             <li>Not yet full icon set: Just open a Issue on GitHub if you find one missing.</li>
             <li>Find Bug -> <u id="git-error">Open new Issue on GitHub</u></li>
         </ul>
@@ -184,7 +184,7 @@ var encodedTripId = `Formatted TripId: ${encodeURIComponent(tripId)|| ''}`;
                             hour: '2-digit',
                             minute: '2-digit'
                         })}`;
-                        flowText += `<a href="departure.html?station=${stopover.stop.id}" class="black">${formattedTime} <b>${stopover.stop.name}</b></a> | `;
+                        flowText += `<a href="departure.html?station=${stopover.stop.id}" class="traintimetable">${formattedTime} <b>${stopover.stop.name}</b></a> | `;
                     }
                 }
             });

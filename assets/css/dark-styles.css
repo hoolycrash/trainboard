@@ -21,6 +21,14 @@ td a {
 	color: #efefef;
 }
 
+.traintimetable {
+	color: darkgray;
+}
+
+.traintimetable b {
+	color: #efefef;
+}
+
 .black {
 	color: #efefef;
 }

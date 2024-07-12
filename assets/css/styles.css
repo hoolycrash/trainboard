@@ -5,7 +5,12 @@
  otherwise just add another class, nobody cares hahahahahaha
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Kode+Mono&display=swap');
+@font-face {
+	font-family: "AtBDigital";
+	font-weight: 400;
+	src: url("/assets/fonts/TTF_AtBDigital-Regular.ttf") format("truetype"),
+	url("/assets/fonts/AtBDigitalRegular.eot");
+}
 
 :root {
 	--switch-color: #5F5F5F;
@@ -15,7 +20,7 @@
 }
 
 body {
-	font-family: "Kode Mono", monospace;
+	font-family: "AtBDigital", "Open Sans", serif;
 	font-size: 20px;
 	margin: 0px;
 	overflow-x: clip;
@@ -70,7 +75,7 @@ span#clock {
 }
 
 .departtime {
-		font-size: 66px;
+		font-size: 73px;
 	}
 
 #navbar {
@@ -700,7 +705,7 @@ td {
 	}
 	
 	.departtime {
-		font-size: 66px;
+		font-size: 72px;
 	}
 	
 	.lineview {

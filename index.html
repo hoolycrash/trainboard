@@ -84,29 +84,28 @@
     <div class="isle"><a href="about.html" class="black">About</a> | <a href="https://github.com/hoolycrash/trainboard"
                                                                         class="black">Github</a></div>
 
+
     <script>
         async function searchLocations() {
             const userInput = document.getElementById('searchInput').value;
             const searchType = document.querySelector('input[name="searchType"]:checked').value;
-            const apiUrl = `https://v6.db.transport.rest/locations?query=${userInput}&fuzzy=true&results=5&stops=true&addresses=true&poi=true&linesOfStops=false&language=de`;
+            const apiUrl = `http://localhost:3000/locations?query=${userInput}`;
 
-            const response = await fetch(apiUrl, {
-                method: "GET",
-                mode: "cors"
-            });
+            try {
+                const response = await fetch(apiUrl, {
+                    method: "GET",
+                    mode: "cors"
+                });
 
-            await response.json().then(value => {
-                displayResults(value, searchType);
-            }).catch(reason => {
-                console.log('Error fetching data: ', reason)
-            });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
 
-            /*.then(response => {
-                console.log(response.json())
-                response.json()
-            })
-            .then(data => displayResults(data, searchType))
-            .catch(error => console.error('Error fetching data:', error));*/
+                const data = await response.json();
+                displayResults(data, searchType);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         }
 
         function displayResults(data, searchType) {
@@ -115,16 +114,15 @@
 
             data.forEach(entry => {
                 // Check if suburban is true
-                const isSuburban = entry.products.suburban === true;
-
-                const isRegional = entry.products.regional || entry.products.regionalexpress;
+                const isSuburban = entry.products?.suburban === true;
+                const isRegional = entry.products?.regional || entry.products?.regionalexpress;
 
                 if (
-                    entry.products.nationalExpress ||
-                    entry.products.national ||
-                    entry.products.regionalExpress ||
-                    entry.products.regional ||
-                    entry.products.suburban
+                    entry.products?.nationalExpress ||
+                    entry.products?.national ||
+                    entry.products?.regionalExpress ||
+                    entry.products?.regional ||
+                    entry.products?.suburban
                 ) {
 
                     // Create a div with class "suggestion"
@@ -171,9 +169,7 @@
                     resultsContainer.appendChild(suggestionDiv);
                 }
             });
-
         }
-
 
         window.addEventListener("load", () => {
             if ("serviceWorker" in navigator) {
@@ -181,6 +177,7 @@
             }
         });
     </script>
+
 </center>
 </body>
 </html>

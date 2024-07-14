@@ -4,129 +4,126 @@ const siteType = getSiteTypeFromURL();
 // Save URL detail
 const urlParams = new URLSearchParams(window.location.search);
 
-//EXPERT MODE
-//Hide Navbar
+// EXPERT MODE
+// Hide Navbar
 var hiddennavbar = urlParams.get('navbar');
 
 if (hiddennavbar === "hide") {
 	document.getElementById('navbar').classList.add('hidden');
 }
 
-//Hide Clock
+// Hide Clock
 var hiddenclock = urlParams.get('clock');
 
 if (hiddenclock === "hide") {
 	document.getElementById('clock').classList.add('hidden');
 }
 
-
-//Show Trainnumber
+// Show Trainnumber
 var hiddentrainnumbers = urlParams.get('trainnumbers');
-var trainnumberson; 
+var trainnumberson;
 
-//Prevent Touch
+// Prevent Touch
 var notouch = urlParams.get('touch');
 
 if (notouch === "no") {
 	document.getElementById('notouch').classList.remove('hidden');
 }
 
-
 var showsuburban = urlParams.get('suburban');
-//END EXPERTMODE
-
+// END EXPERTMODE
 
 const stationID = urlParams.get('station');
 let hasSuburban;
+
 // Load station Data
 fetchStationData(stationID);
 
-//Start Clock
+// Start Clock
 setInterval(updateClock, 1000);
 updateClock();
 
-//Start loading data
-//reload the function every 5 secs, so displayed data will always been up to date
+// Start loading data
+// reload the function every 5 secs, so displayed data will always been up to date
 setInterval(loadData, 5000);
 loadData();
 
-//---- Functions ----
-
 // Check site type
 function getSiteTypeFromURL() {
-    const url = document.location.href;
-    if (url.includes("departure.html")) {
-        return "D";
-    } else if (url.includes("arrival.html")) {
-        return "A";
-    } else if (url.includes("suburban.html")) {
-        return "S";
-    } else if (url.includes("local.html")) {
-        return "L";
-    }
-    // Default site type
-    return "D";
+	const url = document.location.href;
+	if (url.includes("departure.html")) {
+		return "D";
+	} else if (url.includes("arrival.html")) {
+		return "A";
+	} else if (url.includes("suburban.html")) {
+		return "S";
+	} else if (url.includes("local.html")) {
+		return "L";
+	}
+	// Default site type
+	return "D";
 }
 
 // Fetch API Source to get station details
 // (maybe AJAX or Fetch, "async await" is sometimes slow.)
 async function fetchStationData(stationID) {
-    try {
-        const response = await fetch(`https://v6.db.transport.rest/stops/${stationID}?linesOfStops=false&language=de`);
-        const data = await response.json();
-        processStationInfo(data, stationID);
-    } catch (error) {
-        console.error('Fehler beim Abrufen der Daten:', error);
-    }
+	try {
+		const response = await fetch(`http://localhost:3000/station?stationID=${stationID}`, {
+			method: "GET",
+			mode: "cors"
+		});
+		const data = await response.json();
+		processStationInfo(data, stationID);
+	} catch (error) {
+		console.error('Fehler beim Abrufen der Daten:', error);
+	}
 }
 
 // Rendering station details for navbar & header
 function processStationInfo(data, station) {
-	
-    const navbarDiv = document.getElementById('navbar');
-    let navbarContent = '';
-	
+	const navbarDiv = document.getElementById('navbar');
+	let navbarContent = '';
+
 	// Local Services
 	if (siteType === 'L') {
 		navbarContent += `
-			<div class="tabs">
-				<a href="#"class="active">&nbsp;Nahverkehr&nbsp;</a>
-			</div>`;		
+                <div class="tabs">
+                    <a href="#" class="active">&nbsp;Nahverkehr&nbsp;</a>
+                </div>`;
 	} else
 
-	// Normal station 
-    if ((data.products.nationalExpress || data.products.national || data.products.regionalExpress || data.products.regional) && data.products.suburban === true) {
-        navbarContent += `
-            <div class="tabs">
-                <a href="departure.html?station=${station}"class="${siteType === 'D' ? 'active' : ''}">&nbsp;Abfahrt&nbsp;</a>
-                <a href="arrival.html?station=${station}"class="${siteType === 'A' ? 'active' : ''}">&nbsp;Ankunft&nbsp;</a>
-                <a href="suburban.html?station=${station}"class="${siteType === 'S' ? 'active' : ''}">&nbsp;S-Bahn&nbsp;</a>
-            </div>`;
-			hasSuburban = true;
-	} else
-	
-	// S-Bahn only station
-	if (data.products.suburban === true && data.products.regional === false) {
-		if (siteType !== 'S') {document.location = `suburban.html?station=${station}`;}
-		navbarDiv.innerHTML +='<a href="#" class="disabled">&nbsp;Abfahrt&nbsp;</a>' +
-		'<a href="#" class="disabled">&nbsp;Ankunft&nbsp;</a>' + 
-		'<a href="suburban.html?station=' + station + '" class="active">&nbsp;S-Bahn&nbsp;</a>';
-	} else
-
-	// Station without S-Bahn
-    if ((data.products.nationalExpress || data.products.national || data.products.regionalExpress || data.products.regional) && data.products.suburban === false) {
-        if (siteType === 'S') {document.location = `departure.html?station=${station}`;}
+		// Normal station
+	if ((data.products.nationalExpress || data.products.national || data.products.regionalExpress || data.products.regional) && data.products.suburban === true) {
 		navbarContent += `
-            <a href="departure.html?station=${station}"class="${siteType === 'D' ? 'active' : ''}">&nbsp;Abfahrt&nbsp;</a>
-            <a href="arrival.html?station=${station}"class="${siteType === 'A' ? 'active' : ''}">&nbsp;Ankunft&nbsp;</a>
-            <a href="#" class="disabled">&nbsp;S-Bahn&nbsp;</a>`;
-	}
-		
-    navbarContent += `
-        <div class="iconbar"><a class="navsearch" href="${siteType === 'L' ? 'localsearch' : 'index'}.html">${siteType === 'L' ? 'Haltestellen' : 'Stations'}suche</a></div>`;
-                                   
-    navbarDiv.innerHTML = navbarContent;
+                <div class="tabs">
+                    <a href="departure.html?station=${station}" class="${siteType === 'D' ? 'active' : ''}">&nbsp;Abfahrt&nbsp;</a>
+                    <a href="arrival.html?station=${station}" class="${siteType === 'A' ? 'active' : ''}">&nbsp;Ankunft&nbsp;</a>
+                    <a href="suburban.html?station=${station}" class="${siteType === 'S' ? 'active' : ''}">&nbsp;S-Bahn&nbsp;</a>
+                </div>`;
+		hasSuburban = true;
+	} else
 
+		// S-Bahn only station
+	if (data.products.suburban === true && data.products.regional === false) {
+		if (siteType !== 'S') { document.location = `suburban.html?station=${station}`; }
+		navbarDiv.innerHTML += '<a href="#" class="disabled">&nbsp;Abfahrt&nbsp;</a>' +
+			'<a href="#" class="disabled">&nbsp;Ankunft&nbsp;</a>' +
+			'<a href="suburban.html?station=' + station + '" class="active">&nbsp;S-Bahn&nbsp;</a>';
+	} else
+
+		// Station without S-Bahn
+	if ((data.products.nationalExpress || data.products.national || data.products.regionalExpress || data.products.regional) && data.products.suburban === false) {
+		if (siteType === 'S') { document.location = `departure.html?station=${station}`; }
+		navbarContent += `
+                <a href="departure.html?station=${station}" class="${siteType === 'D' ? 'active' : ''}">&nbsp;Abfahrt&nbsp;</a>
+                <a href="arrival.html?station=${station}" class="${siteType === 'A' ? 'active' : ''}">&nbsp;Ankunft&nbsp;</a>
+                <a href="#" class="disabled">&nbsp;S-Bahn&nbsp;</a>`;
+	}
+
+	navbarContent += `
+            <div class="iconbar"><a class="navsearch" href="${siteType === 'L' ? 'localsearch' : 'index'}.html">${siteType === 'L' ? 'Haltestellen' : 'Stations'}suche</a></div>`;
+
+	navbarDiv.innerHTML = navbarContent;
 
 	// Add station name to div
 	document.getElementById('stationname').textContent = data.name;
@@ -134,55 +131,34 @@ function processStationInfo(data, station) {
 
 // Clock
 function updateClock() {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    document.getElementById('clock').innerHTML = `${hours}<span class="blink">:</span>${minutes}`;
+	const now = new Date();
+	const hours = now.getHours().toString().padStart(2, '0');
+	const minutes = now.getMinutes().toString().padStart(2, '0');
+	document.getElementById('clock').innerHTML = `${hours}<span class="blink">:</span>${minutes}`;
 }
 
-//Fetch departures or arrivals
-async function loadData() {
-	var apiUrl = `https://v6.db.transport.rest/stops/${stationID}/${siteType === 'A' ? 'arrivals' : 'departures'}?duration=20000&results=500&linesOfStops=false&remarks=true&language=de`;
-    try {
-        const response = await fetch(apiUrl);
-        var jsonData = await response.json();
-		if (siteType === 'A') {
-			updateTable(jsonData.arrivals)
-		} else {
-			updateTable(jsonData.departures)
-		}
-    } catch (error) {
-        console.error('Fehler beim Abrufen der Daten:', error);
-    }
-}
-/* // maybe AJAX, "async await" fails sometimes.
 // Fetch departures or arrivals
-function loadData() {
-	var apiUrl = `https://v6.db.transport.rest/stops/${stationID}/${siteType === 'A' ? 'arrivals' : 'departures'}?duration=20000&results=500&linesOfStops=false&remarks=true&language=de`;
-	// AJAX-Request
-	var xhr = new XMLHttpRequest();
-	xhr.open('GET', apiUrl, true);
+async function loadData() {
+	const apiUrl = `http://localhost:3000/${siteType === 'A' ? 'arrivals' : 'departures'}?stationID=${stationID}`;
 
-	// Callback to end request
-	xhr.onload = function() {
-		if (xhr.status === 200) {
-			// JSON Data to table
-			var jsonData = JSON.parse(xhr.responseText);
-			if (siteType === 'A') {
-				updateTable(jsonData.arrivals)
-			} else {
-				updateTable(jsonData.departures)
-			}
+	try {
+		const response = await fetch(apiUrl, {
+			method: "GET",
+			mode: "cors"
+		});
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
 		}
-	};
 
-	// Send request
-	xhr.send();
+		const jsonData = await response.json();
+		const data = siteType === 'A' ? jsonData.arrivals : jsonData.departures;
+		updateTable(data);
+	} catch (error) {
+		console.error('Fehler beim Abrufen der Daten:', error);
+	}
 }
-*/
 
-
-// Rendering departures or arrivals
 function updateTable(data) {
 	// Handle null response
 	if (data == null) {
@@ -190,22 +166,15 @@ function updateTable(data) {
 		return;
 	}
 
-	/*
-	// Looking for departing products "suburban"
-	var hasSuburbanDeparture = data.some(function(entry) {
-		return entry.line.product === "suburban";
-	});*/
-
-	// sorts the entries by when or plannedwhen
-
+	// Sort the entries by plannedWhen, ensuring that cancelled trips are also sorted correctly
 	data.sort(function(a, b) {
-		var timeA = a.when !== null ? a.when : a.plannedWhen;
-		var timeB = b.when !== null ? b.when : b.plannedWhen;
-		return new Date(timeA) - new Date(timeB);
+		var timeA = a.plannedWhen !== null ? new Date(a.plannedWhen) : new Date(a.when);
+		var timeB = b.plannedWhen !== null ? new Date(b.plannedWhen) : new Date(b.when);
+		return timeA - timeB;
 	});
 
 	var tableBody = document.getElementById('tableBody');
-	tableBody.innerHTML = ''; // delete everything before rewrite table content
+	tableBody.innerHTML = ''; // Delete everything before rewriting table content
 
 	let findtrain = 0;
 	data.forEach(function(entry) {
@@ -218,7 +187,7 @@ function updateTable(data) {
 				entry.line.product === "tram" ||
 				entry.line.product === "taxi"
 			) {
-				// skip this entry (not needed for a TRAIN ONLY board)
+				// Skip this entry (not needed for a TRAIN ONLY board)
 				return;
 			}
 		}
@@ -228,15 +197,15 @@ function updateTable(data) {
 				entry.line.product === "national" ||
 				entry.line.product === "nationalExpress"
 			) {
-				// skip this entry (not needed for a LOCAL SERVICES ONLY board)
+				// Skip this entry (not needed for a LOCAL SERVICES ONLY board)
 				return;
 			}
 		}
 
-		// if trip is cancelled
+		// If trip is cancelled
 		if ((siteType === 'S' && entry.line.product !== "suburban") ||
 			((siteType !== 'S' && siteType !== 'L') && entry.line.product === "suburban" && showsuburban !== 'show')) {
-			return; // skip everything except S-Bahn OR skip S-Bahn
+			return; // Skip everything except S-Bahn OR skip S-Bahn
 		}
 
 		var isCancelled = entry.remarks.some(function(remark) {
@@ -248,7 +217,7 @@ function updateTable(data) {
 		var now = new Date();
 		var diffPlannedMinutes = Math.round((now - plannedDepartureTime) / (1000 * 60));
 
-		// If entry is cancelled and more than 10 mins ago skip (not neccesary to skip cancelled trips which should have been departed already. may increase or decrease the time
+		// If entry is cancelled and more than 10 mins ago skip (not necessary to skip cancelled trips which should have been departed already. may increase or decrease the time
 		if (isCancelled && diffPlannedMinutes > 0) {
 			return;
 		}
@@ -257,7 +226,7 @@ function updateTable(data) {
 		var row = tableBody.insertRow();
 		//row.classList.add('boardrow');
 
-		// set style to line-trough if cancelled
+		// Set style to line-through if cancelled
 		if (isCancelled) {
 			row.classList.add('cancelled');
 		}
@@ -308,7 +277,7 @@ function updateTable(data) {
 				} else if (timediff <= 60) {
 					// Show countdown instead of departing times when departing time is <= 60 min away from now
 					if (delayDifference > 5) {
-						//delay more then 5 minutes -> time in red
+						// Delay more than 5 minutes -> time in red
 						countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><span style="color: #ec0016;">` + timediff + `<span class="additional">&nbsp;min.</span></span></a>`;
 					} else {
 						countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">` + timediff + '<span class="additional">&nbsp;min.</span></a>';
@@ -323,7 +292,8 @@ function updateTable(data) {
 							countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${formatTime(entry.when)}</a>`;
 						}
 					}, 60000);
-				}    }
+				}
+			}
 		} else {
 			if (entry.when !== null) {
 				if (delayDifference > 0) {
@@ -338,13 +308,20 @@ function updateTable(data) {
 
 		var wideCell2 = row.insertCell(2);
 
-		if (entry.plannedPlatform === null) {
-			row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"> </a>`;
-		} else {
-			if (entry.platform == entry.plannedPlatform){
-				row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.plannedPlatform}</a>`;
+		// Anpassung hier: Wenn die geplante Plattform null ist und der Zug storniert ist, wird nur die gestrichene Plattform angezeigt
+		if (isCancelled) {
+			if (entry.plannedPlatform === null) {
+				row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><s>${entry.platform}</s></a>`;
 			} else {
 				row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><nobr class='mobilebreak'><s class='disabled'>${entry.plannedPlatform}</s></nobr></a>`;
+			}
+		} else {
+			if (entry.platform == null) {
+				row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">-</a>`;
+			} else if (entry.platform == entry.plannedPlatform) {
+				row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.plannedPlatform}</a>`;
+			} else {
+				row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><nobr class='mobilebreak'><s class='disabled'>${entry.plannedPlatform}</s><span class="red"> ${entry.platform}</span></nobr></a>`;
 			}
 		}
 
@@ -353,7 +330,7 @@ function updateTable(data) {
 		if (entry.remarks.length > 0) {
 			var InfoMessage = '';
 			for (var i = 0; i < entry.remarks.length; i++) {
-				if (i > 0) { InfoMessage += " +++ ";}
+				if (i > 0) { InfoMessage += " +++ "; }
 				InfoMessage += entry.remarks[i].text;
 			}
 		}
@@ -364,23 +341,23 @@ function updateTable(data) {
 		if (siteType !== 'A') {
 			wideCell2.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.direction}</a>`;
 		} else {
-			wideCell2.innerHTML = `<span class="prefix">Von&nbsp;</span><a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.provenance}</a>`;
+			wideCell2.innerHTML = `<span class="prefix" style="margin-top: -5px">Von&nbsp;</span><a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.provenance}</a>`;
 		}
 
 		if (InfoMessage !== undefined) {
 			wideCell2.innerHTML += `<div class="remark bigonly">${InfoMessage}</div>`;
 		}
 
-		// show cancelled icon
+		// Show cancelled icon
 		if (isCancelled) {
 			cell.innerHTML = `<img src="./assets/cancelled.webp" class="mini">`;
 		}
 	});
 
-	//Switch to S-Bahn or departure if there are no trains in the list
+	// Switch to S-Bahn or departure if there are no trains in the list
 	if (findtrain == 0) {
 		console.log(findtrain);
-		if (hasSuburban == true) {document.location = `${siteType === 'S' ? 'departure' : 'suburban'}.html?station=${stationID}`;}
+		if (hasSuburban == true) { document.location = `${siteType === 'S' ? 'departure' : 'suburban'}.html?station=${stationID}`; }
 	}
 }
 
@@ -407,5 +384,5 @@ function getAbMessage(dateTimeString) {
 		return timediff <= 0 ? '<img src="./assets/depart.gif" class="mini">' : '';
 	} else {
 		return timediff <= 0 ? '' : '';
-	}	
+	}
 }

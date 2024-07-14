@@ -24,6 +24,8 @@ body {
 	font-size: 20px;
 	margin: 0px;
 	overflow-x: clip;
+	background-color: #000;
+	color: #fff;
 }
 
 .notouch {
@@ -34,7 +36,7 @@ body {
 }
 
 span {
-	text-align: left;	
+	text-align: left;
 }
 
 .disabled {
@@ -43,10 +45,10 @@ span {
 
 .hidden {
 	display: none;
-}	
+}
 
 .wrap {
-	white-space: normal;	
+	white-space: normal;
 }
 
 .additional {
@@ -75,8 +77,8 @@ span#clock {
 }
 
 .departtime {
-		font-size: 73px;
-	}
+	font-size: 73px;
+}
 
 #navbar {
 	background-color: #000;
@@ -94,14 +96,14 @@ span#clock {
 	width: 20px;
 	aspect-ratio: 1;
 	margin-right: 10px;
-    vertical-align: bottom;
+	vertical-align: bottom;
 }
 
 .isle {
 	position: fixed;
 	bottom: 0px;
 	right: 0px;
-	background-color: #fff;	
+	background-color: #fff;
 	color: #000;
 	font-size: 15px;
 	border-radius: 3px;
@@ -134,7 +136,7 @@ a {
 	margin: 10px 2px 10px 2px;
 	white-space: nowrap;
 }
-	
+
 .active {
 	text-decoration: underline 3px;
 	text-underline-offset: 23px;
@@ -144,13 +146,13 @@ a {
 .remark {
 	display: block;
 	font-size: 17px;
-    margin: calc(0px - (var(--cellpadding) / 2)) var(--cellpadding) var(--cellpadding);
+	margin: calc(0px - (var(--cellpadding) / 2)) var(--cellpadding) var(--cellpadding);
 }
 
 .home {
 	background-image: url('../station.jpg');
 	background-repeat: no-repeat;
-	background-attachment: fixed;  
+	background-attachment: fixed;
 	background-size: cover;
 	background-color: #000;
 	background-position: right;
@@ -193,34 +195,29 @@ a {
 }
 
 .switch-container {
-    display: flex;
+	display: flex;
 	border-radius: 10px;
 	margin: 17px;
 }
 
 input[type="radio"] {
-    display: none;
+	display: none;
 }
 
 .coacheswrapper {
-	width: 100%;
+	width: calc(100% - 200px); /* 100px on each side */
+	margin: 0 auto;
 	overflow-x: scroll;
 	height: 250px;
 	margin-top: 20px;
-	padding-left: 10%;
-}
-
-::-webkit-scrollbar {
-    display: none;
 }
 
 .coachescontent {
 	display: flex;
 	align-items: center;
-	min-width: 200%;
+	min-width: 100%;
 	height: 110px;
 	padding: 10px;
-	padding-left: 20px;
 	padding-top: 24px;
 	position: relative;
 	@media (prefers-reduced-motion: no-preference) {
@@ -233,60 +230,8 @@ input[type="radio"] {
 
 .sector {
 	top: -55px;
-    position: absolute;
-    width: 100%;
-}
-
-
-/* Germany ICE Costum Strip */
-.fzg938058120578, .fzg938024128572, .fzg938024125578, .fzg938024127574, .fzg938048120571, .fzg938024123573, .fzg938024120579, .fzg938098120570, .fzg938064120570, .fzg938088120572, .fzg938014120571, .fzg938018120577, .fzg938008120579 {
-	box-shadow: none !important;
-	background-image: url(.././strips/germany.svg) !important;
-	background-size: 12.5px !important;
-	background-position: bottom !important;
-	background-repeat: repeat-x !important;
-}
-
-/* Europe ICE Costum Strip */
-.fzg938054065017, .fzg938054066015, .fzg938054067013, .fzg938054068011, .fzg938054063012, .fzg938054062014, .fzg938054061016, .fzg938054060018 {
-	box-shadow: none !important;
-	background-image: url(.././strips/europe.svg) !important;
-	background-size: 12.5px !important;
-	background-position: bottom !important;
-	background-repeat: repeat-x !important;
-}
-
-/* Pride ICE Costum Strip */
-.fzg938054035044, .fzg938054036042, .fzg938054037040, .fzg938054038048, .fzg938054033049, .fzg938054032041, .fzg938054031100, .fzg938054030268 {
-	box-shadow: none !important;
-	background-image: url(.././strips/pride.svg) !important;
-	background-size: 12.5px !important;
-	background-position: bottom !important;
-	background-repeat: repeat-x !important;
-}
-
-/* @keyframes drivein {
-	0% {
-		margin-left: 100%;
-	}
-	
-	40% {
-		margin-left: 100%;
-	}
-	
-	100% {
-		margin-left: 0px;
-	}
-} */
-@keyframes drivein {
-	0% {
-		left: 100%;
-		opacity: 0;
-	}
-	100% {
-		left: 0px;
-		opacity: 1;
-	}
+	position: absolute;
+	width: 100%;
 }
 
 .coach {
@@ -297,13 +242,15 @@ input[type="radio"] {
 	height: 55px;
 	margin-left: -5px;
 	padding-top: 7px;
-	background-color: #fff;
+	background-color: #1d1d1d;
 	text-align: center;
 	font-size: 35px;
-	color: #414141;
+	color: #efefef;
 	font-weight: bold;
-	box-shadow: inset 0px -10px #cecece;
+	box-shadow: inset 0px -10px #212121;
 	position: relative;
+	flex-grow: 1;
+	flex-shrink: 0; /* Prevent shrinking */
 }
 
 .coach.steuerHead {
@@ -340,7 +287,7 @@ input[type="radio"] {
 	border-width: 5px 3px 5px 3px;
 	margin-left: 1px;
 	margin-right: 1px;
-	background-image: url(.././icons/trainwindow.svg);
+	background-image: url('.././icons/trainwindow.svg');
 	background-size: 30px;
 	background-position: left center;
 	background-repeat: no-repeat;
@@ -355,21 +302,16 @@ input[type="radio"] {
 	background-repeat: no-repeat;
 }
 
-.coach.steuerBack /*:not(.steuerHead)*/ {
+.coach.steuerBack {
 	border-radius: 0px 80px 10px 0px;
-	border-width: 5px 5px 5px 3px;	
+	border-width: 5px 5px 5px 3px;
 	margin-right: 1px;
-	/*
-	background-image: url('.././icons/trainwindow-mirror.svg');
-	background-size: 30px;
-	background-position: right center;
-	background-repeat: no-repeat;*/
 }
 
 @keyframes blink {
-  50% {
-    opacity: 0.0;
-  }
+	50% {
+		opacity: 0.0;
+	}
 }
 
 .blink {
@@ -382,9 +324,9 @@ input[type="radio"] {
 
 label {
 	width: 100%;
-    padding: 10px;
-    margin: 0;
-    cursor: pointer;
+	padding: 10px;
+	margin: 0;
+	cursor: pointer;
 	font-family: Arial;
 	font-size: 17px;
 }
@@ -430,7 +372,7 @@ input.checkbox {
 }
 
 .container {
-display: flex;
+	display: flex;
 	flex-wrap: wrap;
 }
 
@@ -505,7 +447,7 @@ td {
 
 .clockbox {
 	text-align: right;
-	
+
 }
 
 .black {
@@ -529,7 +471,7 @@ td {
 }
 
 .bigicon {
-	height: 30px; 
+	height: 30px;
 	padding-left: 5px;
 }
 
@@ -539,7 +481,7 @@ td {
 }
 
 .mediumicon {
-	height: 20px; 
+	height: 20px;
 	margin-right: 5px;
 }
 
@@ -577,11 +519,11 @@ td {
 	.stacktobottom {
 		order: 1; /* Zurücksetzen der Reihenfolge auf den Standardwert */
 	}
-	
+
 	.left-div, .right-div {
 		min-width: 100%; /* Wenn der Platz nicht ausreicht, beide auf 100% setzen */
 	}
-			
+
 	.searchbar {
 		margin-top: 13px;
 		width: -webkit-fill-available;
@@ -598,77 +540,77 @@ td {
 	th {
 		/* padding: 10px;*/
 	}
-			
+
 	td {
 		font-size: 15px;
 		a {
 			/* padding: 10px;*/
 		}
 	}
-	
+
 	.mini {
 		height: 25px;
 	}
-	
+
 	.biglinebadge {
 		width: 150px;
 		font-size: 17px;
 	}
-			
+
 	.linebadge {
 		text-wrap: pretty;
 		width: 80px;
 	}
-	
+
 	.bigonly {
 		display: none;
 	}
-	
+
 	.smallonly {
 		display: inline;
 	}
-	
+
 	.mobilebreak {
 		white-space: normal!important;
 	}
-	
+
 	table tr td:nth-child(3) {
 		overflow: hidden;
 		max-width: 90px;
 	}
-	
+
 	.megaicon {
 		height: 50px;
 	}
-	
+
 	.big {
 		font-size: 27px;
 	}
-	
+
 	.departtime {
 		font-size: 54px;
 	}
 }
 
 @media (max-width: 400px) {
-		
+
 	.linebadge {
 		width: 60px!important;
 		word-wrap: break-word;
 	}
-	
+
 	.megaicon {
 		height: 40px;
 	}
-	
+
 	.big {
 		font-size: 23px;
 	}
-	
+
 	.departtime {
 		font-size: 46px;
 	}
-	
+
 	th,
 	td a {
 		padding: 10px 1px 25px 2px;
@@ -691,29 +633,29 @@ td {
 			/* padding: 20px; */
 		}
 	}
-	
+
 	.topline {
 		padding: 15px;
 	}
-	
+
 	.megaicon {
 		height: 75px;
 	}
-	
+
 	.big {
 		font-size: 45px;
 	}
-	
+
 	.departtime {
 		font-size: 72px;
 	}
-	
+
 	.lineview {
 		max-width: 300px;
 	}
-	
+
 	.mini {
-		height: 45px;	
+		height: 45px;
 	}
 }
 
@@ -722,7 +664,7 @@ td {
 	display: inline-block;
 	/*border-bottom: 1px dotted black;*/ /* If you want dots under the hoverable text */
 }
-  
+
 .tooltip .tooltiptext {
 	visibility: hidden;
 	width: 150px;
@@ -732,7 +674,7 @@ td {
 	border-radius: 6px;
 	padding: 5px 0;
 	font-size: 18px;
-	
+
 	/* Position the tooltip */
 	position: absolute;
 	z-index: 1;
@@ -740,7 +682,7 @@ td {
 	left: 50%;
 	margin-left: -60px;
 }
-  
+
 .tooltip:hover .tooltiptext {
 	visibility: visible;
 }

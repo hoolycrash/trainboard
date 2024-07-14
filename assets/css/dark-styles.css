@@ -1,42 +1,46 @@
 @media (prefers-color-scheme: dark) {
+	body {
+		background-color: #0f0f0f;
+		color: #efefef;
+	}
 
-body {
-	background-color: #0f0f0f;
-	color: #efefef;
-}
+	td a {
+		color: #efefef;
+	}
 
-td a {
-	color: #efefef;
-}
+	.header, tr:nth-child(even) {
+		background-color: #222;
+	}
 
-.header, tr:nth-child(even) {
-	background-color: #222;
-}
+	.megaicon {
+		filter: invert(1);
+	}
 
-.megaicon {
-	filter: invert(1);
-}
+	.tripcontainer {
+		color: #efefef;
+	}
 
-.tripcontainer {
-	color: #efefef;
-}
+	.traintimetable {
+		color: #797979;
+	}
 
-.traintimetable {
-	color: #797979;
-}
+	.traintimetable b {
+		color: #efefef;
+	}
 
-.traintimetable b {
-	color: #efefef;
-}
+	.black {
+		color: #efefef;
+	}
 
-.black {
-	color: #efefef;
-}
+	.coach {
+		background-color: #1d1d1d;
+		color: #efefef;
+		box-shadow: inset 0px -10px #212121;
+	}
 
-.coach {
-	background-color: #1d1d1d;
-	color: #efefef;
-	box-shadow: inset 0px -10px #212121;
-}
-
+	.platform-sector {
+		background-color: #333;
+		border: 1px solid #555;
+		color: #fff;
+	}
 }

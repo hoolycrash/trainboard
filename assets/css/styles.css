@@ -205,19 +205,24 @@ input[type="radio"] {
 }
 
 .coacheswrapper {
-	width: calc(100% - 200px); /* 100px on each side */
-	margin: 0 auto;
+	width: 100%;
 	overflow-x: scroll;
 	height: 250px;
 	margin-top: 20px;
+	padding-left: 10%;
+}
+
+::-webkit-scrollbar {
+	display: none;
 }
 
 .coachescontent {
 	display: flex;
 	align-items: center;
-	min-width: 100%;
+	min-width: 200%;
 	height: 110px;
 	padding: 10px;
+	padding-left: 20px;
 	padding-top: 24px;
 	position: relative;
 	@media (prefers-reduced-motion: no-preference) {
@@ -233,6 +238,7 @@ input[type="radio"] {
 	position: absolute;
 	width: 100%;
 }
+
 
 /* Germany ICE Costum Strip */
 .fzg938058120578, .fzg938024128572, .fzg938024125578, .fzg938024127574, .fzg938048120571, .fzg938024123573, .fzg938024120579, .fzg938098120570, .fzg938064120570, .fzg938088120572, .fzg938014120571, .fzg938018120577, .fzg938008120579 {
@@ -293,15 +299,13 @@ input[type="radio"] {
 	height: 55px;
 	margin-left: -5px;
 	padding-top: 7px;
-	background-color: #1d1d1d;
+	background-color: #fff;
 	text-align: center;
 	font-size: 35px;
-	color: #efefef;
+	color: #414141;
 	font-weight: bold;
-	box-shadow: inset 0px -10px #212121;
+	box-shadow: inset 0px -10px #cecece;
 	position: relative;
-	flex-grow: 1;
-	flex-shrink: 0; /* Prevent shrinking */
 }
 
 .coach.steuerHead {
@@ -338,7 +342,7 @@ input[type="radio"] {
 	border-width: 5px 3px 5px 3px;
 	margin-left: 1px;
 	margin-right: 1px;
-	background-image: url('.././icons/trainwindow.svg');
+	background-image: url(.././icons/trainwindow.svg);
 	background-size: 30px;
 	background-position: left center;
 	background-repeat: no-repeat;
@@ -353,10 +357,15 @@ input[type="radio"] {
 	background-repeat: no-repeat;
 }
 
-.coach.steuerBack {
+.coach.steuerBack /*:not(.steuerHead)*/ {
 	border-radius: 0px 80px 10px 0px;
 	border-width: 5px 5px 5px 3px;
 	margin-right: 1px;
+	/*
+	background-image: url('.././icons/trainwindow-mirror.svg');
+	background-size: 30px;
+	background-position: right center;
+	background-repeat: no-repeat;*/
 }
 
 @keyframes blink {
@@ -364,6 +373,7 @@ input[type="radio"] {
 		opacity: 0.0;
 	}
 }
+
 
 .blink {
 	animation: blink 1s step-start 0s infinite;

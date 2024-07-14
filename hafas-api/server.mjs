@@ -44,7 +44,7 @@ app.get('/locations', validateQuery, async (req, res, next) => {
         const locations = await dbHafas.locations(req.query.query, {
             results: 5,
             stops: true,
-            addresses: true,
+            addresses: false,
             poi: true
         });
         res.json(locations);
@@ -63,6 +63,7 @@ app.get('/departures', validateID('stationID'), async (req, res, next) => {
             language: 'de'
         });
         res.json(departures);
+        console.log('departure request')
     } catch (error) {
         next(error);
     }
@@ -78,6 +79,7 @@ app.get('/arrivals', validateID('stationID'), async (req, res, next) => {
             language: 'de'
         });
         res.json(arrivals);
+        console.log('arrival request')
     } catch (error) {
         next(error);
     }
@@ -87,6 +89,7 @@ app.get('/station', validateID('stationID'), async (req, res, next) => {
     try {
         const station = await dbHafas.stop(req.query.stationID);
         res.json(station);
+        console.log('station request')
     } catch (error) {
         next(error);
     }
@@ -96,6 +99,7 @@ app.get('/trip', validateID('tripId'), async (req, res, next) => {
     try {
         const trip = await dbHafas.trip(req.query.tripId, { stopovers: true, remarks: true });
         res.json(trip);
+        console.log('trip request')
     } catch (error) {
         next(error);
     }

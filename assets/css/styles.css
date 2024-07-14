@@ -180,7 +180,7 @@ a {
 .searchbar {
 	font-size: 20px;
 	border: none;
-	font-family: "Kode Mono", monospace;
+	font-family: "AtBDigital", sans-serif;
 	height: 40px;
 	background-image: url('.././icons/search.svg');
 	background-size: 25px;
@@ -611,7 +611,7 @@ td {
 
 	.linebadge {
 		text-wrap: pretty;
-		width: 80px;
+		width: 90px;
 	}
 
 	.bigonly {
@@ -647,7 +647,7 @@ td {
 @media (max-width: 400px) {
 
 	.linebadge {
-		width: 60px!important;
+		width: 80px!important;
 		word-wrap: break-word;
 	}
 
@@ -665,7 +665,7 @@ td {
 
 	th,
 	td a {
-		padding: 10px 1px 25px 2px;
+		padding: 10px 1px 25px 8px;
 	}
 }
 
@@ -740,7 +740,7 @@ td {
 }
 
 
-@media (max-width: 480px) {
+@media (max-width: 320px) {
 
 	.timetable {
 		padding-left: 10%;

@@ -339,7 +339,7 @@ function updateTable(data) {
 		cell.classList.add("zerotable");
 
 		if (siteType !== 'A') {
-			wideCell2.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><span class="direction"> ${entry.direction}</span> </a>`;
+			wideCell2.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><span class="scrolling-wrapper"><span class="scrolling-text"> ${entry.direction} </span></span> </a>`;
 		} else {
 			wideCell2.innerHTML = `<span class="prefix">Von&nbsp;</span><a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.provenance}</a>`;
 		}
@@ -359,6 +359,8 @@ function updateTable(data) {
 		console.log(findtrain);
 		if (hasSuburban == true) { document.location = `${siteType === 'S' ? 'departure' : 'suburban'}.html?station=${stationID}`; }
 	}
+
+
 }
 
 

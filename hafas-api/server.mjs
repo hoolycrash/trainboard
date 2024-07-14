@@ -6,7 +6,6 @@ const app = express();
 const port = 3000;
 const dbHafas = createClient(dbProfile, 'trainboard (request@cuzimmartin.dev)');
 
-// Middleware für CORS
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
@@ -14,7 +13,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Middleware für Anfrage-Validierung
+// Middleware fÃ¼r Anfrage-Validierung
 const validateQuery = (req, res, next) => {
     const { query } = req.query;
     if (!query || query.trim() === '') {
@@ -23,7 +22,7 @@ const validateQuery = (req, res, next) => {
     next();
 };
 
-// Middleware für ID-Validierung
+// Middleware fÃ¼r ID-Validierung
 const validateID = (id) => {
     return (req, res, next) => {
         if (!req.query[id] || req.query[id].trim() === '') {
@@ -57,7 +56,7 @@ app.get('/departures', validateID('stationID'), async (req, res, next) => {
     try {
         const departures = await dbHafas.departures(req.query.stationID, {
             duration: 20000,
-            results: 400,
+            results: 350,
             linesOfStops: false,
             remarks: true,
             language: 'de'

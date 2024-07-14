@@ -60,10 +60,9 @@ span {
 .prefix {
 	color: #6b6b6a;
 	float: left;
-	margin-top: 5px;
+	margin-top: 3px;
 	font-weight: normal;
 	font-size: 0.8em;
-	line-height: 1.9em;
 	padding-left: var(--cellpadding);
 	padding-top: var(--cellpadding);
 }
@@ -667,6 +666,10 @@ td {
 	td a {
 		padding: 10px 1px 25px 8px;
 	}
+
+	.prefix {
+		margin-top: -1.5px;
+	}
 }
 
 @media (min-width: 1300px) {
@@ -740,13 +743,9 @@ td {
 }
 
 
-@media (max-width: 320px) {
-
-	.timetable {
-		padding-left: 10%;
-	}
+@media (min-width: 300px) {
 
 	.prefix {
-		margin-top: 0;
+		margin-top: 3px;
 	}
 }

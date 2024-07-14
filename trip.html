@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zuginformationen</title>
+    <title>Zuginformationen | Trainboard</title>
     <link rel="stylesheet" href="./assets/css/styles.css">
     <link rel="stylesheet" href="./assets/css/dark-styles.css">
     <link rel="stylesheet" href="./assets/css/line-colors.css">
@@ -92,14 +92,21 @@
                     return;
                 }
                 if (foundStation) {
-                    const time = new Date(stopover.arrival || stopover.departure);
-                    const formattedTime = `${time.toLocaleTimeString('de-DE', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    })}`;
-                    flowText += `<a href="departure.html?station=${stopover.stop.id}" class="traintimetable">${formattedTime} <b>${stopover.stop.name}</b></a> | `;
+                    if (stopover.cancelled == true && stopover.arrival == null && stopover.departure == null) {
+                        flowText += `<a href="departure.html?station=${stopover.stop.id}" class="red"><s><b>${stopover.stop.name}</b></s></a> | `;
+                    } else {
+                        // Create an item in the flowing text
+                        const time = stopover.arrival ? new Date(stopover.arrival) : new Date(stopover.departure);
+                        const timeType = stopover.arrival ? 'ARRIVAL' : 'DEPARTURE';
+                        const formattedTime = `${time.toLocaleTimeString('de-DE', {
+                            hour: '2-digit',
+                            minute: '2-digit'
+                        })}`;
+                        flowText += `<a href="departure.html?station=${stopover.stop.id}" class="traintimetable">${formattedTime} <b>${stopover.stop.name}</b></a> | `;
+                    }
                 }
             });
+
 
             const destinationDiv = document.getElementById('destination');
             const destinationStopover = trip.stopovers.find(stopover => stopover.stop.id === trip.destination.id);

@@ -5,12 +5,7 @@
  otherwise just add another class, nobody cares hahahahahaha
  */
 
-@font-face {
-	font-family: "AtBDigital";
-	font-weight: 400;
-	src: url("../fonts/TTF_AtBDigital-Regular.ttf") format("truetype"),
-	url("../fonts/AtBDigitalRegular.eot");
-}
+@import url('https://fonts.googleapis.com/css2?family=Kode+Mono&display=swap');
 
 :root {
 	--switch-color: #5F5F5F;

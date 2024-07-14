@@ -64,7 +64,7 @@
         const stationId = stationValue;
 
         try {
-            const response = await fetch(`http://localhost:3000/trip?tripId=${encodeURIComponent(tripId)}&stationId=${stationId}`);
+            const response = await fetch(`http://168.119.111.217:3000/trip?tripId=${encodeURIComponent(tripId)}&stationId=${stationId}`);
             const data = await response.json();
             const trip = data.trip;
             const zugnummer = trip.line.fahrtNr;

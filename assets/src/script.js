@@ -68,7 +68,7 @@ function getSiteTypeFromURL() {
 // (maybe AJAX or Fetch, "async await" is sometimes slow.)
 async function fetchStationData(stationID) {
 	try {
-		const response = await fetch(`http://localhost:3000/station?stationID=${stationID}`, {
+		const response = await fetch(`http://168.119.111.217:3000/station?stationID=${stationID}`, {
 			method: "GET",
 			mode: "cors"
 		});
@@ -139,7 +139,7 @@ function updateClock() {
 
 // Fetch departures or arrivals
 async function loadData() {
-	const apiUrl = `http://localhost:3000/${siteType === 'A' ? 'arrivals' : 'departures'}?stationID=${stationID}`;
+	const apiUrl = `http://168.119.111.217:3000/${siteType === 'A' ? 'arrivals' : 'departures'}?stationID=${stationID}`;
 
 	try {
 		const response = await fetch(apiUrl, {
@@ -299,10 +299,10 @@ function updateTable(data) {
 				if (delayDifference > 0) {
 					countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><nobr class='mobilebreak'><s class='disabled'>${formatTime(entry.plannedWhen)}</s> ${formatTime(entry.when)}</nobr></a>`;
 				} else {
-					countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${formatTime(entry.when)}</a>`;
+					countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><span class="timetable">${formatTime(entry.when)}</span></a>`;
 				}
 			} else {
-				countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${formatTime(entry.plannedWhen)}</a>`;
+				countdownCell.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><span class="timetable">${formatTime(entry.plannedWhen)}</span></a>`;
 			}
 		}
 
@@ -339,9 +339,9 @@ function updateTable(data) {
 		cell.classList.add("zerotable");
 
 		if (siteType !== 'A') {
-			wideCell2.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.direction}</a>`;
+			wideCell2.innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><span class="direction"> ${entry.direction}</span> </a>`;
 		} else {
-			wideCell2.innerHTML = `<span class="prefix" style="margin-top: -5px">Von&nbsp;</span><a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.provenance}</a>`;
+			wideCell2.innerHTML = `<span class="prefix">Von&nbsp;</span><a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.provenance}</a>`;
 		}
 
 		if (InfoMessage !== undefined) {

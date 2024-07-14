@@ -60,6 +60,7 @@ span {
 .prefix {
 	color: #6b6b6a;
 	float: left;
+	margin-top: 5px;
 	font-weight: normal;
 	font-size: 0.8em;
 	line-height: 1.9em;
@@ -232,6 +233,57 @@ input[type="radio"] {
 	top: -55px;
 	position: absolute;
 	width: 100%;
+}
+
+/* Germany ICE Costum Strip */
+.fzg938058120578, .fzg938024128572, .fzg938024125578, .fzg938024127574, .fzg938048120571, .fzg938024123573, .fzg938024120579, .fzg938098120570, .fzg938064120570, .fzg938088120572, .fzg938014120571, .fzg938018120577, .fzg938008120579 {
+	box-shadow: none !important;
+	background-image: url(.././strips/germany.svg) !important;
+	background-size: 12.5px !important;
+	background-position: bottom !important;
+	background-repeat: repeat-x !important;
+}
+
+/* Europe ICE Costum Strip */
+.fzg938054065017, .fzg938054066015, .fzg938054067013, .fzg938054068011, .fzg938054063012, .fzg938054062014, .fzg938054061016, .fzg938054060018 {
+	box-shadow: none !important;
+	background-image: url(.././strips/europe.svg) !important;
+	background-size: 12.5px !important;
+	background-position: bottom !important;
+	background-repeat: repeat-x !important;
+}
+
+/* Pride ICE Costum Strip */
+.fzg938054035044, .fzg938054036042, .fzg938054037040, .fzg938054038048, .fzg938054033049, .fzg938054032041, .fzg938054031100, .fzg938054030268 {
+	box-shadow: none !important;
+	background-image: url(.././strips/pride.svg) !important;
+	background-size: 12.5px !important;
+	background-position: bottom !important;
+	background-repeat: repeat-x !important;
+}
+
+/* @keyframes drivein {
+	0% {
+		margin-left: 100%;
+	}
+
+	40% {
+		margin-left: 100%;
+	}
+
+	100% {
+		margin-left: 0px;
+	}
+} */
+@keyframes drivein {
+	0% {
+		left: 100%;
+		opacity: 0;
+	}
+	100% {
+		left: 0px;
+		opacity: 1;
+	}
 }
 
 .coach {
@@ -685,4 +737,16 @@ td {
 
 .tooltip:hover .tooltiptext {
 	visibility: visible;
+}
+
+
+@media (max-width: 480px) {
+
+	.timetable {
+		padding-left: 10%;
+	}
+
+	.prefix {
+		margin-top: 0;
+	}
 }

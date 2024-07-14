@@ -89,7 +89,7 @@
         async function searchLocations() {
             const userInput = document.getElementById('searchInput').value;
             const searchType = document.querySelector('input[name="searchType"]:checked').value;
-            const apiUrl = `http://localhost:3000/locations?query=${userInput}`;
+            const apiUrl = `http://168.119.111.217:3000/locations?query=${userInput}`;
 
             try {
                 const response = await fetch(apiUrl, {

@@ -8,8 +8,8 @@
 @font-face {
 	font-family: "AtBDigital";
 	font-weight: 400;
-	src: url("/assets/fonts/TTF_AtBDigital-Regular.ttf") format("truetype"),
-	url("/assets/fonts/AtBDigitalRegular.eot");
+	src: url("../fonts/TTF_AtBDigital-Regular.ttf") format("truetype"),
+	url("../fonts/AtBDigitalRegular.eot");
 }
 
 :root {

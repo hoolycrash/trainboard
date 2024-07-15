@@ -68,7 +68,7 @@ function getSiteTypeFromURL() {
 // (maybe AJAX or Fetch, "async await" is sometimes slow.)
 async function fetchStationData(stationID) {
 	try {
-		const response = await fetch(`http://168.119.111.217:3000/station?stationID=${stationID}`, {
+		const response = await fetch(`https://data.cuzimmartin.dev/station?stationID=${stationID}`, {
 			method: "GET",
 			mode: "cors"
 		});
@@ -139,7 +139,7 @@ function updateClock() {
 
 // Fetch departures or arrivals
 async function loadData() {
-	const apiUrl = `http://168.119.111.217:3000/${siteType === 'A' ? 'arrivals' : 'departures'}?stationID=${stationID}`;
+	const apiUrl = `https://data.cuzimmartin.dev/${siteType === 'A' ? 'arrivals' : 'departures'}?stationID=${stationID}`;
 
 	try {
 		const response = await fetch(apiUrl, {

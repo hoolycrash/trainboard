@@ -15,7 +15,7 @@
 }
 
 body {
-	font-family: "AtBDigital", "Open Sans", serif;
+	font-family: "Kode Mono", monospace;
 	font-size: 20px;
 	margin: 0px;
 	overflow-x: clip;
@@ -174,7 +174,7 @@ a {
 .searchbar {
 	font-size: 20px;
 	border: none;
-	font-family: "AtBDigital", sans-serif;
+	font-family: "Kode Mono", monospace;
 	height: 40px;
 	background-image: url('.././icons/search.svg');
 	background-size: 25px;

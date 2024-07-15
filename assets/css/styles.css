@@ -19,6 +19,8 @@ body {
 	font-size: 20px;
 	margin: 0px;
 	overflow-x: clip;
+	background-color: #000;
+	color: #fff;
 }
 
 .notouch {
@@ -29,7 +31,7 @@ body {
 }
 
 span {
-	text-align: left;	
+	text-align: left;
 }
 
 .disabled {
@@ -38,10 +40,10 @@ span {
 
 .hidden {
 	display: none;
-}	
+}
 
 .wrap {
-	white-space: normal;	
+	white-space: normal;
 }
 
 .additional {
@@ -53,9 +55,9 @@ span {
 .prefix {
 	color: #6b6b6a;
 	float: left;
+	margin-top: 3px;
 	font-weight: normal;
 	font-size: 0.8em;
-	line-height: 1.9em;
 	padding-left: var(--cellpadding);
 	padding-top: var(--cellpadding);
 }
@@ -70,8 +72,8 @@ span#clock {
 }
 
 .departtime {
-		font-size: 70px;
-	}
+	font-size: 73px;
+}
 
 #navbar {
 	background-color: #000;
@@ -89,14 +91,14 @@ span#clock {
 	width: 20px;
 	aspect-ratio: 1;
 	margin-right: 10px;
-    vertical-align: bottom;
+	vertical-align: bottom;
 }
 
 .isle {
 	position: fixed;
 	bottom: 0px;
 	right: 0px;
-	background-color: #fff;	
+	background-color: #fff;
 	color: #000;
 	font-size: 15px;
 	border-radius: 3px;
@@ -129,7 +131,7 @@ a {
 	margin: 10px 2px 10px 2px;
 	white-space: nowrap;
 }
-	
+
 .active {
 	text-decoration: underline 3px;
 	text-underline-offset: 23px;
@@ -139,13 +141,13 @@ a {
 .remark {
 	display: block;
 	font-size: 17px;
-    margin: calc(0px - (var(--cellpadding) / 2)) var(--cellpadding) var(--cellpadding);
+	margin: calc(0px - (var(--cellpadding) / 2)) var(--cellpadding) var(--cellpadding);
 }
 
 .home {
 	background-image: url('../station.jpg');
 	background-repeat: no-repeat;
-	background-attachment: fixed;  
+	background-attachment: fixed;
 	background-size: cover;
 	background-color: #000;
 	background-position: right;
@@ -188,13 +190,13 @@ a {
 }
 
 .switch-container {
-    display: flex;
+	display: flex;
 	border-radius: 10px;
 	margin: 17px;
 }
 
 input[type="radio"] {
-    display: none;
+	display: none;
 }
 
 .coacheswrapper {
@@ -206,7 +208,7 @@ input[type="radio"] {
 }
 
 ::-webkit-scrollbar {
-    display: none;
+	display: none;
 }
 
 .coachescontent {
@@ -228,8 +230,8 @@ input[type="radio"] {
 
 .sector {
 	top: -55px;
-    position: absolute;
-    width: 100%;
+	position: absolute;
+	width: 100%;
 }
 
 
@@ -264,11 +266,11 @@ input[type="radio"] {
 	0% {
 		margin-left: 100%;
 	}
-	
+
 	40% {
 		margin-left: 100%;
 	}
-	
+
 	100% {
 		margin-left: 0px;
 	}
@@ -352,7 +354,7 @@ input[type="radio"] {
 
 .coach.steuerBack /*:not(.steuerHead)*/ {
 	border-radius: 0px 80px 10px 0px;
-	border-width: 5px 5px 5px 3px;	
+	border-width: 5px 5px 5px 3px;
 	margin-right: 1px;
 	/*
 	background-image: url('.././icons/trainwindow-mirror.svg');
@@ -362,10 +364,11 @@ input[type="radio"] {
 }
 
 @keyframes blink {
-  50% {
-    opacity: 0.0;
-  }
+	50% {
+		opacity: 0.0;
+	}
 }
+
 
 .blink {
 	animation: blink 1s step-start 0s infinite;
@@ -377,9 +380,9 @@ input[type="radio"] {
 
 label {
 	width: 100%;
-    padding: 10px;
-    margin: 0;
-    cursor: pointer;
+	padding: 10px;
+	margin: 0;
+	cursor: pointer;
 	font-family: Arial;
 	font-size: 17px;
 }
@@ -425,7 +428,7 @@ input.checkbox {
 }
 
 .container {
-display: flex;
+	display: flex;
 	flex-wrap: wrap;
 }
 
@@ -500,7 +503,7 @@ td {
 
 .clockbox {
 	text-align: right;
-	
+
 }
 
 .black {
@@ -524,7 +527,7 @@ td {
 }
 
 .bigicon {
-	height: 30px; 
+	height: 30px;
 	padding-left: 5px;
 }
 
@@ -534,7 +537,7 @@ td {
 }
 
 .mediumicon {
-	height: 20px; 
+	height: 20px;
 	margin-right: 5px;
 }
 
@@ -572,11 +575,11 @@ td {
 	.stacktobottom {
 		order: 1; /* Zurücksetzen der Reihenfolge auf den Standardwert */
 	}
-	
+
 	.left-div, .right-div {
 		min-width: 100%; /* Wenn der Platz nicht ausreicht, beide auf 100% setzen */
 	}
-			
+
 	.searchbar {
 		margin-top: 13px;
 		width: -webkit-fill-available;
@@ -593,80 +596,84 @@ td {
 	th {
 		/* padding: 10px;*/
 	}
-			
+
 	td {
 		font-size: 15px;
 		a {
 			/* padding: 10px;*/
 		}
 	}
-	
+
 	.mini {
 		height: 25px;
 	}
-	
+
 	.biglinebadge {
 		width: 150px;
 		font-size: 17px;
 	}
-			
+
 	.linebadge {
 		text-wrap: pretty;
-		width: 80px;
+		width: 90px;
 	}
-	
+
 	.bigonly {
 		display: none;
 	}
-	
+
 	.smallonly {
 		display: inline;
 	}
-	
+
 	.mobilebreak {
 		white-space: normal!important;
 	}
-	
+
 	table tr td:nth-child(3) {
 		overflow: hidden;
 		max-width: 90px;
 	}
-	
+
 	.megaicon {
 		height: 50px;
 	}
-	
+
 	.big {
 		font-size: 27px;
 	}
-	
+
 	.departtime {
-		font-size: 50px;
+		font-size: 54px;
 	}
 }
 
 @media (max-width: 400px) {
-		
+
 	.linebadge {
-		width: 60px!important;
+		width: 80px!important;
 		word-wrap: break-word;
 	}
-	
+
 	.megaicon {
 		height: 40px;
 	}
-	
+
 	.big {
 		font-size: 23px;
 	}
-	
+
 	.departtime {
 		font-size: 46px;
 	}
-	
+
 	th,
 	td a {
-		padding: 10px 1px 25px 2px;
+		padding: 10px 1px 25px 8px;
+	}
+
+	.prefix {
+		margin-top: -1.5px;
 	}
 }
 
@@ -686,29 +693,29 @@ td {
 			/* padding: 20px; */
 		}
 	}
-	
+
 	.topline {
 		padding: 15px;
 	}
-	
+
 	.megaicon {
 		height: 75px;
 	}
-	
+
 	.big {
 		font-size: 45px;
 	}
-	
+
 	.departtime {
-		font-size: 90px;
+		font-size: 72px;
 	}
-	
+
 	.lineview {
 		max-width: 300px;
 	}
-	
+
 	.mini {
-		height: 45px;	
+		height: 45px;
 	}
 }
 
@@ -717,7 +724,7 @@ td {
 	display: inline-block;
 	/*border-bottom: 1px dotted black;*/ /* If you want dots under the hoverable text */
 }
-  
+
 .tooltip .tooltiptext {
 	visibility: hidden;
 	width: 150px;
@@ -727,7 +734,7 @@ td {
 	border-radius: 6px;
 	padding: 5px 0;
 	font-size: 18px;
-	
+
 	/* Position the tooltip */
 	position: absolute;
 	z-index: 1;
@@ -735,7 +742,15 @@ td {
 	left: 50%;
 	margin-left: -60px;
 }
-  
+
 .tooltip:hover .tooltiptext {
 	visibility: visible;
+}
+
+
+@media (min-width: 300px) {
+
+	.prefix {
+		margin-top: 3px;
+	}
 }

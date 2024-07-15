@@ -3,15 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abfahrten und Ankünfte</title>
+    <title>Abfahrten und Ankünfte | Trainboard</title>
     <link rel="stylesheet" href="./assets/css/styles.css">
     <link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
     <link rel="manifest" href="/manifest.json" type="application/json">
     <meta name="theme-color" content="#000">
-    <meta name="description" content="Abfahrts- und Ankunftstafel für Deutsche Bahnhöfe.">
-    <meta name="keywords"
-          content="bahn, db, bahnhof, deutschebahn, trainboard, abfahrtstafel, train, abfahrt, ankunft"/>
+    <meta name="description" content="Erhalten Sie aktuelle Informationen zu Abfahrten und Ankünften an deutschen Bahnhöfen mit unserer interaktiven Zugtafel.">
+    <meta name="keywords" content="bahn, db, bahnhof, deutschebahn, trainboard, abfahrtstafel, abfahrtsmonitor, ankunftsmonitor, stationsinformation, zugtafel, abfahrt, ankunft, deutsche bahnhöfe">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Abfahrten und Ankünfte - Deutsche Bahnhöfe | Trainboard">
+    <meta property="og:description" content="Erhalten Sie aktuelle Informationen zu Abfahrten und Ankünften an deutschen Bahnhöfen mit unserer interaktiven Zugtafel.">
+    <meta property="og:image" content="https://trainboard.de.cool/assets/branding/icon-512x512.png">
+    <meta property="og:url" content="https://trainboard.de.cool">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Abfahrten und Ankünfte - Deutsche Bahnhöfe | Trainboard">
+    <meta name="twitter:description" content="Erhalten Sie aktuelle Informationen zu Abfahrten und Ankünften an deutschen Bahnhöfen mit unserer interaktiven Zugtafel.">
+    <meta name="twitter:image" content="https://trainboard.de.cool/assets/branding/icon-512x512.png">
+    <meta name="twitter:url" content="https://trainboard.de.cool">
+
+    <!-- Schema.org Markup -->
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "WebSite",
+            "name": "Trainboard",
+            "url": "https://trainboard.de.cool",
+            "description": "Interaktive Abfahrts- und Ankunftstafel für Deutsche Bahnhöfe.",
+            "sameAs": [
+                "https://github.com/hoolycrash/trainboard"
+            ]
+        }
+    </script>
 </head>
+
 
 <body class="home">
 
@@ -56,29 +84,28 @@
     <div class="isle"><a href="about.html" class="black">About</a> | <a href="https://github.com/hoolycrash/trainboard"
                                                                         class="black">Github</a></div>
 
+
     <script>
         async function searchLocations() {
             const userInput = document.getElementById('searchInput').value;
             const searchType = document.querySelector('input[name="searchType"]:checked').value;
-            const apiUrl = `https://v6.db.transport.rest/locations?query=${userInput}&fuzzy=true&results=5&stops=true&addresses=true&poi=true&linesOfStops=false&language=de`;
+            const apiUrl = `http://168.119.111.217:3000/locations?query=${userInput}`;
 
-            const response = await fetch(apiUrl, {
-                method: "GET",
-                mode: "cors"
-            });
+            try {
+                const response = await fetch(apiUrl, {
+                    method: "GET",
+                    mode: "cors"
+                });
 
-            await response.json().then(value => {
-                displayResults(value, searchType);
-            }).catch(reason => {
-                console.log('Error fetching data: ', reason)
-            });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
 
-            /*.then(response => {
-                console.log(response.json())
-                response.json()
-            })
-            .then(data => displayResults(data, searchType))
-            .catch(error => console.error('Error fetching data:', error));*/
+                const data = await response.json();
+                displayResults(data, searchType);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         }
 
         function displayResults(data, searchType) {
@@ -87,16 +114,15 @@
 
             data.forEach(entry => {
                 // Check if suburban is true
-                const isSuburban = entry.products.suburban === true;
-
-                const isRegional = entry.products.regional || entry.products.regionalexpress;
+                const isSuburban = entry.products?.suburban === true;
+                const isRegional = entry.products?.regional || entry.products?.regionalexpress;
 
                 if (
-                    entry.products.nationalExpress ||
-                    entry.products.national ||
-                    entry.products.regionalExpress ||
-                    entry.products.regional ||
-                    entry.products.suburban
+                    entry.products?.nationalExpress ||
+                    entry.products?.national ||
+                    entry.products?.regionalExpress ||
+                    entry.products?.regional ||
+                    entry.products?.suburban
                 ) {
 
                     // Create a div with class "suggestion"
@@ -143,9 +169,7 @@
                     resultsContainer.appendChild(suggestionDiv);
                 }
             });
-
         }
-
 
         window.addEventListener("load", () => {
             if ("serviceWorker" in navigator) {
@@ -153,6 +177,7 @@
             }
         });
     </script>
+
 </center>
 </body>
 </html>

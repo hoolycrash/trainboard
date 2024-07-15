@@ -91,11 +91,8 @@
 		const showTrainnumbers = document.getElementById('showTrainnumbersCheckbox').checked;
 		const disableTouch = document.getElementById('disableTouchCheckbox').checked;
         let apiUrl;
-        if (searchType === 'suburban') {
-            apiUrl = `https://v6.db.transport.rest/locations?query=${userInput}&fuzzy=true&results=5&stops=true&addresses=true&poi=true&linesOfStops=false&language=de&suburban=true`;
-        } else {
-            apiUrl = `https://v6.db.transport.rest/locations?query=${userInput}&fuzzy=true&results=5&stops=true&addresses=true&poi=true&linesOfStops=false&language=de`;
-        }
+
+            apiUrl = `https://data.cuzimmartin.dev/locations?query=${userInput}`;
         
         if (hideNavbar) {
             apiUrl += '&navbar=hide';

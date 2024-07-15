@@ -46,7 +46,7 @@
 <script>
 	function searchLocations() {
 		const userInput = document.getElementById('searchInput').value;
-		const apiUrl = `https://v6.db.transport.rest/locations?query=${userInput}&fuzzy=true&results=5&stops=true&addresses=true&poi=true&linesOfStops=false&language=de`;
+		const apiUrl = `https://data.cuzimmartin.dev/locations?query=${userInput}`;
 
 		fetch(apiUrl)
 		.then(response => response.json())

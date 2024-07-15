@@ -40,19 +40,23 @@
         <span id="notice"></span>
         <br>
     </div>
-
-    <div class="coacheswrapper" id="coacheswrapper">
-        <div id="blocksContainer" class="coachescontent"></div>
-    </div>
-
+	<a href="symbolkey.html">
+	    <div class="coacheswrapper" id="coacheswrapper">
+	        <div id="blocksContainer" class="coachescontent"></div>
+	    </div>
+	</a>
+	
     <div class="hidden" id="git-info">
+	
+	<!--- DO NOT REMOVE THIS, FOR WHATEVER REASON IT CRASHES THE CODE -->
         <b>Wagenreihung - KNOWN ISSUES:</b>
         <ul style="list-style: none">
             <li>Not yet full icon set: Just open an Issue on GitHub if you find one missing.</li>
             <li>Find Bug -> <u id="git-error">Open new Issue on GitHub</u></li>
         </ul>
         <a href="https://github.com/hoolycrash/trainboard/blob/main/trip.html" class="black"><u>View this page on GitHub.</u></a><br><br>
-    </div>
+    <!--- -->
+	</div>
     <br><br><br>
 </center>
 
@@ -149,7 +153,7 @@
                 return;
             }
 
-            document.getElementById('git-info').className = '';
+            
             document.getElementById('git-error').innerHTML = `<a href="https://github.com/hoolycrash/trainboard/issues/new?title=Bug%20Wagenreihung:&body=Train:${zugnummer}%20Datetime:${datetime}%20Station:${stationId}" target="_blank" class="black">Open new Issue with Train data on Github</a>`;
             rendertraincomposition(data.data.istformation);
         } catch (error) {

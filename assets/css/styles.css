@@ -98,8 +98,9 @@ span#clock {
 	position: fixed;
 	bottom: 0px;
 	right: 0px;
-	background-color: #fff;
-	color: #000;
+	background-color: rgba(38,38,38,0.8);
+	backdrop-filter: blur(9px);
+	color: #fff;
 	font-size: 15px;
 	border-radius: 3px;
 	padding: 5px;
@@ -158,11 +159,31 @@ a {
 .searchcontainer {
 	width: 85%;
 	max-width: 700px;
-	background-color: #fff;
-	color: #000;
-	border-radius: 5px;
+	background-color: rgba(38,38,38,0.8);
+	backdrop-filter: blur(9px);
+	color: #fff;
+	border-radius: 20px;
 	overflow-y: hidden;
 }
+
+.nameholder {
+	width: 85%;
+	max-width: 700px;
+	text-align: left;
+	font-size: 25px;
+	font-weight: bold;
+	margin: 10px;
+	text-shadow: 0px 0px 20px #000;
+}
+
+.logo {
+	height: 30px;
+	margin-right: 18px;
+	border: solid 1px #fff;
+	border-radius: 13px;
+}
+
+
 
 .tripcontainer, .blanktext {
 	width: 80%;
@@ -183,6 +204,8 @@ a {
 	padding-left: 40px;
 	margin: 17px;
 	width: 100%;
+	background-color: rgba(255, 255, 255, 0);
+	color: #fff;
 }
 
 .searchbar:focus {
@@ -388,9 +411,8 @@ label {
 }
 
 .switchlabel {
-	background-color: var(--switch-bg-color);
-	border: solid 1px var(--switch-color);
-	color: var(--switch-color);
+	border: solid 1px #fff;
+	color: #fff;
 }
 
 .leftalign {
@@ -413,18 +435,18 @@ input.checkbox {
 }
 
 #departure:checked + label {
-	background-color: #131313;
-	color: #fff;
+	background-color: #fff;
+	color: #202020;
 }
 
 #arrival:checked + label {
-	background-color: #131313;
-	color: #fff;
+	background-color: #fff;
+	color: #202020;
 }
 
 #suburban:checked + label {
-	background-color: #131313;
-	color: #fff;
+	background-color: #fff;
+	color: #202020;
 }
 
 .container {
@@ -494,6 +516,7 @@ td {
 	justify-content: space-between;
 	padding: 17px; /* Optional padding for spacing */
 	cursor: pointer;
+	color: #fff;
 }
 
 .topline {
@@ -523,12 +546,16 @@ td {
 }
 
 .suggestion:hover {
-	background-color: #e4e4e4;
+	background-color: rgba(255,255,255,0.1);
 }
 
 .bigicon {
 	height: 30px;
 	padding-left: 5px;
+}
+
+.inverted {
+	filter: invert(1);
 }
 
 .megaicon {

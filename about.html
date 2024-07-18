@@ -59,7 +59,7 @@ fetch('https://api.github.com/repos/hoolycrash/trainboard/contributors')
     data.forEach(contributor => {
       const div = document.createElement('div');
       div.innerHTML = `
-        <a href="${contributor.html_url}" class="black">
+        <a class="contributor" href="${contributor.html_url}" class="black">
           <img src="${contributor.avatar_url}" alt="${contributor.login}" class="avatar">
           <strong>${contributor.login}</strong>
           <span class="green"> +${contributor.contributions}</span>

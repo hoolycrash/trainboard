@@ -780,6 +780,11 @@ td {
 	visibility: visible;
 }
 
+.contributor {
+	display: flex;
+	gap: 0.5rem;
+}
+
 
 @media (min-width: 300px) {
 

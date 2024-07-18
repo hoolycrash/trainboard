@@ -311,7 +311,11 @@ function updateTable(data) {
 		// Anpassung hier: Wenn die geplante Plattform null ist und der Zug storniert ist, wird nur die gestrichene Plattform angezeigt
 		if (isCancelled) {
 			if (entry.plannedPlatform === null) {
-				row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><s>${entry.platform}</s></a>`;
+				if (entry.platform === null) {
+					row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"></a>`;
+				} else {
+					row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><s>${entry.platform}</s></a>`;
+				}
 			} else {
 				row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><nobr class='mobilebreak'><s class='disabled'>${entry.plannedPlatform}</s></nobr></a>`;
 			}
@@ -320,6 +324,8 @@ function updateTable(data) {
 				row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">-</a>`;
 			} else if (entry.platform == entry.plannedPlatform) {
 				row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.plannedPlatform}</a>`;
+			} else if (entry.plannedPlatform === null) {
+				row.insertCell(3).innerHTML = `<a class="red" href="trip.html?id=${entry.tripId}&station=${entry.stop.id}">${entry.platform}</a>`;
 			} else {
 				row.insertCell(3).innerHTML = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><nobr class='mobilebreak'><s class='disabled'>${entry.plannedPlatform}</s><span class="red"> ${entry.platform}</span></nobr></a>`;
 			}

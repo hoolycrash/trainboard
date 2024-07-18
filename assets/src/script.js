@@ -356,7 +356,6 @@ function updateTable(data) {
 
 	// Switch to S-Bahn or departure if there are no trains in the list
 	if (findtrain == 0) {
-		console.log(findtrain);
 		if (hasSuburban == true) { document.location = `${siteType === 'S' ? 'departure' : 'suburban'}.html?station=${stationID}`; }
 	}
 

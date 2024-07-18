@@ -94,9 +94,8 @@ span#clock {
 	vertical-align: bottom;
 }
 
-.isle {
+.isle, .descriptionbox {
 	position: fixed;
-	bottom: 0px;
 	right: 0px;
 	background-color: rgba(38,38,38,0.8);
 	backdrop-filter: blur(9px);
@@ -105,6 +104,15 @@ span#clock {
 	border-radius: 3px;
 	padding: 5px;
 	margin: 10px;
+	max-width: 250px;
+}
+
+.isle {
+	bottom: 0px;
+}
+
+.descriptionbox {
+	bottom: 40px;
 }
 
 .zerotable {
@@ -146,12 +154,10 @@ a {
 }
 
 .home {
-	background-image: url('../station.jpg');
 	background-repeat: no-repeat;
 	background-attachment: fixed;
 	background-size: cover;
 	background-color: #000;
-	background-position: right;
 	text-align: center;
 	color: #fff;
 }

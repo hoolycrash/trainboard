@@ -1,6 +1,6 @@
 /// Background Image
 		
-const url = "https://train-img-server.de.cool/dataset.json";
+const url = "https://data.cuzimmartin.dev/mainpage-images/latest";
 
 fetch(url)
   .then(response => response.json())
@@ -8,17 +8,17 @@ fetch(url)
     // Assuming the first entry is the first element in the array
     const firstEntry = data[0]; // Access the first element of the array
     if (firstEntry) {
-      const imageUrl = firstEntry.filename;
-      const focusPoint = firstEntry.focuspoint;
+      const imageUrl = firstEntry.url;
+      //const focusPoint = firstEntry.focuspoint;
 
       const bodyElement = document.body;
-      bodyElement.style.backgroundImage = `url('https://train-img-server.de.cool/images/${imageUrl}')`;
-      bodyElement.style.backgroundPosition = focusPoint;
+      bodyElement.style.backgroundImage = `url('${imageUrl}')`;
+      //bodyElement.style.backgroundPosition = focusPoint;
     } 
 	
 	const descriptionElement = document.getElementById("description");
       if (descriptionElement) {
-        descriptionElement.textContent = firstEntry.description;
+        descriptionElement.textContent = firstEntry.infoText;
       } 
 
       const copyrightElement = document.getElementById("copyright");

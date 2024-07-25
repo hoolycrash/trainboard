@@ -106,7 +106,7 @@ var stationID = urlParams.get('station');
 fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
 .then(response => response.json())
 .then(data => {
-	document.getElementById('stationname').innerHTML = data.name + "," + data.ril100Identifiers[0].rilIdentifier;
+	document.getElementById('stationname').innerHTML = data.name + ", " + data.ril100Identifiers[0].rilIdentifier;
 	
 	document.getElementById('productline').textContent = data.productLine.productLine;
 	
@@ -202,7 +202,7 @@ fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
 	}
 	
 	if ("DBinformation" in data) {
-		document.getElementById("additionalservicestable").innerHTML += "<tr><td><img src=\"./assets/icons/DBInformation.svg\" class=\"serviceicon\"><td class=\"wide\">DB Information</td><td><span class=\"secondary\">Ja</span></td></tr>";
+		document.getElementById("additionalservicestable").innerHTML += "<tr><td><img src=\"./assets/icons/dbinformation.svg\" class=\"serviceicon\"><td class=\"wide\">DB Information</td><td><span class=\"secondary\">Ja</span></td></tr>";
 	}
 		
 	if (data.hasDBLounge === true) {

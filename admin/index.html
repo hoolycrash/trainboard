@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foto validieren | Trainboard</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/dark-styles.css">
+    <link rel="stylesheet" href="../assets/css/line-colors.css">
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/branding/favicon.ico">
+    <link rel="manifest" href="/manifest.json" type="application/json">
+    <meta name="theme-color" content="#000">
+    <meta name="robots" content="noindex">
+
+    <style>
+
+        button {
+            font-family: "Kode Mono", monospace;
+        }
+
+        .tabs span {
+            font-size: 1.2rem;
+            color: #FFFFFF;
+        }
+
+
+        #imageContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        #pendingImage {
+            max-width: 700px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .focus-point-container {
+            display: grid;
+            grid-template-areas:
+                "top-left top-center top-right"
+                "middle-left middle-center middle-right"
+                "bottom-left bottom-center bottom-right";
+            gap: 10px;
+            margin-top: 2rem;
+        }
+
+        .focus-point-button {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #3B82F6;
+            color: #FFFFFF;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .focus-point-button:hover {
+            background-color: #2563EB;
+        }
+
+        .focus-point-button.top-left { grid-area: top-left; }
+        .focus-point-button.top-center { grid-area: top-center; }
+        .focus-point-button.top-right { grid-area: top-right; }
+        .focus-point-button.middle-left { grid-area: middle-left; }
+        .focus-point-button.middle-center { grid-area: middle-center; }
+        .focus-point-button.middle-right { grid-area: middle-right; }
+        .focus-point-button.bottom-left { grid-area: bottom-left; }
+        .focus-point-button.bottom-center { grid-area: bottom-center; }
+        .focus-point-button.bottom-right { grid-area: bottom-right; }
+
+
+        .success-message {
+            display: none;
+            margin-top: 1rem;
+            color: #0cb14b;
+            font-family: "Kode Mono", monospace;
+        }
+
+        #focusSuccessMessage {
+            margin-top: 2rem;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 3rem;
+        }
+
+        .validate-button {
+            padding: 0.7rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #3B82F6;
+            color: #FFFFFF;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            min-width: 100px;
+        }
+
+        .validate-button#acceptButton {
+            background-color: #0cb14b;
+        }
+
+        .validate-button#rejectButton {
+            background-color: red;
+        }
+
+        .validate-button:hover {
+            background-color: #2563EB;
+        }
+
+        .info-edit-container {
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-edit-container input {
+            padding: 0.5rem;
+            border: none;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            background-color: #2C2C2C;
+            color: #FFFFFF;
+            font-size: 17px;
+            width: 350px;
+            text-align: center;
+            border-right: none;
+        }
+
+        .info-edit-container button {
+            padding: 0.5rem 0.7rem;
+            border: none;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            background-color: #dc6600;
+            color: #FFFFFF;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .info-edit-container button:hover {
+            background-color: #ff4400;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<noscript> You need to enable JavaScript to run this app. </noscript>
+
+<nav id="navbar">
+    <div class="tabs"><span class="active">&nbsp;Foto validieren&nbsp;</span></div>
+    <div class="iconbar bigonly"><a href="https://trainboard.de.cool">Schließen</a></div>
+    <div class="iconbar"><a href="https://trainboard.de.cool"><img src="../assets/icons/close.svg" class="mediumicon" alt="Schließen"></a></div>
+</nav>
+
+<center>
+    <div id="imageContainer">
+        <img id="pendingImage" src="" alt="Pending Image">
+        <div id="imageInfo"></div>
+
+        <div class="info-edit-container">
+            <input type="text" id="infoTextInput" placeholder="Edit Info Text">
+            <button onclick="updateInfoText()">Update Info</button>
+        </div>
+
+
+        <div class="focus-point-container">
+            <button class="focus-point-button top-left" onclick="selectFocusPoint('top-left')">Top Left</button>
+            <button class="focus-point-button top-center" onclick="selectFocusPoint('top-center')">Top Center</button>
+            <button class="focus-point-button top-right" onclick="selectFocusPoint('top-right')">Top Right</button>
+            <button class="focus-point-button middle-left" onclick="selectFocusPoint('middle-left')">Middle Left</button>
+            <button class="focus-point-button middle-center" onclick="selectFocusPoint('middle-center')">Center</button>
+            <button class="focus-point-button middle-right" onclick="selectFocusPoint('middle-right')">Middle Right</button>
+            <button class="focus-point-button bottom-left" onclick="selectFocusPoint('bottom-left')">Bottom Left</button>
+            <button class="focus-point-button bottom-center" onclick="selectFocusPoint('bottom-center')">Bottom Center</button>
+            <button class="focus-point-button bottom-right" onclick="selectFocusPoint('bottom-right')">Bottom Right</button>
+        </div>
+
+        <div class="success-message" id="focusSuccessMessage">Focus point successfully set!</div>
+
+        <div class="button-group">
+            <button id="rejectButton" class="validate-button">Reject</button>
+            <button id="acceptButton" class="validate-button">Accept</button>
+        </div>
+    </div>
+    <p id="message"></p>
+</center>
+
+<script>
+    async function fetchPendingImage() {
+        const response = await fetch('https://data.cuzimmartin.dev/pending-images');
+        const data = await response.json();
+        const images = data.images.concat(data.mainpageImages);
+
+        if (images.length > 0) {
+            const image = images[0];
+            console.log('Fetched image:', image);
+            document.getElementById('pendingImage').src = image.url;
+            document.getElementById('imageInfo').textContent = `Type: ${image.type ? image.type : 'mainpage'}, Info: ${image.infoText}, Copyright: ${image.copyright}`;
+            document.getElementById('pendingImage').dataset.id = image._id;
+            document.getElementById('pendingImage').dataset.type = image.type ? image.type : 'mainpage';
+            document.getElementById('infoTextInput').value = image.infoText;
+        } else {
+            document.getElementById('message').textContent = 'No pending images.';
+            document.getElementById('imageContainer').style.display = 'none';
+        }
+    }
+
+    async function updateImageStatus(status) {
+        const imageId = document.getElementById('pendingImage').dataset.id;
+        const imageType = document.getElementById('pendingImage').dataset.type;
+
+        console.log('Sending data:', { id: imageId, status, type: imageType });
+
+        const response = await fetch('https://data.cuzimmartin.dev/update-image-status', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: imageId, status, type: imageType })
+        });
+
+        if (response.ok) {
+            fetchPendingImage();
+        } else {
+            const errorData = await response.json();
+            console.error('Error response:', errorData);
+            alert('Failed to update image status: ' + errorData.error);
+        }
+    }
+
+
+    async function selectFocusPoint(focusPoint) {
+        const imageId = document.getElementById('pendingImage').dataset.id;
+        const response = await fetch('https://data.cuzimmartin.dev/update-focus-point', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: imageId, focusPoint })
+        });
+
+        if (response.ok) {
+            showSuccessMessage('Focus point successfully set!');
+        } else {
+            alert('Failed to update focus point');
+        }
+    }
+
+    async function updateInfoText() {
+        const imageId = document.getElementById('pendingImage').dataset.id;
+        const infoText = document.getElementById('infoTextInput').value;
+        const imageType = document.getElementById('pendingImage').dataset.type;
+
+        const response = await fetch('https://data.cuzimmartin.dev/update-info-text', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: imageId, infoText, type: imageType })
+        });
+
+        if (response.ok) {
+            showSuccessMessage('Info text successfully updated!');
+            fetchPendingImage();
+        } else {
+            alert('Failed to update info text');
+        }
+    }
+
+    function showSuccessMessage(message) {
+        const successMessage = document.getElementById('focusSuccessMessage');
+        successMessage.textContent = message;
+        successMessage.style.display = 'block';
+        setTimeout(() => {
+            successMessage.style.display = 'none';
+        }, 5000);
+    }
+
+    document.getElementById('acceptButton').addEventListener('click', () => updateImageStatus('accepted'));
+    document.getElementById('rejectButton').addEventListener('click', () => updateImageStatus('rejected'));
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight') {
+            updateImageStatus('accepted');
+        } else if (event.key === 'ArrowLeft') {
+            updateImageStatus('rejected');
+        }
+    });
+
+    fetchPendingImage();
+</script>
+</body>
+</html>

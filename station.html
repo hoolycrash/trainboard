@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bahnhof</title>
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/dark-styles.css">
+    <link rel="stylesheet" href="./assets/css/line-colors.css">
+    <link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
+    <link rel="manifest" href="/manifest.json" type="application/json">
+    <meta name="theme-color" content="#000">
+    <meta name="robots" content="noindex">
+</head>
+
+<body>
+
+<center>
+    <noscript> You need to enable JavaScript to run this app.</noscript>
+
+    <nav id="navbar">
+			<div class="tabs">
+				<a href="#" class="active">&nbsp;Bahnhof&nbsp;</a>
+			</div>
+            <div class="iconbar"><a class="navsearch" href="stationsearch.html">Bahnhofsuche</a></div>
+	</nav>
+
+    <br>
+	
+	<div id="errorbox" class="hidden">
+		<h1>&#128557;</h1>
+		<h3>Es ist ein Fehler aufgetreten.</h3>
+		<p>Bitte überprüfe ob diese Station durch <i>DB Infrago</i> betrieben wird.</p>
+		<p><a href="stationsearch.html"><u>Bahnhofsuche</u></a></p>
+	</div>
+	
+    <div id="container" class="tripcontainer">
+        <div class="container">
+            <div class="left-div">
+			
+				
+				
+				<table>
+					<tr id="topservicestable"></tr>
+					
+				</table>
+				
+				<h3>Ausstattung</h3>
+                <table id="servicestable">
+					
+				</table>
+				
+				<div id="servicesbox">
+					<h3>Services</h3>
+	                <table id="additionalservicestable"></table>
+				</div>
+				
+				<div id="facilitystatusbox">
+					<h3>Außer Betrieb</h3>
+	                <table id="facilitiesstatus">
+						
+					</table>
+				</div>
+				
+				
+            </div>
+            <div class="right-div lineview">
+				<div id="stationimage" class="stationimage">
+					<div class="stationimagecontent" >
+						<span class="stationname" id="stationname">Lade Daten...</span><br>
+						<small id="productline"></small>
+						
+					</div>
+				</div>
+                
+			
+				<div class="stationdetails">
+					
+					
+					<small id="adress"></small>
+					
+				</div>
+				
+				<span id="sevmap"></span>
+				
+				<span id="weather"></span>
+                <br><br>
+            </div>
+
+
+        </div>
+        <span id="notice"></span>
+
+        <br>
+
+    </div>
+
+   
+</center>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+
+var stationID = urlParams.get('station');
+
+fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
+.then(response => response.json())
+.then(data => {
+	document.getElementById('stationname').innerHTML = data.name + ", " + data.ril100Identifiers[0].rilIdentifier;
+	
+	document.getElementById('productline').textContent = data.productLine.productLine;
+	
+	document.getElementById('adress').innerHTML = "<a href=\"https://www.google.com/maps/dir/?api=1&=true&destination=" +  data.mailingAddress.street + " " + data.mailingAddress.zipcode + " " + data.mailingAddress.city  + "\" class=\"black\">" + data.mailingAddress.street + "<br>" + data.mailingAddress.zipcode + "<br>" + data.mailingAddress.city + "</a>";
+
+	document.getElementById('sevmap').innerHTML = "<a href=\"https://www.bahnhof.de/downloads/replacement-service-maps/" +  data.number + ".pdf\"><div class=\"sevbutton button \">Lageplan</div></a>";	  
+	
+	var imgurl = data.photoPath;
+	document.getElementById("stationimage").style.backgroundImage = "url(" + imgurl + ")";
+	
+		
+	
+	//TOP SERVICES
+	const topservicesTable = document.getElementById("topservicestable");
+	
+	if (data.hasWiFi === true) {
+		topservicesTable.innerHTML += "<td><img src=\"./assets/icons/hasWiFi.svg\" class=\"topserviceicon\"><td class=\"wide\">WiFi<br><span class=\"secondary\">Ja</span></td>";
+	} else {
+		//topservicesTable.innerHTML += "<td><img src=\"./assets/icons/hasntWiFi.svg\" class=\"topserviceicon\"><td class=\"wide\">WiFi<br><span class=\"secondary\">Nein</span></td>";
+
+	}
+	
+	if (data.hasSteplessAccess === 'yes') {
+		topservicesTable.innerHTML += "<td><img src=\"./assets/icons/hasSteplessAccess.svg\" class=\"topserviceicon\"><td class=\"wide\">Stufenfrei<br><span class=\"secondary\">Ja</span></td>";
+	
+	} else if (data.hasSteplessAccess === 'partial') {
+	
+		topservicesTable.innerHTML += "<td><img src=\"./assets/icons/partialSteplessAccess.svg\" class=\"topserviceicon\"><td class=\"wide\">Stufenfrei<br><span class=\"secondary\">Teilweise</span></td>";
+
+	} else {
+		topservicesTable.innerHTML += "<td><img src=\"./assets/icons/hasntSteplessAccess.svg\" class=\"topserviceicon\"><td class=\"wide\">Stufenfrei<br><span class=\"secondary\">Nein</span></td>";
+
+	}
+	
+	
+	
+	//SERVICES
+	const servicesTable = document.getElementById("servicestable");
+	
+	if (data.hasParking === true) {
+		servicesTable.innerHTML += "<tr><td><img src=\"./assets/icons/hasParking.svg\" class=\"serviceicon\"><td class=\"wide\">Parkplatz</td><td><span class=\"secondary\">Ja</span></td></tr>";
+	}
+	
+	if (data.hasBicycleParking === true) {
+		servicesTable.innerHTML += "<tr><td><img src=\"./assets/icons/hasBicycleParking.svg\" class=\"serviceicon\"><td class=\"wide\">Radparken</td><td><span class=\"secondary\">Ja</span></td></tr>";
+	}
+	
+	if (data.hasPublicFacilities === true) {
+		servicesTable.innerHTML += "<tr><td><img src=\"./assets/icons/hasPublicFacilities.svg\" class=\"serviceicon\"><td class=\"wide\">Öffentliches WC</td><td><span class=\"secondary\">Ja</span></td></tr>";
+	}
+	
+	if (data.hasLockerSystem === true) {
+		servicesTable.innerHTML += "<tr><td><img src=\"./assets/icons/hasLockerSystem.svg\" class=\"serviceicon\"><td class=\"wide\">Schließfächer</td><td><span class=\"secondary\">Ja</span></td></tr>";
+	}
+	
+	if (data.hasTaxiRank === true) {
+		servicesTable.innerHTML += "<tr><td><img src=\"./assets/icons/hasTaxiRank.svg\" class=\"serviceicon\"><td class=\"wide\">Taxirank</td><td><span class=\"secondary\">Ja</span></td></tr>";
+	}
+		
+	//FACILITIES
+	
+	const facilitiesstatusTable = document.getElementById("facilitiesstatus");
+	let facilityActiveCounter = 0;
+	let facilityInactiveCounter = 0;
+
+	
+	data.facilities.forEach(facility => {
+		if (facility.state === 'INACTIVE') {
+			facilitiesstatusTable.innerHTML += "<tr><td><img src=\"./assets/icons/"+ facility.type +".svg\" class=\"serviceicon\"></td><td class=\"wide\">" + (facility.type === "ESCALATOR" ? "Fahrtreppe" : (facility.type === "ELEVATOR" ? "Aufzug" : facility.type)) + " " + facility.description + "</tr>";
+ 			++facilityInactiveCounter;
+		} else {
+			++facilityActiveCounter;
+		}
+		
+		});
+		
+	console.log('Inactive: '+  facilityInactiveCounter)
+	
+	console.log('Active: '+  facilityActiveCounter)
+	
+	facilitiesstatusTable.innerHTML += "<tr><td><img src=\"./assets/icons/facilityActive.svg\" class=\"serviceicon\"></td><td class=\"wide\">" + facilityActiveCounter + " Anlagen in Betrieb</tr>";
+	
+	if (facilityActiveCounter === 0 && facilityInactiveCounter === 0) {
+		document.getElementById('facilitystatusbox').classList.add('hidden');
+	}
+	
+	
+	//SERVICES
+	const additionalservicestable = document.getElementById("additionalservicestable");
+	
+	if (data.hasTravelCenter === true) {
+		document.getElementById("additionalservicestable").innerHTML += "<tr><td><img src=\"./assets/icons/hasTravelcenter.svg\" class=\"serviceicon\"><td class=\"wide\">Reisezentrum</td><td><span class=\"secondary\">Ja</span></td></tr>";
+	}
+	
+	if ("DBinformation" in data) {
+		document.getElementById("additionalservicestable").innerHTML += "<tr><td><img src=\"./assets/icons/dbinformation.svg\" class=\"serviceicon\"><td class=\"wide\">DB Information</td><td><span class=\"secondary\">Ja</span></td></tr>";
+	}
+		
+	if (data.hasDBLounge === true) {
+		document.getElementById("additionalservicestable").innerHTML += "<tr><td><img src=\"./assets/icons/hasDBLounge.svg\" class=\"serviceicon\"><td class=\"wide\">DB Lounge</td><td><span class=\"secondary\">Ja</span></td></tr>";
+	}
+	
+	if (data.hasLostAndFound === true) {
+		document.getElementById("additionalservicestable").innerHTML += "<tr><td><img src=\"./assets/icons/hasLostAndFound.svg\" class=\"serviceicon\"><td class=\"wide\">Fundbüro</td><td><span class=\"secondary\">Ja</span></td></tr>";
+	}
+	
+	if (data.hasRailwayMission === true) {
+		document.getElementById("additionalservicestable").innerHTML += "<tr><td><img src=\"./assets/icons/hasRailwayMission.svg\" class=\"serviceicon\"><td class=\"wide\">Bahnhofsmission</td><td><span class=\"secondary\">Ja</span></td></tr>";
+	}
+		
+	if (data.hasCarRental === true) {
+		document.getElementById("additionalservicestable").innerHTML += "<tr><td><img src=\"./assets/icons/hasCarRental.svg\" class=\"serviceicon\"><td class=\"wide\">Mietwagenverleih</td><td><span class=\"secondary\">Ja</span></td></tr>";
+	}
+	
+	
+	//WEATHER
+	
+	fetch(`https://data.cuzimmartin.dev/weather?city=${data.mailingAddress.city}`)
+	.then(response => response.json())
+	.then(weatherdata => {
+		
+		console.log(weatherdata.main.temp);
+		
+		console.log(weatherdata.weather[0].description);
+		
+		document.getElementById('weather').innerHTML = "<a href=\"weather.html?city=" + data.mailingAddress.city + "\"><div class=\"button\">" + Math.floor(weatherdata.main.temp) + "°C " + weatherdata.weather[0].description +"</div></a>";	  
+	
+	})
+
+})
+.catch(error => {
+	console.error('Error fetching station data:', error);
+	document.getElementById('container').classList.add('hidden');
+	document.getElementById('errorbox').classList.remove('hidden');
+});
+</script>
+
+</body>
+</html>

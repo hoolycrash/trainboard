@@ -15,6 +15,10 @@
 	.megaicon {
 		filter: invert(1);
 	}
+	
+	.noinvert {
+		filter: invert(0);
+	}
 
 	.tripcontainer {
 		color: #efefef;

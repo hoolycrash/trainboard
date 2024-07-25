@@ -23,6 +23,23 @@ body {
 	color: #000;
 }
 
+.button {
+	background-color: #000;
+	padding: 10px;
+	border-radius: 10px;
+	text-align: center;
+	font-size: 17px;
+
+}
+
+.sevbutton {
+	background-color: #9b1b60;
+	background-image: url('.././icons/sevlogo.svg');
+	background-size: contain;
+	background-repeat: no-repeat;
+
+}
+
 .notouch {
 	height: 100%;
 	width: 100%;
@@ -34,7 +51,7 @@ span {
 	text-align: left;
 }
 
-.disabled {
+.disabled, .secondary {
 	color: var(--disabled-color);
 }
 
@@ -52,6 +69,45 @@ span {
 	font-size: 0.8em;
 }
 
+.stationimage {
+	width: 100%;
+	height: 250px;
+	background-color: #000;
+	background-size: cover;
+	border-radius: 10px;
+	vertical-align: bottom;
+	position: relative;
+	box-shadow: inset #000 0px -70px 60px;
+	background-position: center;
+	top: 5px;
+	
+}
+
+.stationimagecontent {
+	position: absolute;
+	bottom: 0;
+	left: 10px;
+	right: 10px;
+	bottom: 10px;
+	color: #fff;
+}
+
+.stationname {
+	font-size: 24px;
+}
+
+.serviceicon {
+	height: 30px;
+}
+
+.topserviceicon {
+	height: 50px;
+}
+
+
+.green {
+	color: #00ff00;
+}
 .prefix {
 	color: #6b6b6a;
 	float: left;
@@ -65,6 +121,15 @@ span {
 .big {
 	font-weight: bold;
 	font-size: 35px;
+}
+
+.map {
+	height: 1000px;
+	width: 1000px;
+}
+
+.weathericon {
+	height: 130px;
 }
 
 span#clock {
@@ -81,6 +146,7 @@ span#clock {
 	height: 16px;
 	padding: 25px 16px 25px 16px;
 	font-size: 16px;
+	overflow-x: scroll;
 }
 
 .navsearch:before {
@@ -128,6 +194,13 @@ span#clock {
 
 .tabs {
 	float: left;
+	display: inline-table;
+}
+
+.stationdetails {
+	margin: 10px;
+	margin-top: 20px;
+	margin-bottom: 0px;
 }
 
 .iconbar {
@@ -463,6 +536,7 @@ input.checkbox {
 .left-div {
 	flex: 1;
 	min-width: 200px;
+	margin-left: 20px;
 }
 
 .right-div {
@@ -611,6 +685,7 @@ td {
 
 	.left-div, .right-div {
 		min-width: 100%; /* Wenn der Platz nicht ausreicht, beide auf 100% setzen */
+		margin-left: unset;
 	}
 
 	.searchbar {

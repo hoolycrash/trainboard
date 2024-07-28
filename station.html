@@ -187,7 +187,12 @@ fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
 	
 	console.log('Active: '+  facilityActiveCounter)
 	
-	facilitiesstatusTable.innerHTML += "<tr><td><img src=\"./assets/icons/facilityActive.svg\" class=\"serviceicon\"></td><td class=\"wide\">" + facilityActiveCounter + " Anlagen in Betrieb</tr>";
+	if (facilityActiveCounter === 1) {
+		facilitiesstatusTable.innerHTML += "<tr><td><img src=\"./assets/icons/facilityActive.svg\" class=\"serviceicon\"></td><td class=\"wide\">" + facilityActiveCounter + " Anlage in Betrieb</tr>";
+	} else {
+		facilitiesstatusTable.innerHTML += "<tr><td><img src=\"./assets/icons/facilityActive.svg\" class=\"serviceicon\"></td><td class=\"wide\">" + facilityActiveCounter + " Anlagen in Betrieb</tr>";
+	}
+	
 	
 	if (facilityActiveCounter === 0 && facilityInactiveCounter === 0) {
 		document.getElementById('facilitystatusbox').classList.add('hidden');

@@ -234,7 +234,7 @@ fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
 	.then(weatherdata => {
 
 		if (weatherdata?.alerts?.[0]?.properties?.EVENT != null) {
-			document.getElementById('weather').innerHTML = "<a href=\"weather.html?city=" + data.mailingAddress.city + "\"><div class=\"button\">" + Math.floor(weatherdata.main.temp) + "°C " + weatherdata.weather[0].description +"<br><div class=\"weatherwarning\">📢" + weatherdata?.alerts?.[0]?.properties?.EVENT + "</div></div></a>";	  
+			document.getElementById('weather').innerHTML = "<a href=\"weather.html?city=" + data.mailingAddress.city + "\"><div class=\"button\">" + Math.floor(weatherdata.main.temp) + "°C " + weatherdata.weather[0].description +"<br><div class=\"weatherwarning\">📢 " + weatherdata?.alerts?.[0]?.properties?.EVENT + "</div></div></a>";	  
 		} else {
 			document.getElementById('weather').innerHTML = "<a href=\"weather.html?city=" + data.mailingAddress.city + "\"><div class=\"button\">" + Math.floor(weatherdata.main.temp) + "°C " + weatherdata.weather[0].description +"<br></div></a>";	  
 		}

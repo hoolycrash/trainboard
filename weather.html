@@ -72,7 +72,7 @@ var city = urlParams.get('city');
 		document.getElementById('clouds').innerHTML =  "&#x2601; &nbsp;Bevölkung: " + weatherdata.clouds.all + " %";	  
 
 		if (weatherdata?.alerts?.[0]?.properties?.EVENT != null) {
-			document.getElementById('warnings').innerHTML = "<div class=\"weatherwarning\"><small class=\"secondary\">📢Wetterwarnung</small><br><b>" + weatherdata.alerts[0].properties?.EVENT + "</b><br><small>" + weatherdata.alerts[0].properties?.DESCRIPTION + "<hr><b>Herausgeber:</b> " + weatherdata.alerts[0].properties?.CONTACT + "</small></div>";	  
+			document.getElementById('warnings').innerHTML = "<div class=\"weatherwarning\"><small class=\"secondary\">📢 Wetterwarnung</small><br><b>" + weatherdata.alerts[0].properties?.EVENT + "</b><br><small>" + weatherdata.alerts[0].properties?.DESCRIPTION + "<hr><b>Herausgeber:</b> " + weatherdata.alerts[0].properties?.CONTACT + "</small></div>";	  
 		}
 	})
 </script>

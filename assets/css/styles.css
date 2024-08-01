@@ -48,6 +48,7 @@ body {
 	color: #000;
 	border-radius: 10px;
 	box-shadow: inset 0px -20px 60px #ffe1e1;
+	overflow-x: hidden;
 }
 
 hr {

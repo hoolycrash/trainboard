@@ -44,6 +44,7 @@
 
         </div>
         <span id="notice"></span>
+        <span id="error"></span>
 
         <br>
 
@@ -240,11 +241,27 @@ var encodedTripId = `Formatted TripId: ${encodeURIComponent(tripId)|| ''}`;
     function fetchtraincomposition(zugnummer, datetime, stationId) {
 	
 	
-        fetch(`https://ist-wr.noncd.db.de/wagenreihung/1.0/${zugnummer}/${datetime}`)
-            .then(response => response.json())
+        fetch(`https://ist-wr.noncd.db.de/wagenreihung/1.0/${zugnummer}/${datetime}`, {
+            method: "GET",
+            mode: "no-cors",
+            headers: {
+                "Accept": "*/*",
+                "Access-Control-Allow-Origin": "*",
+            }
+        })
+            .then(response => {
+
+                console.log(response);
+
+                if (!response.ok) {
+                    document.getElementById('notice').innerHTML = '<br><br>Die Wagenreihung kann aktuell nicht angezeigt werden!<br><br>';
+                    document.getElementById('error').innerHTML = `<br><br>${response.statusText}<br><br>`;
+                    document.getElementById('coacheswrapper').classList.add('hidden');
+                }
+
+                return response.json();
+            })
             .then(data => {
-
-
                 // Check for valid JSON
                 if (data.error) {
                     document.getElementById('notice').innerHTML = '<br><br>Wagenreihung für diesen Zug nicht verfügbar.<br><br>';
@@ -263,6 +280,7 @@ var encodedTripId = `Formatted TripId: ${encodeURIComponent(tripId)|| ''}`;
                 document.getElementById('git-info').className = '';
                 document.getElementById('git-error').innerHTML = `<a href="https://github.com/hoolycrash/trainboard/issues/new?title=Bug%20Wagenreihung:&body=Train:${zugnummer}%20Datetime:${datetime}%20Station:${stationId}" target="_blank" class="black">Open new Issue with Train data on Github</a>`;
                 rendertraincomposition(data.data.istformation);
+
             });
     }
 

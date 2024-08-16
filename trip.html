@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -23,7 +22,7 @@
         <div class="tabs"><span class="active">&nbsp;Zuginformationen&nbsp;</span></div>
         <div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div>
         <div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg"
-                                                                       class="mediumicon"></a></div>
+                                                                       class="mediumicon" alt="Close"></a></div>
     </nav>
 
     <br>
@@ -44,6 +43,7 @@
 
         </div>
         <span id="notice"></span>
+        <span id="error"></span>
 
         <br>
 
@@ -75,7 +75,6 @@
         const queryParams = url.split("?")[1];
         return queryParams.split("&")[0].replace("id=", "");
     }
-	
 
 
     // ---------------------------- Functions ----------------------------
@@ -85,26 +84,26 @@
         // Extract params from url
         const urlParams = new URLSearchParams(window.location.search);
         const tripId = getTripIdFromUrl(window.location.href); //trip id needed to identify the train
-        
-		
-		const currentUrl = window.location.href;
-		
-		function getParameterByName(name, url) {
-		    if (!url) url = window.location.href;
-		    name = name.replace(/[\[\]]/g, '\\$&');
-		    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
-		    const results = regex.exec(url);
-		    if (!results) return null;
-		    if (!results[2]) return '';
-		    return decodeURIComponent(results[2].replace(/\+/g, ' '));
-		}
-		
-		const stationValue = getParameterByName('station', currentUrl);
-		
-		
-		const stationId = stationValue;
-		
-var encodedTripId = `Formatted TripId: ${encodeURIComponent(tripId)|| ''}`;
+
+
+        const currentUrl = window.location.href;
+
+        function getParameterByName(name, url) {
+            if (!url) url = window.location.href;
+            name = name.replace(/[\[\]]/g, '\\$&');
+            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+            const results = regex.exec(url);
+            if (!results) return null;
+            if (!results[2]) return '';
+            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+        }
+
+        const stationValue = getParameterByName('station', currentUrl);
+
+
+        const stationId = stationValue;
+
+        var encodedTripId = `Formatted TripId: ${encodeURIComponent(tripId) || ''}`;
 
 
         try {
@@ -114,10 +113,10 @@ var encodedTripId = `Formatted TripId: ${encodeURIComponent(tripId)|| ''}`;
             const data = await response.json();
 
             const zugnummer = data.trip.line.fahrtNr; //Train Nr (Zugnummer)
-			
-			console.log(zugnummer);
-			
-			
+            const trainType = data.trip.line.productName; //Train Type (ICE, IC, RE, RB)
+
+            console.log(zugnummer);
+
 
             // Create the flowing text with the next stations of this trip
             let flowText = "";
@@ -156,20 +155,20 @@ var encodedTripId = `Formatted TripId: ${encodeURIComponent(tripId)|| ''}`;
                             selectedDepartureTimeDiv.innerHTML = "<s class='disabled'>" + selectedFormattedPlannedTime + "</s><br>" + selectedFormattedTime;
                         }
 
-                        // converting departing-time to YYYYMMDDHHMM format for the api request
+                        // converting departing-time to YYYY-MM-DDTHH:mm:ss:msZ format for the api request
                         const selecteddepartTime = new Date(stopover.plannedDeparture);
                         const year = selecteddepartTime.getFullYear();
                         const month = String(selecteddepartTime.getMonth() + 1).padStart(2, '0');
                         const day = String(selecteddepartTime.getDate()).padStart(2, '0');
                         const hours = String(selecteddepartTime.getHours()).padStart(2, '0');
                         const minutes = String(selecteddepartTime.getMinutes()).padStart(2, '0');
-                        const convertedtime = `${year}${month}${day}${hours}${minutes}`;
+                        const convertedtime = `${year}-${month}-${day}T${hours}:${minutes}:00.000Z`;
                         let datetime = convertedtime;
 
                         //Start loading train composition
-                        fetchtraincomposition(zugnummer, datetime, stationId);
-						
-						
+                        fetchtraincomposition(zugnummer, datetime, stationId, trainType);
+
+
                     }
                     return;
                 }
@@ -237,14 +236,52 @@ var encodedTripId = `Formatted TripId: ${encodeURIComponent(tripId)|| ''}`;
 
     }
 
-    function fetchtraincomposition(zugnummer, datetime, stationId) {
-	
-	
-        fetch(`https://ist-wr.noncd.db.de/wagenreihung/1.0/${zugnummer}/${datetime}`)
+    function fetchtraincomposition(trainNumber, departureTime, eva, trainType) {
+
+        fetch(`https://api.cuzimmartin.dev/wagenreihung?train_number=${trainNumber}&eva=${eva}&train_type=${trainType}&departure_time=${departureTime}`)
             .then(response => response.json())
             .then(data => {
 
+                if (data.error) {
+                    document.getElementById('notice').innerHTML = '<br><br>Wagenreihung für diesen Zug nicht verfügbar.<br><br>';
+                    document.getElementById('coacheswrapper').classList.add('hidden');
+                    return;
+                }
 
+                let groups = data.groups;
+
+                groups.forEach(group => {
+                    let vehicles = group.vehicles;
+
+                    console.log(vehicles);
+
+                    renderTrainVehicles(vehicles);
+
+                });
+
+            });
+
+        /*fetch(`https://ist-wr.noncd.db.de/wagenreihung/1.0/${zugnummer}/${datetime}`, {
+            method: "GET",
+            mode: "no-cors",
+            headers: {
+                "Accept": "*!/!*",
+                "Access-Control-Allow-Origin": "*",
+            }
+        })
+            .then(response => {
+
+                console.log(response);
+
+                if (!response.ok) {
+                    document.getElementById('notice').innerHTML = '<br><br>Die Wagenreihung kann aktuell nicht angezeigt werden!<br><br>';
+                    document.getElementById('error').innerHTML = `<br><br>${response.statusText}<br><br>`;
+                    document.getElementById('coacheswrapper').classList.add('hidden');
+                }
+
+                return response.json();
+            })
+            .then(data => {
                 // Check for valid JSON
                 if (data.error) {
                     document.getElementById('notice').innerHTML = '<br><br>Wagenreihung für diesen Zug nicht verfügbar.<br><br>';
@@ -263,7 +300,165 @@ var encodedTripId = `Formatted TripId: ${encodeURIComponent(tripId)|| ''}`;
                 document.getElementById('git-info').className = '';
                 document.getElementById('git-error').innerHTML = `<a href="https://github.com/hoolycrash/trainboard/issues/new?title=Bug%20Wagenreihung:&body=Train:${zugnummer}%20Datetime:${datetime}%20Station:${stationId}" target="_blank" class="black">Open new Issue with Train data on Github</a>`;
                 rendertraincomposition(data.data.istformation);
+
+            });*/
+    }
+
+    function renderTrainVehicles(vehicles) {
+
+        const blocksContainer = document.getElementById('blocksContainer');
+        let vehicleName = "";
+
+        console.log("Wagenreihung:", vehicles);
+
+        for (let i = 0; i < vehicles.length; i++) {
+
+            let vehicle = vehicles[i];
+            let setLOK = false; //Boolean TrainSet has LOK
+            // ignoring for now | TODO - check if it still fits
+            //let vehicleType = getVehicleType(veh)
+
+            this.renderTrainSection(vehicle, i, vehicles.length, setLOK, blocksContainer);
+
+        }
+
+    }
+
+    function renderTrainSection(vehicle, count, listSize, isLOK, blocksContainer) {
+
+        const imgPath = 'assets/icons/carriage';
+        const mappedList = listSize - 1;
+
+        const wagonIdentificationNumber = vehicle.wagonIdentificationNumber;
+
+        const wagonNumber = 'fzg' + vehicle.vehicleID;
+
+        const category = vehicle.type;
+        const amenitiesDiv = document.createElement('div');
+        amenitiesDiv.classList.add('coach');
+        //Boolean for Show IMG
+        let showIMG = true;
+
+        //check TrainSET has LOK -> Add Head on Coach
+
+        amenitiesDiv.classList.add(wagonNumber);
+
+        // skip for now - basic work in prior
+        /*if (setLOK === true) {
+            ausstattungsDiv.classList.add('head');
+            setLOK = false;
+        }
+
+        if (kategorie === "LOK") {
+            ausstattungsDiv.classList.add('lok');
+            ausstattungsDiv.innerHTML = `LOK`;
+            setLOK = true;
+            showIMG = false;
+        }*/
+
+        if (count === 0 && !isLOK) {
+            isLOK = true;
+            console.log("LOK " + count);
+            amenitiesDiv.classList.add('lok');
+        } else if (count === mappedList) {
+            amenitiesDiv.classList.add('steuerBack');
+            console.log("End " + count);
+        } else {
+            amenitiesDiv.classList.add('coach');
+            console.log("Coach " + count);
+        }
+
+        //Train-Set has only one Coach or is BR650 (RS1)
+        if (count === 0 && mappedList === 0 || vehicle.series === "650") {
+            amenitiesDiv.className = 'coach';
+            amenitiesDiv.classList.add('single');
+        } else {
+            if (count > 0) {
+
+                // use orientation for head and back
+
+                amenitiesDiv.classList.add('coach');
+
+                /*amenitiesDiv.className = 'coach';
+
+                //if 2th vehicle after LOK
+                if (count === 1 && isLOK) {
+                    amenitiesDiv.classList.add('head');
+                }
+
+                //if last Coach before LOK | TODO - does this happen now? Any data provided?
+                /!*if (count === (mappedList - 1) && !isLOK) {
+                    amenitiesDiv.classList.add('back');
+                }*!/
+
+                // if Last Coach
+                if (count === mappedList && !isLOK) {
+
+                    amenitiesDiv.classList.add('steuerBack');
+
+                    // no parameters provided in response
+                    /!*if (kategorie.includes("STEUERWAGEN")) {
+                        ausstattungsDiv.classList.add('steuerBack');
+                    } else {
+                        ausstattungsDiv.classList.add('back');
+                    }*!/
+                }*/
+            }
+        }
+
+        if (vehicle.status !== "OPEN") {
+            amenitiesDiv.innerHTML = `x`;
+            showIMG = false;
+            //ausstattungsDiv.innerHTML += `<br><br>${fahrzeug.fahrzeugsektor}`;
+        }
+
+        if (showIMG) {
+
+            // no data provided | TODO - add data to response?
+            /*amenitiesDiv.innerHTML = `<div class='sector'>${wagonIdentificationNumber}`;*/
+
+            amenitiesDiv.innerHTML += `${wagonIdentificationNumber}<br>`;
+
+            vehicle.amenities.forEach(amenity => {
+
+                switch (amenity.type.toUpperCase()) {
+                    case "AIR_CONDITION":
+                        amenitiesDiv.innerHTML += `<img src="${imgPath}/KLIMA.svg">`;
+                        break;
+                    case "ZONE_QUIET": // Ruhezone
+                        amenitiesDiv.innerHTML += `<img src="${imgPath}/RUHE.svg">`;
+                        break;
+                    case "SEATS_BAHN_COMFORT": // Komfortsitze
+                        amenitiesDiv.innerHTML += `<img src="${imgPath}/PLAETZEBAHNCOMFORT.svg">`;
+                        break;
+                    case "SEATS_SEVERELY_DISABLED": // Sitze für schwerbehinderte Reisende
+                        amenitiesDiv.innerHTML += `<img src="${imgPath}/PLAETZESCHWERBEH.svg">`;
+                        break;
+                    case "ZONE_FAMILY": // Sitze für schwerbehinderte Reisende
+                        amenitiesDiv.innerHTML += `<img src="${imgPath}/FAMILIE.svg">`;
+                        break;
+                    case "CABIN_INFANT": // Sitze für schwerbehinderte Reisende
+                        amenitiesDiv.innerHTML += `<img src="${imgPath}/ABTEILKLEINKIND.svg">`;
+                        break;
+                    case "TOILET_WHEELCHAIR": // Sitze für schwerbehinderte Reisende
+                        amenitiesDiv.innerHTML += `<img src="${imgPath}/ROLLSTUHLTOILETTE.svg">`;
+                        break;
+                    case "WHEELCHAIR_SPACE": // Sitze für schwerbehinderte Reisende
+                        amenitiesDiv.innerHTML += `<img src="${imgPath}/PLAETZEROLLSTUHL.svg">`;
+                        break;
+                    case "BIKE_SPACE": // Sitze für schwerbehinderte Reisende
+                        amenitiesDiv.innerHTML += `<img src="${imgPath}/PLAETZEFAHRRAD.svg">`;
+                        break;
+                    case "INFO": // Sitze für schwerbehinderte Reisende
+                        amenitiesDiv.innerHTML += `<img src="${imgPath}/INFO.svg">`;
+                        break;
+                }
             });
+
+        }
+
+        blocksContainer.appendChild(amenitiesDiv);
+        //Next Coach
     }
 
     function rendertraincomposition(data) {

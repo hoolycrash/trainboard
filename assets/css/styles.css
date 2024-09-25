@@ -867,3 +867,465 @@ td {
 		margin-top: 3px;
 	}
 }
+
+
+/* Container für zentrierten Inhalt */
+.trip-container-centered {
+	margin: 0 auto;
+	padding: 20px;
+	max-width: 1200px;
+}
+
+/* Trip Header und Details */
+.trip-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;
+	border-bottom: 2px solid #444;
+	margin-bottom: 20px;
+	width: 100%;
+}
+
+.trip-logo {
+	max-width: 90px;
+	height: auto;
+}
+
+.trip-title {
+	text-align: left;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+}
+
+.trip-title h1 {
+	font-size: 2.5rem;
+	font-weight: bold;
+	color: #fff;
+	margin: 0;
+}
+
+.trip-duration-info {
+	text-align: right;
+	flex: 0 1 200px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.trip-type {
+	background-color: #222;
+	padding: 5px 10px;
+	border-radius: 5px;
+	font-size: 0.9rem;
+	color: #fff;
+	margin-bottom: 5px;
+}
+
+.trip-date {
+	background-color: #333;
+	margin-top: 10px;
+	padding: 5px 10px;
+	border-radius: 5px;
+	font-size: 0.9rem;
+	color: #fff;
+}
+
+.trip-duration {
+	background-color: #333;
+	margin-top: 18px;
+	padding: 5px 10px;
+	border-radius: 5px;
+	font-size: 0.9rem;
+	color: #fff;
+}
+
+.trip-card-icon {
+	margin: -15px 35px 0 0;
+	max-height: 45px;
+	max-width: 45px;
+	cursor: pointer;
+}
+
+.trip-status-container {
+	text-align: center;
+	margin: 10px 0;
+}
+
+.trip-status {
+	font-size: 1rem;
+	color: #bbb;
+}
+
+/* Fortschrittsleiste */
+.trip-progress-bar {
+	flex: 1;
+	position: relative;
+	width: 100%;
+}
+
+.trip-progress-bar-container {
+	height: 5px;
+	background-color: #555;
+	position: relative;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	overflow: hidden;
+	width: 100%;
+}
+
+.trip-progress {
+	height: 100%;
+	background-color: #0f0;
+	position: absolute;
+	left: 0;
+}
+
+.trip-station-info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+}
+
+.trip-time-info {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	position: relative;
+	margin-top: 5px;
+}
+
+.trip-origin-info,
+.trip-destination-info {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.trip-origin-time,
+.trip-destination-time {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+#originStation,
+#destinationStation {
+	font-size: 1.2rem;
+	font-weight: bold;
+	color: #fff;
+}
+
+#originTime,
+#destinationTime {
+	font-size: 1rem;
+	color: #0f0;
+	margin-top: 5px;
+}
+
+/* Stopover Liste */
+.trip-stopovers {
+	padding: 20px;
+	border-bottom: 2px solid #444;
+	position: relative;
+	margin-bottom: 20px;
+}
+
+.trip-stopover {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 0;
+	border-bottom: 1px solid #333;
+	position: relative;
+}
+
+.trip-stopover:last-child {
+	border-bottom: none;
+}
+
+.trip-stop-time {
+	text-align: left;
+	color: #fff;
+	position: relative;
+	z-index: 1;
+	width: 22%;
+	font-size: 20px;
+}
+
+.trip-stop-info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 75%;
+}
+
+.trip-stop-name {
+	font-weight: bold;
+	position: relative;
+	z-index: 1;
+	color: #fff;
+	margin-right: 10px;
+}
+
+.trip-platform {
+	color: #ccc;
+	position: relative;
+	z-index: 1;
+	font-size: 20px;
+}
+
+.trip-stopover.trip-cancelled::before {
+	background-color: red;
+}
+
+.trip-stopover.trip-delayed .trip-stop-time,
+.trip-stopover.trip-delayed .trip-stop-name {
+	color: red;
+}
+
+.trip-delay {
+	color: red;
+	font-weight: bold;
+	margin-left: 5px;
+}
+
+/* Warnungen */
+.trip-warnings {
+	padding: 20px;
+	background-color: #222;
+	color: #f00;
+	margin-bottom: 20px;
+}
+
+.trip-warning-item {
+	font-size: 1rem;
+	margin: 5px 0;
+}
+
+/* Anpassungen für mobile Geräte */
+@media (max-width: 1024px) {
+	.trip-title h1 {
+		font-size: 2rem;
+	}
+
+	.trip-date {
+		font-size: 0.8rem;
+		margin-top: 5px;
+	}
+
+	.trip-duration-info {
+		flex: 0 1 180px;
+		font-size: 0.8rem;
+	}
+
+	.trip-stop-time {
+		font-size: 0.9rem;
+	}
+
+	.trip-stop-name {
+		font-size: 1rem;
+	}
+
+	.trip-platform {
+		font-size: 0.9rem;
+	}
+}
+
+@media (max-width: 768px) {
+	.trip-header {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
+	.trip-title {
+		width: 100%;
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
+	.trip-title h1 {
+		font-size: 1.8rem;
+	}
+
+	.trip-date {
+		font-size: 0.8rem;
+		margin-bottom: 10px;
+	}
+
+	.trip-duration-info {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		margin-top: 10px;
+		align-items: center;
+	}
+
+	.trip-logo {
+		max-width: 60px;
+		height: auto;
+		margin-bottom: 5px;
+	}
+
+	.trip-duration {
+		font-size: 0.9rem;
+		margin-top: 5px;
+	}
+
+	.trip-stop-time {
+		font-size: 0.8rem;
+	}
+
+	.trip-stop-name {
+		font-size: 0.9rem;
+	}
+
+	.trip-platform {
+		font-size: 0.8rem;
+	}
+
+	.trip-card-icon {
+		max-width: 25px;
+		margin: -5px 10px 0 0;
+	}
+
+	.trip-status {
+		font-size: 0.9rem;
+	}
+
+	#originStation,
+	#destinationStation {
+		font-size: 1rem;
+	}
+
+	#originTime,
+	#destinationTime {
+		font-size: 0.8rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.trip-header {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		margin-bottom: 10px;
+	}
+
+	.trip-title h1 {
+		font-size: 1.5rem;
+		margin-bottom: 5px;
+	}
+
+	.trip-date {
+		font-size: 0.7rem;
+		margin-bottom: 10px;
+	}
+
+	.trip-logo {
+		max-width: 50px;
+		height: auto;
+		margin-bottom: 5px;
+	}
+
+	.trip-duration-info {
+		width: 100%;
+		margin-top: 10px;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.trip-duration {
+		font-size: 0.8rem;
+		margin-top: 5px;
+	}
+
+	.trip-status {
+		font-size: 0.8rem;
+		margin-top: 10px;
+	}
+
+	.trip-stop-time,
+	.trip-stop-info {
+		font-size: 0.8rem;
+	}
+
+	.trip-stop-time {
+		font-size: 0.65rem;
+	}
+
+	.trip-stop-name {
+		font-size: 0.8rem;
+	}
+
+	.trip-platform {
+		font-size: 0.7rem;
+	}
+
+	.trip-progress-bar-container {
+		height: 3px;
+		margin-top: 10px;
+	}
+
+	.trip-progress {
+		font-size: 0.8rem;
+	}
+}
+
+
+
+
+#mapModal {
+	display: none; /* Modal standardmäßig verstecken */
+	position: fixed; /* Modal über den anderen Inhalten positionieren */
+	z-index: 1000; /* Modal über allem anderen anzeigen */
+	left: 50%; /* Modal horizontal zentrieren */
+	top: 50%; /* Modal vertikal zentrieren */
+	transform: translate(-50%, -50%); /* Verschiebung um die Hälfte der Breite und Höhe */
+	background-color: rgba(0, 0, 0, 0.8); /* Optional: Dunkler Hintergrund */
+	padding: 20px; /* Optional: Innenabstand */
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Optional: Schatteneffekt */
+	border-radius: 10px; /* Optional: Abgerundete Ecken */
+}
+
+.modal-content {
+	position: relative;
+	width: 80vw; /* 80% der Ansichtsbreite */
+	max-width: 1500px; /* Maximale Breite */
+	height: 80vh; /* 80% der Ansichtshöhe */
+	max-height: 1000px; /* Maximale Höhe */
+	background-color: #333; /* Hintergrundfarbe des Modalinhalts */
+	padding: 0; /* Entfernt den Innenabstand */
+	border-radius: 10px; /* Abgerundete Ecken */
+	overflow: hidden; /* Verhindert das Überlaufen des Inhalts */
+}
+
+#map {
+	width: 100%; /* Volle Breite nutzen */
+	height: 100%; /* Volle Höhe nutzen */
+}
+
+.close {
+	position: absolute;
+	top: 10px;
+	right: 20px;
+	font-size: 30px;
+	color: red;
+	cursor: pointer;
+	z-index: 10;
+}
+
+
+.close:hover,
+.close:focus {
+	color: #d3d3d3;
+	text-decoration: none;
+	cursor: pointer;
+}

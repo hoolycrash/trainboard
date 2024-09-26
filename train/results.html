@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suchergebnisse</title>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+
+<div id="resultsContainer">
+    <h1>Suchergebnisse</h1>
+    <div id="results"></div>
+</div>
+
+<script>
+    async function fetchSearchResults() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const trainNumber = urlParams.get('trainNumber');
+        const limit = urlParams.get('limit') || 10; // Standardwert ist 10, wenn kein Limit angegeben wird
+
+        const response = await fetch(`https://data.cuzimmartin.dev/search-train?trainNumber=${encodeURIComponent(trainNumber)}&limit=${limit}`);
+        const trips = await response.json();
+
+        displayResults(trips);
+    }
+
+    function displayResults(trips) {
+        const resultsContainer = document.getElementById('results');
+        resultsContainer.innerHTML = ''; // Clear previous results
+
+        if (trips.length === 0) {
+            resultsContainer.innerHTML = '<p>Keine Ergebnisse gefunden.</p>';
+            return;
+        }
+
+        trips.forEach(trip => {
+            const suggestionDiv = document.createElement('div');
+            suggestionDiv.classList.add('suggestion');
+
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = `Zug: ${trip.route.route_short_name} (${trip.trip_id})`;
+
+            const routeSpan = document.createElement('span');
+            routeSpan.textContent = `${trip.stops[0].stop_name} -> ${trip.stops[trip.stops.length - 1].stop_name}`;
+
+            const link = document.createElement('a');
+            link.href = `/train/${trip.route.route_short_name}`;
+            link.textContent = 'Details ansehen';
+
+            suggestionDiv.appendChild(nameSpan);
+            suggestionDiv.appendChild(routeSpan);
+            suggestionDiv.appendChild(link);
+
+            suggestionDiv.addEventListener('click', () => {
+                window.location.href = link.href;
+            });
+
+            resultsContainer.appendChild(suggestionDiv);
+        });
+    }
+
+
+    fetchSearchResults();
+
+</script>
+
+</body>
+</html>

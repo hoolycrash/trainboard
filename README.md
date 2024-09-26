@@ -22,16 +22,11 @@ If you wish to contribute to this project, please feel free to do so. However, i
 
 Therefore, if you intend to make functional or visual changes that deviate from the original purpose, consider creating your own project using the code provided here.
 
-Additionally, `please be aware that one of the significant advantages of this application is its ability to run locally in a web browser without requiring a complicated setup. Preserving this functionality would be highly appreciated :)`
-
-To ensure that your code will be accepted, it is recommended to start by contributing to planned features listed below: 
-
-- Optimise Coach Position Indicator (`db-wagenreihung.html`)
-- Complete S-Bahn Signet styles in `/assets/css/line-colors.css`
-- Train Remarks, currently only available on large screens (`departures.html`,`arrivals.html`,`suburban.html`)
-- Optimise javascript and outsource it to single files to reduce clutter and storage space
-- Improving accessibility
-- Better Optimisation for different screen sizes
+```
+Please be aware that one of the significant advantages of this application
+is its ability to run locally in a webbrowser without requiring a complicated setup.
+Preserving this functionality would be highly appreciated :)
+```
 
 ## Follow me:
 [![linkedin](https://img.shields.io/badge/twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/SBahnFahrer)

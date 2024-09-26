@@ -163,7 +163,7 @@ fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
 	}
 	
 	if (data.hasTaxiRank === true) {
-		servicesTable.innerHTML += "<tr><td><img src=\"./assets/icons/hasTaxiRank.svg\" class=\"serviceicon\"><td class=\"wide\">Taxirank</td><td><span class=\"secondary\">Ja</span></td></tr>";
+		servicesTable.innerHTML += "<tr><td><img src=\"./assets/icons/hasTaxiRank.svg\" class=\"serviceicon\"><td class=\"wide\">Taxistand</td><td><span class=\"secondary\">Ja</span></td></tr>";
 	}
 		
 	//FACILITIES
@@ -187,7 +187,12 @@ fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
 	
 	console.log('Active: '+  facilityActiveCounter)
 	
-	facilitiesstatusTable.innerHTML += "<tr><td><img src=\"./assets/icons/facilityActive.svg\" class=\"serviceicon\"></td><td class=\"wide\">" + facilityActiveCounter + " Anlagen in Betrieb</tr>";
+	if (facilityActiveCounter === 1) {
+		facilitiesstatusTable.innerHTML += "<tr><td><img src=\"./assets/icons/facilityActive.svg\" class=\"serviceicon\"></td><td class=\"wide\">" + facilityActiveCounter + " Anlage in Betrieb</tr>";
+	} else {
+		facilitiesstatusTable.innerHTML += "<tr><td><img src=\"./assets/icons/facilityActive.svg\" class=\"serviceicon\"></td><td class=\"wide\">" + facilityActiveCounter + " Anlagen in Betrieb</tr>";
+	}
+	
 	
 	if (facilityActiveCounter === 0 && facilityInactiveCounter === 0) {
 		document.getElementById('facilitystatusbox').classList.add('hidden');
@@ -227,15 +232,16 @@ fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
 	fetch(`https://data.cuzimmartin.dev/weather?city=${data.mailingAddress.city}`)
 	.then(response => response.json())
 	.then(weatherdata => {
-		
-		console.log(weatherdata.main.temp);
-		
-		console.log(weatherdata.weather[0].description);
-		
-		document.getElementById('weather').innerHTML = "<a href=\"weather.html?city=" + data.mailingAddress.city + "\"><div class=\"button\">" + Math.floor(weatherdata.main.temp) + "°C " + weatherdata.weather[0].description +"</div></a>";	  
-	
+
+		if (weatherdata?.alerts?.[0]?.properties?.EVENT != null) {
+			document.getElementById('weather').innerHTML = "<a href=\"weather.html?city=" + data.mailingAddress.city + "\"><div class=\"button\">" + Math.floor(weatherdata.main.temp) + "°C " + weatherdata.weather[0].description +"<br><div class=\"weatherwarning\">📢 " + weatherdata?.alerts?.[0]?.properties?.EVENT?.replace("VORABINFORMATION", "") + "</div></div></a>";	  
+		} else {
+			document.getElementById('weather').innerHTML = "<a href=\"weather.html?city=" + data.mailingAddress.city + "\"><div class=\"button\">" + Math.floor(weatherdata.main.temp) + "°C " + weatherdata.weather[0].description +"<br></div></a>";	  
+		}
+
 	})
 
+	
 })
 .catch(error => {
 	console.error('Error fetching station data:', error);

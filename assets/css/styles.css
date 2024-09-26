@@ -40,6 +40,22 @@ body {
 
 }
 
+.weatherwarning {
+	background-color: #f3f3f3;
+	border: solid 1px #202020;
+	padding: 10px;
+	margin-top: 5px;
+	color: #000;
+	border-radius: 10px;
+	box-shadow: inset 0px -20px 60px #ffe1e1;
+	overflow-x: hidden;
+}
+
+hr {
+	border-color: #fff;
+	opacity: 0.2;
+}
+
 .notouch {
 	height: 100%;
 	width: 100%;

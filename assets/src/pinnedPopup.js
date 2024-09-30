@@ -127,154 +127,134 @@ document.body.appendChild(pinnedPopup);
 
 
 
-
 async function fetchAndDisplayData() {
 
-            // Funktion zum Abrufen des Cookies
-        function getCookie(name) {
-            const nameEQ = name + "=";
-            const ca = document.cookie.split(';');
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-            }
-            return null;
-
-            
+    // Funktion zum Abrufen des Cookies
+    function getCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
         }
+        return null;
+    }
 
-        
-        
+    // Den Wert des Cookies 'pinnedjourney' abrufen und in einer Variablen speichern
+    const pinnedJourney = getCookie('pinnedjourney');
 
-        
-    
-        // Den Wert des Cookies 'pinnedjourney' abrufen und in einer Variablen speichern
-        const pinnedJourney = getCookie('pinnedjourney');
+    // Wenn der Cookie existiert, gib den Wert aus
+    if (pinnedJourney) {
+        const tripId = pinnedJourney;
+        console.log(tripId);  // Wenn du den Wert von `pinnedJourney` überprüfen möchtest, wird jetzt `tripId` angezeigt
+        document.getElementById('linebadge').classList.add('badgeClassProductName');
+    } else {
+        console.log('Cookie "pinnedJourney" wurde nicht gefunden.');
+        document.getElementById('pinnedPopup').classList.add('hidden');
+        return;  // Beende die Funktion, um keine API-Anfrage zu stellen
+    }
 
-        
-    
-        // Wenn der Cookie existiert, gib den Wert aus
-        if (pinnedJourney) {
-            const tripId = pinnedJourney;
-            console.log(tripId);  // Wenn du den Wert von `pinnedJourney` überprüfen möchtest, wird jetzt `tripId` angezeigt
-            document.getElementById('linebadge').classList.add('badgeClassProductName');
-            
+    const currentUrl = window.location.href;
 
-            
-        } else {
-            console.log('Cookie "pinnedJourney" wurde nicht gefunden.');
-            document.getElementById('pinnedPopup').classList.add('hidden');
+    // Funktion, um URL-Parameter zu extrahieren
+    function getParameterByName(name, url) {
+        if (!url) url = window.location.href;
+        name = name.replace(/[\[\]]/g, '\\$&');
+        const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+        const results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    }
 
-            
+    // Event Listener für Klick auf das Popup, um auf die Trip-Seite zu leiten
+    document.getElementById('pinnedPopup').addEventListener('click', function () {
+        // Seite mit der Trip-ID weiterleiten
+        window.location.href = `trip.html?tripId=${pinnedJourney}`;
+    });
+
+    const tripID = pinnedJourney;
+
+    let profile = 'oebb';  // Standardprofil ist 'oebb'
+
+    let data;
+    let primaryEndpoint = profile === 'oebb' ? 'oebb-trip' : 'trip';
+    let fallbackProfile = profile === 'oebb' ? 'db' : 'oebb';
+    let fallbackEndpoint = fallbackProfile === 'oebb' ? 'oebb-trip' : 'trip';
+
+    console.log(pinnedJourney);
+
+    try {
+        const apiUrl = `https://data.cuzimmartin.dev/${primaryEndpoint}?tripId=${(pinnedJourney)}`;
+        const response = await fetch(apiUrl);
+        if (!response.ok) {
+            throw new Error(`Fehler beim Abrufen der Daten von ${primaryEndpoint}: ${response.statusText}`);
         }
+        data = await response.json();
 
-        const currentUrl = window.location.href;
-
-        function getParameterByName(name, url) {
-            if (!url) url = window.location.href;
-            name = name.replace(/[\[\]]/g, '\\$&');
-            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
-            const results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, ' '));
-            
+        if (!data.trip) {
+            throw new Error('Keine Daten für diese Reise gefunden.');
         }
-        document.getElementById('pinnedPopup').addEventListener('click', function() {
-            // Seite mit der Trip-ID weiterleiten
-            window.location.href = `trip.html?tripId=${pinnedJourney}`;
-        });
-        
-        const tripID = (pinnedJourney);
-
-        let profile = ('oebb'); // Standardprofil ist 'oebb'
-
-        let data;
-        let primaryEndpoint = profile === 'oebb' ? 'oebb-trip' : 'trip';
-        let fallbackProfile = profile === 'oebb' ? 'db' : 'oebb';
-        let fallbackEndpoint = fallbackProfile === 'oebb' ? 'oebb-trip' : 'trip';
-
-        console.log(pinnedJourney);
-       
-
+    } catch (error) {
+        console.warn(`Problem mit der ${primaryEndpoint} API, wechsle zur ${fallbackEndpoint} API.`, error);
         try {
-            const apiUrl = `https://data.cuzimmartin.dev/${primaryEndpoint}?tripId=${(pinnedJourney)}`;
+            const apiUrl = `https://data.cuzimmartin.dev/${fallbackEndpoint}?tripId=${(pinnedJourney)}`;
             const response = await fetch(apiUrl);
             if (!response.ok) {
-                throw new Error(`Fehler beim Abrufen der Daten von ${primaryEndpoint}: ${response.statusText}`);
+                throw new Error(`Fehler bei der Fallback API (${fallbackEndpoint}): ${response.statusText}`);
             }
             data = await response.json();
-
-            if (!data.trip) {
-                throw new Error('Keine Daten für diese Reise gefunden.');
-            }
-        } catch (error) {
-            console.warn(`Problem mit der ${primaryEndpoint} API, wechsle zur ${fallbackEndpoint} API.`, error);
-            try {
-                const apiUrl = `https://data.cuzimmartin.dev/${fallbackEndpoint}?tripId=${(pinnedJourney)}`;
-                const response = await fetch(apiUrl);
-                if (!response.ok) {
-                    throw new Error(`Fehler bei der Fallback API (${fallbackEndpoint}): ${response.statusText}`);
-                }
-                data = await response.json();
-                profile = fallbackProfile; // Setze das Profil auf das Fallback-Profil
-            } catch (secondError) {
-                console.error('Fehler auch bei der Fallback API:', secondError);
-                const statusElement = document.getElementById('tripStatus');
-                statusElement.textContent = `Fehler beim Abrufen der Zugdaten über beide APIs.`;
-                return;
-            }
+            profile = fallbackProfile;  // Setze das Profil auf das Fallback-Profil
+        } catch (secondError) {
+            console.error('Fehler auch bei der Fallback API:', secondError);
+            const statusElement = document.getElementById('tripStatus');
+            statusElement.textContent = `Fehler beim Abrufen der Zugdaten über beide APIs.`;
+            return;
         }
+    }
 
+    // Titel und Details setzen
+    var lineName = data.trip.line.name.split('(')[0];
+    document.getElementById('linebadge').textContent = `${lineName}`;
 
-        
+    // Dauer berechnen
+    const departureTime = new Date(data.trip.plannedDeparture);
+    const arrivalTime = new Date(data.trip.plannedArrival);
+    const duration = (arrivalTime - departureTime) / (1000 * 60 * 60);  // Stunden
+    const minutes = Math.floor((duration % 1) * 60);
+    document.getElementById('tripDurationTime').textContent = `${Math.floor(duration)}:${minutes.toString().padStart(2, '0')} Std`;
 
-        // Titel und Details setzen
-        //document.getElementById('trainTitle').innerHTML = `${data.trip.line.fahrtNr}`;
+    // Ursprungsstation und Zielstation setzen
+    document.getElementById('originStation').textContent = data.trip.origin.name;
+    document.getElementById('originTime').textContent = departureTime.toLocaleTimeString('de-DE', {
+        hour: '2-digit',
+        minute: '2-digit',
+    });
 
-        var lineName = data.trip.line.name.split('(')[0]; 
-        document.getElementById('linebadge').textContent = `${lineName}`;
+    console.log(departureTime);  // Prüfe, ob departureTime ein gültiges Datum ist
 
-        // Dauer berechnen
-        const departureTime = new Date(data.trip.plannedDeparture);
-        const arrivalTime = new Date(data.trip.plannedArrival);
-        const duration = (arrivalTime - departureTime) / (1000 * 60 * 60); // Stunden
-        const minutes = Math.floor((duration % 1) * 60);
-        document.getElementById('tripDurationTime').textContent = `${Math.floor(duration)}:${minutes.toString().padStart(2, '0')} Std`;
+    document.getElementById('destinationStation').textContent = data.trip.destination.name;
+    document.getElementById('destinationTime').textContent = arrivalTime.toLocaleTimeString('de-DE', {
+        hour: '2-digit',
+        minute: '2-digit',
+    });
 
-        // Ursprungsstation und Zielstation setzen
-        document.getElementById('originStation').textContent = data.trip.origin.name;
-        document.getElementById('originTime').textContent = departureTime.toLocaleTimeString('de-DE', {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+    // Header Farbe
+    const badgeClassProductName = encodeURIComponent(data.trip.line.productName);
+    const badgeClassProduct = encodeURIComponent(data.trip.line.product);
+    const badgeClassLineOperator = encodeURIComponent(lineName.replace(/\s+/g, '')) + encodeURIComponent(data.trip.line.operator.id);
+    const badgeClassOperator = encodeURIComponent(data.trip.line.operator.id);
 
-        console.log(departureTime); // Prüfe, ob departureTime ein gültiges Datum ist
+    document.getElementById('linebadge').classList.add(badgeClassProductName);
+    document.getElementById('linebadge').classList.add(badgeClassProduct);
+    document.getElementById('linebadge').classList.add(badgeClassLineOperator);
+    document.getElementById('linebadge').classList.add(badgeClassOperator);
 
-        document.getElementById('destinationStation').textContent = data.trip.destination.name;
-        document.getElementById('destinationTime').textContent = arrivalTime.toLocaleTimeString('de-DE', {
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+    // Dynamische Fortschrittsleiste aktualisieren
+    setProgressBar(departureTime, new Date(), arrivalTime);
 
-         //Header Farbe
-         const badgeClassProductName = encodeURIComponent(data.trip.line.productName);
-        const badgeClassProduct = encodeURIComponent(data.trip.line.product);
-        const badgeClassLineOperator = encodeURIComponent(lineName.replace(/\s+/g, '')) + encodeURIComponent(data.trip.line.operator.id);
-        const badgeClassOperator = encodeURIComponent(data.trip.line.operator.id);
-               
-        
-        document.getElementById('linebadge').classList.add(badgeClassProductName);
-        document.getElementById('linebadge').classList.add(badgeClassProduct);
-        document.getElementById('linebadge').classList.add(badgeClassLineOperator);
-        document.getElementById('linebadge').classList.add(badgeClassOperator);
-        
-
-        // Dynamische Fortschrittsleiste aktualisieren
-        setProgressBar(departureTime, new Date(), arrivalTime);
-
-        function setProgressBar(departureTime, currentTime, arrivalTime) {
+    function setProgressBar(departureTime, currentTime, arrivalTime) {
         const startTime = new Date(departureTime);
         const endTime = new Date(arrivalTime);
 
@@ -293,17 +273,4 @@ async function fetchAndDisplayData() {
         const progressBar = document.querySelector('.trip-progress');
         progressBar.style.width = progressPercentage + '%';
     }
-
-
-
-    
-
-    }
-
-   
-
- 
-    
-
-    
-  
+}

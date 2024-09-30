@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Wetter</title>
+	<title id="title">Wetter</title>
 	<link rel="stylesheet" href="./assets/css/styles.css">
 	<link rel="stylesheet" href="./assets/css/dark-styles.css">
 	<link rel="stylesheet" href="./assets/css/line-colors.css">
@@ -14,6 +14,8 @@
 
 <body>
 
+	
+<script src="./assets/src/pinnedPopup.js"></script>
 <center>
 
 <nav id="navbar"><div class="tabs"><span class="active">&nbsp;Wetter <span id="city"></span>&nbsp;</a></div><div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div><div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg" class="mediumicon"></a></div></nav>
@@ -74,7 +76,12 @@ var city = urlParams.get('city');
 		if (weatherdata?.alerts?.[0]?.properties?.EVENT != null) {
 			document.getElementById('warnings').innerHTML = "<div class=\"weatherwarning\"><small class=\"secondary\">📢 Wetterwarnung</small><br><b>" + weatherdata.alerts[0].properties?.EVENT + "</b><br><small>" + weatherdata.alerts[0].properties?.DESCRIPTION + "<hr><b>Herausgeber:</b> " + weatherdata.alerts[0].properties?.CONTACT + "</small></div>";	  
 		}
+
+		document.getElementById('title').innerHTML = weatherdata.name + " " + Math.floor(weatherdata.main.temp) + "°C - " + weatherdata.weather[0].description;
 	})
+
+	fetchAndDisplayData();
+
 </script>
 
 </body>

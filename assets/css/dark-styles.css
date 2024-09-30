@@ -54,4 +54,45 @@
 		box-shadow: inset 0px -20px 60px #300505;
 		color: #fff;
 	}
+
+	.marked-stopover {
+		background-color: #212614;
+	}
+
+	.trip-stop-name {
+		color: #fff!important;
+	}
+
+	.trip-stop-time {
+		color: #fff;
+	}
+
+	.trip-warnings {
+		background-color: #222;
+		color: #fff;
+	}
+
+	.trip-warning-item {
+		border-bottom: solid #323232 1px;
+	}
+
+	.trip-warning-header {
+		background-color: #c9cb3b;
+	}
+
+	.pill {
+		color: #c9cb3b;
+	}
+
+	.coloredSpace {
+		background-color: #222222;
+		color: #fff;
+	}
+
+
+	.multicolorspinner {
+		filter: invert(1);
+	}
+
+	
 }

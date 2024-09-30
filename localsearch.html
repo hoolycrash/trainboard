@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Nahverkehr Abfahrten</title>
 	<link rel="stylesheet" href="./assets/css/styles.css">
+	<link rel="stylesheet" href="./assets/css/line-colors.css">
 	<link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
 	<link rel="manifest" href="/manifest.json" type="application/json" >
 	<meta name="theme-color" content="#000">
@@ -13,6 +14,8 @@
 </head>
 
 <body class="home">
+
+<script src="./assets/src/pinnedPopup.js"></script>
 
 <center>
 
@@ -134,6 +137,9 @@
       });
 	  
     }
+
+	fetchAndDisplayData();
+
   </script>
   
   <script type="text/javascript" src="./assets/src/backgroundimage.js"></script>

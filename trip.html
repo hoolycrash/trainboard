@@ -27,55 +27,136 @@
         <div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div>
         <div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg"
                                                                        class="mediumicon"></a></div>
-        <div class="iconbar"><img id="openMapBtn" class="trip-card-icon" src="./assets/icons/train-map.png" alt="Card Icon"></div>
+        
     </nav>
 
-    <br>
+    <div class="coloredSpace" id="bigheaderbox">
+        <div class="darker">
+            <br>
+            <div class="blanktable">
+            <div class="trip-header">
+                <div class="trip-title">
+                    
+                    <div class="whiteBadge" id="linebadge"></div><br>
+                    
+                </div>
+            
+            </div>
+            
+                <div class="trip-progress-bar">
+                    <div class="trip-station-info">
+                        <div class="trip-origin-info">
+                            <span id="originStation">Origin Station</span>
+                        </div>
+                        <div class="trip-destination-info">
+                            <span id="destinationStation">Destination Station</span>
+                        </div>
+                    </div>
+                    
+                    <div class="trip-time-info">
+                        <div class="trip-origin-time">
+                            <span id="originTime">00:00</span>
+                        </div>
+                        <div class="trip-duration-div">
+                            <span class="trip-duration" id="">Dauer: <span id="tripDurationTime"></span></span>
+                        </div>
+                        <div class="trip-destination-time">
+                            <span id="destinationTime">00:00</span>
+                        </div>
+                    </div>
+
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="coloredSpace displayflex">
+        <div class="tinybutton">
+            <img src="./assets/icons/train.svg" class="slidericon"><br>
+            <span id="trainTitle">Zugnummer</span><br>
+            <small class="disabled">Zugnummer</small>
+        </div>
+
+        <div class="tinybutton">
+            <img src="./assets/icons/calendar.svg" class="slidericon"><br>
+            <span id="trip-date">Tag </span><br>
+            <small class="disabled">Datum</small>
+        </div>
+
+        
+        <div class="tinybutton" id="openMapBtn">
+            <img src="./assets/icons/train-map.svg" class="slidericon"><br>
+            Karte<br>
+            <small class="disabled">Strecke & Live-Position</small>
+        </div>
+
+        <div class="tinybutton" id="myDiv">
+            <img src="./assets/icons/addtrain.png" id="addtrainIcon" class="slidericon"><br>
+            <span id="pinIt">Anheften</span><br>
+            <small class="disabled">Fahrt anpinnen</small>
+        </div>
+
+        <a href="https://www.bahn.de/buchung/jetzt-einchecken?dbkanal_007=tutorialSlider_14-1_link_KomfortCheckinimBrowseraufrufen">
+            <div class="tinybutton">
+                <img src="./assets/icons/comfortcheckin.svg" class="slidericon"><br>
+                Komfort-Checkin<br>
+                <small class="disabled">Jetzt einchecken</small>
+            </div>
+        </a>
+       
+    </div>
+    
 
     <div class="trip-container-centered">
+
+        <div class="trip-status-container"></div>
         <!-- Header der Seite mit Zugdetails -->
-        <div class="trip-header">
-            <div class="trip-title">
-                <h1 id="trainTitle">Zugnummer</h1>
-                <span class="trip-date" id="trip-date">Tag </span>
-            </div>
-            <div class="trip-duration-info">
-                <img class="trip-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Logo_%C3%96BB.svg/2560px-Logo_%C3%96BB.svg.png" alt="ÖBB Logo">
-                <span class="trip-duration" id="tripDuration">Dauer</span>
-            </div>
-        </div>
-        <div class="trip-status-container">
-            <div class="trip-status" id="tripStatus">Status</div>
-        </div>
-        <div class="trip-progress-bar">
-            <div class="trip-station-info">
-                <div class="trip-origin-info">
-                    <span id="originStation">Origin Station</span>
-                </div>
-                <div class="trip-destination-info">
-                    <span id="destinationStation">Destination Station</span>
-                </div>
-            </div>
-            <div class="trip-progress-bar-container">
-                <div class="trip-progress"></div>
-            </div>
-            <div class="trip-time-info">
-                <div class="trip-origin-time">
-                    <span id="originTime">00:00</span>
-                </div>
-                <div class="trip-destination-time">
-                    <span id="destinationTime">00:00</span>
-                </div>
-            </div>
-        </div>
+
+
+        
+
+
+       
 
         <!-- Modal -->
+        
+            <div class="secondary" id="tripStatus"><img src="./assets/blackSpinner.svg" class="loadingspinner multicolorspinner"></div>
+        </div>
         <div id="mapModal" style="display: none;">
             <div class="modal-content">
                 <span class="close">&times;</span>
                 <div id="map"></div>
             </div>
         </div>
+
+
+        <!-- Liste der Haltestellen -->
+        <div class="trip-stopovers blanktext">
+            <!-- Dynamisch generierte Stopover-Elemente werden hier eingefügt -->
+        </div>
+
+        <!-- Warnungen und Hinweise -->
+        <div class="trip-warnings">
+            <ul id="warningsList">
+                <!-- Dynamisch generierte Warnungen werden hier eingefügt -->
+            </ul>
+        </div>
+
+        <br>
+
+        <small>Datenanbieter:</small><br>
+        <img class="trip-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Logo_%C3%96BB.svg/2560px-Logo_%C3%96BB.svg.png" alt="ÖBB Logo" class="dataproviderLogo">
+    
+    
+    
+        <br><br><br>
+    </div>
+
+
+   
+
+</center>
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -147,6 +228,7 @@
 
                 async function initMap() {
                     const tripId = getParameterByName('tripId');
+                    
                     let profile = getParameterByName('profile') || 'oebb'; // Standardprofil ist 'oebb'
 
                     if (!tripId) {
@@ -268,30 +350,6 @@
                 }
             });
 
-        </script>
-
-
-        <!-- Liste der Haltestellen -->
-        <div class="trip-stopovers">
-            <!-- Dynamisch generierte Stopover-Elemente werden hier eingefügt -->
-        </div>
-
-        <!-- Warnungen und Hinweise -->
-        <div class="trip-warnings">
-            <ul id="warningsList">
-                <!-- Dynamisch generierte Warnungen werden hier eingefügt -->
-            </ul>
-        </div>
-    </div>
-
-
-
-
-    <br><br><br>
-
-</center>
-
-<script>
     async function fetchAndDisplayData() {
         const currentUrl = window.location.href;
 
@@ -306,6 +364,8 @@
         }
 
         const tripId = getParameterByName('tripId', currentUrl);
+        const stationId = getParameterByName('stationID', currentUrl);
+        
         let profile = getParameterByName('profile', currentUrl) || 'oebb'; // Standardprofil ist 'oebb'
 
         let data;
@@ -342,16 +402,101 @@
             }
         }
 
+
+        
+
+
+        function updateTrainStatus(trip) {
+        let currentTime = new Date();
+        let departureTime = new Date(trip.departure);
+        let arrivalTime = new Date(trip.arrival);
+
+        const statusElement = document.getElementById('tripStatus');
+
+
+        // Wenn der Zug noch nicht abgefahren ist
+        if (currentTime < departureTime) {
+            const timeUntilDeparture = departureTime - currentTime;
+            const minutesUntilDeparture = Math.round(timeUntilDeparture / 60000);
+            const hours = Math.floor(minutesUntilDeparture / 60);
+            const minutes = minutesUntilDeparture % 60;
+
+            let timeString;
+            if (hours > 0) {
+                timeString = `${hours} Stunde${hours > 1 ? 'n' : ''} und ${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
+            } else {
+                timeString = `${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
+            }
+
+            const platformInfo = trip.origin.departurePlatform ? `auf Gleis ${trip.origin.departurePlatform}` : '';
+            statusElement.textContent = `Fährt in ${timeString} von 🔻 ${trip.origin.name} ${platformInfo} ab.`;
+
+            
+            
+            return;
+
+        }
+
+        // Wenn der Zug bereits abgefahren ist, finde den nächsten Halt
+        let nextStop = null;
+        for (let i = 0; i < trip.stopovers.length; i++) {
+            const stop = trip.stopovers[i];
+            if (new Date(stop.plannedDeparture) > currentTime) {
+                nextStop = stop;
+                break;
+            }
+        }
+
+       
+
+        if (nextStop) {
+            const timeUntilNextStop = new Date(nextStop.plannedArrival) - currentTime;
+            const minutesUntilNextStop = Math.round(timeUntilNextStop / 60000);
+
+            if (minutesUntilNextStop >= 0) {
+                const hours = Math.floor(minutesUntilNextStop / 60);
+                const minutes = minutesUntilNextStop % 60;
+
+                let timeString;
+                if (hours > 0) {
+                    timeString = `${hours} Stunde${hours > 1 ? 'n' : ''} und ${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
+                } else {
+                    timeString = `${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
+                }
+
+                const platformInfo = nextStop.arrivalPlatform || nextStop.departurePlatform ?
+                    `auf Gleis ${nextStop.arrivalPlatform || nextStop.departurePlatform}` : '';
+
+                statusElement.textContent = `Erreicht in ${timeString} die Station 🔻 ${nextStop.stop.name} ${platformInfo}.`;
+            } else {
+                statusElement.textContent = `Zug hat die Station 🔻 ${nextStop.stop.name} erreicht.`;
+            }
+        } else {
+            // Wenn kein nächster Halt mehr bevorsteht oder kein Remark vorhanden ist
+            if (currentTime > arrivalTime) {
+                statusElement.textContent = `Zug hat sein Ziel 🔻 ${trip.destination.name} erreicht.`;
+            } else {
+                statusElement.textContent = `Zug ist auf dem Weg zu 🔻 ${trip.destination.name}.`;
+            }
+        }
+    }
+    
+
+
+
         // Titel und Details setzen
-        document.getElementById('trainTitle').textContent = `${data.trip.line.productName} ${data.trip.line.fahrtNr}`;
-        document.getElementById('title').textContent = `Zuginformationen zu ${data.trip.line.productName} ${data.trip.line.fahrtNr}`;
+        document.getElementById('trainTitle').innerHTML = `${data.trip.line.fahrtNr}`;
+
+        var lineName = data.trip.line.name.split('(')[0]; 
+        document.getElementById('linebadge').textContent = `${lineName}`;
+        document.getElementById('title').textContent = `${data.trip.line.productName} ${data.trip.line.fahrtNr} 🡺 ${data.trip.direction}`;
 
         // Dauer berechnen
         const departureTime = new Date(data.trip.plannedDeparture);
         const arrivalTime = new Date(data.trip.plannedArrival);
         const duration = (arrivalTime - departureTime) / (1000 * 60 * 60); // Stunden
         const minutes = Math.floor((duration % 1) * 60);
-        document.getElementById('tripDuration').textContent = `${Math.floor(duration)}:${minutes.toString().padStart(2, '0')} Std`;
+        document.getElementById('tripDurationTime').textContent = `${Math.floor(duration)}:${minutes.toString().padStart(2, '0')} Std`;
 
         // Datum setzen
         const tripDate = departureTime.toLocaleDateString('de-DE', {
@@ -373,10 +518,10 @@
             minute: '2-digit'
         });
 
-        // Dynamische Fortschrittsleiste aktualisieren
-        setProgressBar(departureTime, new Date(), arrivalTime);
+        
 
         // Haltestellen dynamisch hinzufügen
+        console.log(stationId)
         const stopoversContainer = document.querySelector('.trip-stopovers');
         stopoversContainer.innerHTML = '';
         data.trip.stopovers.forEach(stop => {
@@ -385,21 +530,33 @@
                 stopElement.classList.add('trip-stopover');
                 stopElement.innerHTML = `
                 <div class="trip-stop-time">
-                    <div class="trip-delay" style="font-size: 16px">Halt entfällt</div>
+                    <div class="trip-delay" style="font-size: 16px">Entfällt</div>
                 </div>
                 <div class="trip-stop-info">
                     <span class="trip-stop-name">${stop.stop.name}</span>
                 </div>
             `;
             } else {
+
                 const plannedArrivalTime = stop.plannedArrival ? new Date(stop.plannedArrival).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
                 const actualArrivalTime = stop.arrival ? new Date(stop.arrival).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
                 const plannedDepartureTime = stop.plannedDeparture ? new Date(stop.plannedDeparture).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
                 const actualDepartureTime = stop.departure ? new Date(stop.departure).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
 
-                const arrivalTimeDisplay = plannedArrivalTime === actualArrivalTime ? plannedArrivalTime : `<s>${plannedArrivalTime}</s> <span class="trip-delay">${actualArrivalTime}</span>`;
-                const departureTimeDisplay = plannedDepartureTime === actualDepartureTime ? plannedDepartureTime : `<s>${plannedDepartureTime}</s> <span class="trip-delay">${actualDepartureTime}</span>`;
+                const arrivalTimeDisplay = plannedArrivalTime === actualArrivalTime ? plannedArrivalTime : `<s class=\"disabled\">${plannedArrivalTime}</s> <span>${actualArrivalTime}</span>`;
+                const departureTimeDisplay = plannedDepartureTime === actualDepartureTime ? plannedDepartureTime : `<s class=\"disabled\">${plannedDepartureTime}</s> <span>${actualDepartureTime}</span>`;
 
+                let stopname;
+                if (stationId === stop.stop.id) {
+                    stopname = stop.stop.name + ` huhu`;
+                    stopElement.classList.add('marked-stopover')
+                } else {
+                    stopname = stop.stop.name;
+                }
+
+                //console.log(stationmarker);
+
+                console.log(stopname);
                 stopElement.classList.add('trip-stopover');
                 stopElement.innerHTML = `
                 <div class="trip-stop-time">
@@ -408,17 +565,23 @@
                 </div>
                 <div class="trip-stop-info">
                     <span class="trip-stop-name">${stop.stop.name}</span>
-                    <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gleis ${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
+                    <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class=\"bigonly\">eis</span> ${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
                 </div>
             `;
             }
             stopoversContainer.appendChild(stopElement);
         });
 
+
+        
         // Warnungen dynamisch hinzufügen
         const warningsList = document.getElementById('warningsList');
         warningsList.innerHTML = '';
         if (data.trip.remarks && data.trip.remarks.length > 0) {
+            const WarningHeaderItem = document.createElement('div');
+            WarningHeaderItem.classList.add('trip-warning-header');
+            WarningHeaderItem.innerHTML = `<span class=\"pill\">&nbsp;&nbsp;${data.trip.remarks.length}&nbsp;&nbsp;</span> aktuelle Informationen:`;
+            warningsList.appendChild(WarningHeaderItem);
             const warnings = data.trip.remarks.map(remark => remark.text);
             warnings.forEach(warning => {
                 const warningItem = document.createElement('div');
@@ -427,105 +590,106 @@
                 warningsList.appendChild(warningItem);
             });
         } else {
-            const noWarningsItem = document.createElement('div');
-            noWarningsItem.classList.add('trip-warning-item');
-            noWarningsItem.textContent = 'Keine Warnungen vorhanden.';
-            warningsList.appendChild(noWarningsItem);
+            const WarningHeaderItem = document.createElement('div');
+            WarningHeaderItem.classList.add('trip-warning-item');
+            WarningHeaderItem.textContent = 'Keine Warnungen vorhanden.';
+            warningsList.appendChild(WarningHeaderItem);
         }
 
         // Dynamischen Status des Zuges setzen
         updateTrainStatus(data.trip);
+
+        //Header Farbe
+        const badgeClassProductName = encodeURIComponent(data.trip.line.productName);
+        const badgeClassProduct = encodeURIComponent(data.trip.line.product);
+        const badgeClassLineOperator = encodeURIComponent(lineName.replace(/\s+/g, '')) + encodeURIComponent(data.trip.line.operator.id);
+        const badgeClassOperator = encodeURIComponent(data.trip.line.operator.id);
+        const tripID = encodeURIComponent(data.trip.id);
+
+        
+        
+        
+        //document.getElementById('bigheaderbox').classList.add = (`$}`);
+        document.getElementById('bigheaderbox').classList.add(badgeClassProductName);
+        document.getElementById('bigheaderbox').classList.add(badgeClassProduct);
+        document.getElementById('bigheaderbox').classList.add(badgeClassLineOperator);
+        document.getElementById('bigheaderbox').classList.add(badgeClassOperator);
+
+        document.getElementById('linebadge').classList.add(badgeClassProductName);
+        document.getElementById('linebadge').classList.add(badgeClassProduct);
+        document.getElementById('linebadge').classList.add(badgeClassLineOperator);
+        document.getElementById('linebadge').classList.add(badgeClassOperator);
+
+        let $number = encodeURIComponent(data.trip.id);
+
+        
+
+    // Funktion, um ein Cookie zu setzen
+    function setCookie(name, value, days) {
+        let expires = "";
+        if (days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+
+    // Funktion, um ein Cookie abzurufen
+    function getCookie(name) {
+        const nameEQ = name + "=";
+        const ca = document.cookie.split(';');
+        for (let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    // Funktion beim Klick auf das Div
+    document.getElementById('myDiv').addEventListener('click', function() {
+        // Setze das Cookie
+        setCookie('pinnedjourney', $number, 7); // Cookie für 7 Tage speichern
+        document.getElementById("pinIt").textContent = "Angeheftet";
+        document.getElementById("addtrainIcon").src = "./assets/icons/addedtrain.svg";
+
+        
+
+        // Logge den Cookie-Wert zur Konsole
+        console.log('Cookie-Wert:', cookieValue);
+    }
+
+    );
+
+    // Rufe das Cookie ab
+    const cookieValue = getCookie('pinnedjourney');
+    console.log('Cooooookie Value:', cookieValue);
+
+    const activeValue = `${encodeURIComponent(tripId)}`;
+
+
+    console.log('Active Value', activeValue);
+
+    if (cookieValue === activeValue) {
+        console.log('It is pinned Journey');
+        document.getElementById("pinIt").textContent = "Angeheftet";
+        document.getElementById("addtrainIcon").src = "./assets/icons/addedtrain.svg";
+
+    } else {
+        console.log('It is not pinned Journey');
     }
 
 
-
-    function setProgressBar(departureTime, currentTime, arrivalTime) {
-        const startTime = new Date(departureTime);
-        const endTime = new Date(arrivalTime);
-
-        // Gesamtzeitspanne zwischen Abfahrt und Ankunft
-        const totalTime = endTime - startTime;
-        // Verstrichene Zeit seit der Abfahrt
-        const elapsedTime = currentTime - startTime;
-
-        // Berechnen des Fortschritts als Prozentsatz
-        let progressPercentage = (elapsedTime / totalTime) * 100;
-
-        // Fortschritt auf 0% und 100% beschränken
-        progressPercentage = Math.max(0, Math.min(progressPercentage, 100));
-
-        // Fortschrittsleiste aktualisieren
-        const progressBar = document.querySelector('.trip-progress');
-        progressBar.style.width = progressPercentage + '%';
+    
     }
 
-    function updateTrainStatus(trip) {
-        const currentTime = new Date();
-        const departureTime = new Date(trip.departure);
-        const arrivalTime = new Date(trip.arrival);
+    
 
-        const statusElement = document.getElementById('tripStatus');
 
-        // Wenn der Zug noch nicht abgefahren ist
-        if (currentTime < departureTime) {
-            const timeUntilDeparture = departureTime - currentTime;
-            const minutesUntilDeparture = Math.round(timeUntilDeparture / 60000);
-            const hours = Math.floor(minutesUntilDeparture / 60);
-            const minutes = minutesUntilDeparture % 60;
 
-            let timeString;
-            if (hours > 0) {
-                timeString = `${hours} Stunde${hours > 1 ? 'n' : ''} und ${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
-            } else {
-                timeString = `${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
-            }
-
-            const platformInfo = trip.origin.departurePlatform ? `auf Gleis ${trip.origin.departurePlatform}` : '';
-            statusElement.textContent = `Fährt in ${timeString} von ${trip.origin.name} ${platformInfo} ab.`;
-            return;
-        }
-
-        // Wenn der Zug bereits abgefahren ist, finde den nächsten Halt
-        let nextStop = null;
-        for (let i = 0; i < trip.stopovers.length; i++) {
-            const stop = trip.stopovers[i];
-            if (new Date(stop.plannedDeparture) > currentTime) {
-                nextStop = stop;
-                break;
-            }
-        }
-
-        if (nextStop) {
-            const timeUntilNextStop = new Date(nextStop.plannedArrival) - currentTime;
-            const minutesUntilNextStop = Math.round(timeUntilNextStop / 60000);
-
-            if (minutesUntilNextStop >= 0) {
-                const hours = Math.floor(minutesUntilNextStop / 60);
-                const minutes = minutesUntilNextStop % 60;
-
-                let timeString;
-                if (hours > 0) {
-                    timeString = `${hours} Stunde${hours > 1 ? 'n' : ''} und ${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
-                } else {
-                    timeString = `${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
-                }
-
-                const platformInfo = nextStop.arrivalPlatform || nextStop.departurePlatform ?
-                    `auf Gleis ${nextStop.arrivalPlatform || nextStop.departurePlatform}` : '';
-
-                statusElement.textContent = `Erreicht in ${timeString} die Station ${nextStop.stop.name} ${platformInfo}.`;
-            } else {
-                statusElement.textContent = `Zug hat die Station ${nextStop.stop.name} erreicht.`;
-            }
-        } else {
-            // Wenn kein nächster Halt mehr bevorsteht oder kein Remark vorhanden ist
-            if (currentTime > arrivalTime) {
-                statusElement.textContent = `Zug hat sein Ziel ${trip.destination.name} erreicht.`;
-            } else {
-                statusElement.textContent = `Zug ist auf dem Weg zu ${trip.destination.name}.`;
-            }
-        }
-    }
+   
+    
 
 
 
@@ -537,7 +701,7 @@
     });
 
 
-
+   
 
     function fetchtraincomposition(zugnummer, datetime, stationId) {
 
@@ -737,7 +901,12 @@
             }
             //Next Train
         }
+
+        
     }
+
+    
+       
 
 
     function getVehicleType(fahrzeugbezeichnung) {
@@ -817,6 +986,9 @@
         }
 
         return [fahrzeugbezeichnung, type, series, name];
+        
+
+       
     }
 
 

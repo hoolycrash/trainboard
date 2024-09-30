@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bahnhof</title>
+    <title id="title">Bahnhof</title>
     <link rel="stylesheet" href="./assets/css/styles.css">
     <link rel="stylesheet" href="./assets/css/dark-styles.css">
     <link rel="stylesheet" href="./assets/css/line-colors.css">
@@ -15,6 +15,7 @@
 
 <body>
 
+<script src="./assets/src/pinnedPopup.js"></script>
 <center>
     <noscript> You need to enable JavaScript to run this app.</noscript>
 
@@ -117,7 +118,7 @@ fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
 	var imgurl = data.photoPath;
 	document.getElementById("stationimage").style.backgroundImage = "url(" + imgurl + ")";
 	
-		
+	document.getElementById('title').textContent = `Ausstattung: ${data.name}`;
 	
 	//TOP SERVICES
 	const topservicesTable = document.getElementById("topservicestable");
@@ -248,6 +249,9 @@ fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
 	document.getElementById('container').classList.add('hidden');
 	document.getElementById('errorbox').classList.remove('hidden');
 });
+
+fetchAndDisplayData();
+
 </script>
 
 </body>

@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>S-Bahn Abfahrten</title>
+	<title id="title">S-Bahn</title>
 	<link rel="stylesheet" href="./assets/css/styles.css">
 	<link rel="stylesheet" href="./assets/css/dark-styles.css">
 	<link rel="stylesheet" href="./assets/css/line-colors.css">
@@ -16,6 +16,8 @@
 <body>
 
 <noscript> You need to enable JavaScript to run this app. </noscript>
+
+<script src="./assets/src/pinnedPopup.js"></script>
 
 <div id="notouch" class="notouch hidden"></div>
 
@@ -39,6 +41,11 @@
 </table>
 
 <script src="assets\src\script.js"></script>
+
+<script>
+	        fetchAndDisplayData();
+
+</script>
 
 </body>
 </html>

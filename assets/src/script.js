@@ -347,7 +347,7 @@ function updateTable(data) {
 		cell.classList.add("zerotable");
 
 		if (siteType !== 'A') {
-			wideCell2.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}"><span class="scrolling-wrapper"><span class="scrolling-text"> ${entry.direction} </span></span> </a>`;
+			wideCell2.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}"><span class="scrolling-wrapper"><span class="scrolling-text"> ${entry.destination.name} </span></span> </a>`;
 		} else {
 			wideCell2.innerHTML = `<span class="prefix">Von&nbsp;</span><a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}">${entry.provenance}</a>`;
 		}

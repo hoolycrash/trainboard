@@ -517,7 +517,7 @@
 
         var lineName = data.trip.line.name.split('(')[0];
         document.getElementById('linebadge').textContent = `${lineName}`;
-        document.getElementById('title').textContent = `${data.trip.line.productName} ${data.trip.line.fahrtNr} 🡺 ${data.trip.direction}`;
+        document.getElementById('title').textContent = `${data.trip.line.productName} ${data.trip.line.fahrtNr} 🡺 ${data.trip.destination.name}`;
 
         // Dauer berechnen
         const departureTime = new Date(data.trip.plannedDeparture);

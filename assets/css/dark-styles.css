@@ -76,13 +76,14 @@
 		border-bottom: solid #323232 1px;
 	}
 
-	.trip-warning-header {
+	.trip-warning-header, .yellowbutton {
 		background-color: #c9cb3b;
 	}
 
-	.pill {
+	.pill, .trip-warning-counter {
 		color: #c9cb3b;
 	}
+
 
 	.coloredSpace {
 		background-color: #222222;

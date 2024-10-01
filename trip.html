@@ -104,6 +104,14 @@
                 <small class="disabled">Jetzt einchecken</small>
             </div>
         </a>
+
+       <a href="#remarks">
+        <div class="tinybutton yellowbutton">
+            <div class="trip-warning-counter" id="trip-warning-counter-button">&nbsp;Keine&nbsp;</div>
+             <span id="pinIt">aktuelle Meldung</span><br>
+             <small>Hinweise zur Fahrt</small>
+         </div>
+       </a>
        
     </div>
     
@@ -137,7 +145,7 @@
         </div>
 
         <!-- Warnungen und Hinweise -->
-        <div class="trip-warnings">
+        <div class="trip-warnings" id="remarks">
             <ul id="warningsList">
                 <!-- Dynamisch generierte Warnungen werden hier eingefügt -->
             </ul>
@@ -158,8 +166,7 @@
 
 </center>
 
-<script>
-    // Profilzustände über Seitenaktualisierungen hinweg speichern
+<script>// Profilzustände über Seitenaktualisierungen hinweg speichern
     let profileFailureCache = JSON.parse(localStorage.getItem('profileFailureCache')) || {};
 
     // Funktion zur Bestimmung der Profile basierend auf Zugtyp und Betreiber
@@ -689,6 +696,7 @@
             const WarningHeaderItem = document.createElement('div');
             WarningHeaderItem.classList.add('trip-warning-header');
             WarningHeaderItem.innerHTML = `<span class=\"pill\">&nbsp;&nbsp;${data.trip.remarks.length}&nbsp;&nbsp;</span> aktuelle Informationen:`;
+            document.getElementById('trip-warning-counter-button').innerHTML = `&nbsp;${data.trip.remarks.length}&nbsp;`;
             warningsList.appendChild(WarningHeaderItem);
             const warnings = data.trip.remarks.map(remark => remark.text);
             warnings.forEach(warning => {
@@ -1091,6 +1099,5 @@
     fetchAndDisplayData();
 
 </script>
-
 </body>
 </html>

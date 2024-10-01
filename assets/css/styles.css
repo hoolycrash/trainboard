@@ -44,6 +44,23 @@ body {
 
 }
 
+.yellowbutton {
+	background-color: #c9cb3b;
+	color: #000;
+}
+
+.trip-warning-counter {
+	height: 35px;
+	width: fit-content;
+	font-weight: bold;
+	font-size: 30px;
+	border-radius: 100px;
+	background-color: #000;
+	color: #c9cb3b;
+	margin: auto;
+	margin-bottom: 10px;
+}
+
 .tinybutton:hover {
 	cursor: pointer;
 }

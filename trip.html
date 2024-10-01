@@ -445,72 +445,127 @@
         // Funktion zur Aktualisierung des Zugstatus
         function updateTrainStatus(trip) {
             let currentTime = new Date();
-            let departureTime = new Date(trip.departure);
-            let arrivalTime = new Date(trip.arrival);
+            let departureTime = trip.departure ? new Date(trip.departure) : null;
+            let arrivalTime = trip.arrival ? new Date(trip.arrival) : null;
 
             const statusElement = document.getElementById('tripStatus');
 
-            // Wenn der Zug noch nicht abgefahren ist
-            if (currentTime < departureTime) {
-                const timeUntilDeparture = departureTime - currentTime;
-                const minutesUntilDeparture = Math.round(timeUntilDeparture / 60000);
-                const hours = Math.floor(minutesUntilDeparture / 60);
-                const minutes = minutesUntilDeparture % 60;
+            // Funktion zur Formatierung der Zeitangabe
+            function formatTimeDifference(timeDiffMillis) {
+                const totalMinutes = Math.round(timeDiffMillis / 60000);
+                const hours = Math.floor(totalMinutes / 60);
+                const minutes = totalMinutes % 60;
 
-                let timeString;
+                let timeString = '';
                 if (hours > 0) {
-                    timeString = `${hours} Stunde${hours > 1 ? 'n' : ''} und ${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
+                    timeString = `${hours} Stunde${hours > 1 ? 'n' : ''}`;
+                    if (minutes > 0) {
+                        timeString += ` und ${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
+                    }
                 } else {
                     timeString = `${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
                 }
 
-                const platformInfo = trip.origin.departurePlatform ? `auf Gleis ${trip.origin.departurePlatform}` : '';
-                statusElement.textContent = `Fährt in ${timeString} von 🔻 ${trip.origin.name} ${platformInfo} ab.`;
+                return timeString;
+            }
 
+            // Hilfsfunktion zur Generierung des Plattform-Strings
+            function getPlatformInfo(platform) {
+                return platform ? `auf Gleis ${platform}` : 'ohne festgelegtes Gleis';
+            }
+
+            // Prüfen, ob der gesamte Zug storniert wurde
+            const isTripCancelled = trip.cancelled === true;
+
+            // Prüfen, ob alle Stopovers storniert wurden
+            const allStopoversCancelled = trip.stopovers.every(stop => stop.cancelled === true);
+
+            // Wenn der Zug vollständig storniert wurde
+            if (isTripCancelled && allStopoversCancelled) {
+                statusElement.textContent = `Der Zug ${trip.line.name} ist vollständig ausgefallen.`;
                 return;
             }
 
-            // Wenn der Zug bereits abgefahren ist, finde den nächsten Halt
-            let nextStop = null;
-            for (let i = 0; i < trip.stopovers.length; i++) {
-                const stop = trip.stopovers[i];
-                if (new Date(stop.plannedDeparture) > currentTime) {
-                    nextStop = stop;
-                    break;
+            // Wenn der Zug teilweise storniert wurde
+            const cancelledStopovers = trip.stopovers.filter(stop => stop.cancelled === true);
+            const activeStopovers = trip.stopovers.filter(stop => !stop.cancelled);
+
+            // Funktion zum Finden des nächsten aktiven Stopovers
+            function findNextActiveStopover() {
+                for (let i = 0; i < activeStopovers.length; i++) {
+                    const stop = activeStopovers[i];
+                    const plannedDeparture = stop.plannedDeparture ? new Date(stop.plannedDeparture) : null;
+                    const actualDeparture = stop.departure ? new Date(stop.departure) : null;
+
+                    if ((plannedDeparture && plannedDeparture > currentTime) || (actualDeparture && actualDeparture > currentTime)) {
+                        return stop;
+                    }
                 }
+                return null;
             }
+
+            // Wenn der Zug noch nicht abgefahren ist
+            if (departureTime && currentTime < departureTime && !trip.origin.cancelled) {
+                const timeUntilDeparture = departureTime - currentTime;
+                const timeString = formatTimeDifference(timeUntilDeparture);
+
+                const platformInfo = getPlatformInfo(trip.departurePlatform || trip.plannedDeparturePlatform);
+
+                statusElement.textContent = `Der Zug fährt in ${timeString} von 🔻 ${trip.origin.name} ${platformInfo} ab.`;
+                return;
+            }
+
+            // Wenn der Zug bereits abgefahren ist oder der Abfahrtsbahnhof storniert wurde
+            let nextStop = findNextActiveStopover();
 
             if (nextStop) {
-                const timeUntilNextStop = new Date(nextStop.plannedArrival) - currentTime;
-                const minutesUntilNextStop = Math.round(timeUntilNextStop / 60000);
+                const arrivalTimeAtNextStop = nextStop.arrival ? new Date(nextStop.arrival) : new Date(nextStop.plannedArrival);
+                const timeUntilNextStop = arrivalTimeAtNextStop - currentTime;
+                const timeString = formatTimeDifference(timeUntilNextStop);
 
-                if (minutesUntilNextStop >= 0) {
-                    const hours = Math.floor(minutesUntilNextStop / 60);
-                    const minutes = minutesUntilNextStop % 60;
+                const platformInfoArrival = getPlatformInfo(nextStop.arrivalPlatform || nextStop.plannedArrivalPlatform);
+                const platformInfoDeparture = getPlatformInfo(nextStop.departurePlatform || nextStop.plannedDeparturePlatform);
 
-                    let timeString;
-                    if (hours > 0) {
-                        timeString = `${hours} Stunde${hours > 1 ? 'n' : ''} und ${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
-                    } else {
-                        timeString = `${minutes} Minute${minutes !== 1 ? 'n' : ''}`;
-                    }
-
-                    const platformInfo = nextStop.arrivalPlatform || nextStop.departurePlatform ?
-                        `auf Gleis ${nextStop.arrivalPlatform || nextStop.departurePlatform}` : '';
-
-                    statusElement.textContent = `Erreicht in ${timeString} die Station 🔻 ${nextStop.stop.name} ${platformInfo}.`;
+                if (timeUntilNextStop > 0) {
+                    // Zug erreicht bald den nächsten Halt
+                    statusElement.textContent = `Der Zug erreicht in ${timeString} 🔻 ${nextStop.stop.name} ${platformInfoArrival}.`;
                 } else {
-                    statusElement.textContent = `Zug hat die Station 🔻 ${nextStop.stop.name} erreicht.`;
+                    // Zug ist bereits am nächsten Halt angekommen
+                    const departureTimeAtNextStop = nextStop.departure ? new Date(nextStop.departure) : new Date(nextStop.plannedDeparture);
+                    const timeUntilDeparture = departureTimeAtNextStop - currentTime;
+
+                    if (timeUntilDeparture > 0) {
+                        const departureTimeString = formatTimeDifference(timeUntilDeparture);
+
+                        statusElement.textContent = `Der Zug steht aktuell in 🔻 ${nextStop.stop.name} und fährt in ${departureTimeString} ${platformInfoDeparture} ab.`;
+                    } else {
+                        statusElement.textContent = `Der Zug hat 🔻 ${nextStop.stop.name} gerade verlassen und ist auf dem Weg zum nächsten Halt.`;
+                    }
                 }
             } else {
-                // Wenn kein nächster Halt mehr bevorsteht oder kein Remark vorhanden ist
-                if (currentTime > arrivalTime) {
-                    statusElement.textContent = `Zug hat sein Ziel 🔻 ${trip.destination.name} erreicht.`;
+                // Wenn kein weiterer aktiver Halt mehr bevorsteht
+                if (arrivalTime && currentTime >= arrivalTime && !trip.destination.cancelled) {
+                    statusElement.textContent = `Der Zug hat sein Ziel 🔻 ${trip.destination.name} erreicht.`;
+                } else if (trip.destination.cancelled) {
+                    statusElement.textContent = `Der Zug endet vorzeitig und erreicht nicht sein geplantes Ziel.`;
                 } else {
-                    statusElement.textContent = `Zug ist auf dem Weg zu 🔻 ${trip.destination.name}.`;
+                    const timeUntilArrival = arrivalTime ? arrivalTime - currentTime : null;
+                    const timeString = timeUntilArrival ? formatTimeDifference(timeUntilArrival) : 'unbekannter Zeit';
+
+                    const platformInfo = getPlatformInfo(trip.arrivalPlatform || trip.plannedArrivalPlatform);
+
+                    statusElement.textContent = `Der Zug ist auf dem Weg zu seinem Endziel 🔻 ${trip.destination.name} und wird in ${timeString} ${platformInfo} ankommen.`;
                 }
             }
+
+            // Hinweis auf ausgefallene Halte
+            if (cancelledStopovers.length > 0) {
+                const cancelledStopsNames = cancelledStopovers.map(stop => stop.stop.name).join(', ');
+                statusElement.textContent += `\nDie folgenden Halte entfallen: ${cancelledStopsNames}.`;
+            }
         }
+
+
 
         // Titel und Details setzen
         document.getElementById('trainTitle').innerHTML = `${data.trip.line.fahrtNr}`;

@@ -251,6 +251,8 @@ async function fetchAndDisplayData() {
     document.getElementById('linebadge').classList.add(badgeClassLineOperator);
     document.getElementById('linebadge').classList.add(badgeClassOperator);
 
+   
+
     // Dynamische Fortschrittsleiste aktualisieren
     setProgressBar(departureTime, new Date(), arrivalTime);
 

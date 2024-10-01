@@ -98,7 +98,7 @@
         </div>
 
         <a href="https://www.bahn.de/buchung/jetzt-einchecken?dbkanal_007=tutorialSlider_14-1_link_KomfortCheckinimBrowseraufrufen">
-            <div class="tinybutton">
+            <div class="tinybutton hidden" id="comfortbutton">
                 <img src="./assets/icons/comfortcheckin.svg" class="slidericon"><br>
                 Komfort-Checkin<br>
                 <small class="disabled">Jetzt einchecken</small>
@@ -589,6 +589,12 @@
                     statusElement.textContent = `Zug ist auf dem Weg zu 🔻 ${trip.destination.name}.`;
                 }
             }
+        }
+
+
+        if ((data.trip.line.productName === 'ICE') || (data.trip.line.productName === 'IC')) {
+            console.log('Its Fernzug!')
+            document.getElementById('comfortbutton').classList.remove('hidden');
         }
 
         // Titel und Details setzen

@@ -658,31 +658,78 @@
             stopoversContainer.appendChild(stopElement);
         });
 
+        // Funktion zum Entfernen von HTML-Tags aus Text (ohne Veränderung der Groß-/Kleinschreibung)
+        function sanitizeText(text) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = text;
+            return tempDiv.textContent || tempDiv.innerText || '';
+        }
+
+        // Funktion zum Entfernen von HTML-Tags und Normalisieren des Textes für Vergleichszwecke
+        function sanitizeAndNormalizeText(text) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = text;
+            let sanitizedText = tempDiv.textContent || tempDiv.innerText || '';
+            // Konvertiere zu Kleinbuchstaben und entferne führende/trailing Leerzeichen
+            sanitizedText = sanitizedText.toLowerCase().trim();
+            // Ersetze mehrere Leerzeichen durch ein einzelnes
+            sanitizedText = sanitizedText.replace(/\s+/g, ' ');
+            // Optional: Ersetze Zahlen durch Platzhalter, um ähnliche Warnungen zu erkennen
+            sanitizedText = sanitizedText.replace(/\d+/g, '#');
+            return sanitizedText;
+        }
+
         // Warnungen dynamisch hinzufügen
         const warningsList = document.getElementById('warningsList');
         warningsList.innerHTML = '';
 
         const warningCounterElement = document.getElementById('trip-warning-counter-button');
 
-        if (data.trip.remarks && data.trip.remarks.length > 0) {
-            const warningCount = data.trip.remarks.length;
+        // Sammle die Remarks der Station
+        let stationRemarks = [];
+        if (stationId) {
+            const stationStopover = data.trip.stopovers.find(stopover => stopover.stop.id === stationId);
+            if (stationStopover && stationStopover.remarks && stationStopover.remarks.length > 0) {
+                stationRemarks = stationStopover.remarks;
+            }
+        }
 
-            // Update the warning counter at the top
+        // Sammle die Remarks des Trips
+        const tripRemarks = data.trip.remarks || [];
+
+        // Kombiniere die Remarks, wobei die der Station zuerst kommen
+        const combinedRemarks = [...stationRemarks, ...tripRemarks];
+
+        if (combinedRemarks.length > 0) {
+            const uniqueMessages = new Set();
+            const uniqueRemarks = [];
+
+            combinedRemarks.forEach(remark => {
+                const normalizedText = sanitizeAndNormalizeText(remark.text);
+                if (!uniqueMessages.has(normalizedText)) {
+                    uniqueMessages.add(normalizedText);
+                    uniqueRemarks.push(remark);
+                }
+            });
+
+            const warningCount = uniqueRemarks.length;
+
+            // Aktualisiere den Warnungszähler oben
             warningCounterElement.innerHTML = `&nbsp;${warningCount}&nbsp;`;
 
             const WarningHeaderItem = document.createElement('div');
             WarningHeaderItem.classList.add('trip-warning-header');
             WarningHeaderItem.innerHTML = `<span class=\"pill\">&nbsp;&nbsp;${warningCount}&nbsp;&nbsp;</span> aktuelle Informationen:`;
             warningsList.appendChild(WarningHeaderItem);
-            const warnings = data.trip.remarks.map(remark => remark.text);
-            warnings.forEach(warning => {
+
+            uniqueRemarks.forEach(remark => {
                 const warningItem = document.createElement('div');
                 warningItem.classList.add('trip-warning-item');
-                warningItem.textContent = warning;
+                warningItem.textContent = sanitizeText(remark.text);
                 warningsList.appendChild(warningItem);
             });
         } else {
-            // Update the warning counter at the top
+            // Aktualisiere den Warnungszähler oben
             warningCounterElement.innerHTML = '&nbsp;Keine&nbsp;';
 
             const WarningHeaderItem = document.createElement('div');
@@ -690,6 +737,8 @@
             WarningHeaderItem.textContent = 'Keine Warnungen vorhanden.';
             warningsList.appendChild(WarningHeaderItem);
         }
+
+
 
         // Dynamischen Status des Zuges setzen
         updateTrainStatus(data.trip);

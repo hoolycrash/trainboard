@@ -1151,12 +1151,17 @@ td {
 	max-width: 700px;
 }
 
-.blanktext {
-	width: auto;
-}
 
 .blanktable {
 	width: auto;
+}
+
+.gray {
+	background-color: #d9d9d9;
+}
+
+.clear {
+	background-color: none;
 }
 
 .trip-stopover {
@@ -1242,8 +1247,8 @@ td {
 }
 
 .pill {
-	background-color: #000;
-	color: #c9cb3b;
+	background-color: #c9cb3b;
+	color: #000;
 	border-radius: 20px;
 }
 
@@ -1277,6 +1282,10 @@ td {
 }
 
 @media (max-width: 768px) {
+
+	.tripcontainer, .blanktext {
+		width: 95%;
+	}
 
 	.trip-stopovers {
 		width: auto;

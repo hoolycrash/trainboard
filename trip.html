@@ -145,11 +145,13 @@
         </div>
 
         <!-- Warnungen und Hinweise -->
-        <div class="trip-warnings" id="remarks">
-            <ul id="warningsList">
-                <!-- Dynamisch generierte Warnungen werden hier eingefügt -->
-            </ul>
+
+        <div class="gray">
+            <div class="blanktext">
+                <table id="remarksTable" cellpadding="10"></table>
+            </div>
         </div>
+        
 
         <br>
 
@@ -680,7 +682,7 @@
         }
 
         // Warnungen dynamisch hinzufügen
-        const warningsList = document.getElementById('warningsList');
+        const warningsList = document.getElementById('remarksTable');
         warningsList.innerHTML = '';
 
         const warningCounterElement = document.getElementById('trip-warning-counter-button');
@@ -706,6 +708,7 @@
 
             combinedRemarks.forEach(remark => {
                 const normalizedText = sanitizeAndNormalizeText(remark.text);
+                const remarkcode = (remark.code);
                 if (!uniqueMessages.has(normalizedText)) {
                     uniqueMessages.add(normalizedText);
                     uniqueRemarks.push(remark);
@@ -717,15 +720,13 @@
             // Aktualisiere den Warnungszähler oben
             warningCounterElement.innerHTML = `&nbsp;${warningCount}&nbsp;`;
 
-            const WarningHeaderItem = document.createElement('div');
-            WarningHeaderItem.classList.add('trip-warning-header');
-            WarningHeaderItem.innerHTML = `<span class=\"pill\">&nbsp;&nbsp;${warningCount}&nbsp;&nbsp;</span> aktuelle Informationen:`;
+            const WarningHeaderItem = document.createElement('tr');
+            WarningHeaderItem.innerHTML = `<td colspan="2"><h3><span class=\"pill\">&nbsp;&nbsp;${warningCount}&nbsp;&nbsp;</span> aktuelle Informationen:</h3></td>`;
             warningsList.appendChild(WarningHeaderItem);
 
             uniqueRemarks.forEach(remark => {
-                const warningItem = document.createElement('div');
-                warningItem.classList.add('trip-warning-item');
-                warningItem.textContent = sanitizeText(remark.text);
+                const warningItem = document.createElement('tr');
+                warningItem.innerHTML += (`<td class="clear"><img src="./assets/icons/remark${sanitizeText(remark.code.replace(/\./g, ''))}.svg" class="serviceicon"></td><td class="clear wide">${sanitizeText(remark.text)}</td>`);
                 warningsList.appendChild(warningItem);
             });
         } else {

@@ -81,7 +81,16 @@
 	}
 
 	.pill, .trip-warning-counter {
-		color: #c9cb3b;
+		color: #000;
+		background-color: #c9cb3b;
+	}
+
+	.clear {
+		background-color: none;
+	}
+
+	.gray {
+		background-color: #222222;
 	}
 
 

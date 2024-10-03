@@ -104,5 +104,13 @@
 		filter: invert(1);
 	}
 
+	.cubesector {
+		background-color: #222222!important;
+	}
+
+	.sectoricon {
+		background-color: #00004d!important;
+	}
+
 	
 }

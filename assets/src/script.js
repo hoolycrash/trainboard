@@ -241,7 +241,7 @@ function updateTable(data) {
 			var trainnumber = ``;
 		}
 
-		let linebadge = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}&stationId=${encodeURIComponent(entry.tripId)}"><div class="linebadge ${entry.line.product} ${entry.line.name.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}">`;
+		let linebadge = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}&stationId=${encodeURIComponent(entry.tripId)}"><div class="linebadge ${entry.line.product} ${entry.line.name.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}">`;
 		if (entry.line.operator.id === 'freiberger-eisenbahngesellschaft') {
 			linebadge += "FEG</div>";
 		} else if (entry.line.productName === "FEX") {
@@ -266,7 +266,7 @@ function updateTable(data) {
 		if ((siteType === 'S' || siteType === 'L') && timediff <= 60) {
 			if (entry.when !== null) {
 				if (timediff <= 0) {
-					countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}">jetzt</a>`;
+					countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}">jetzt</a>`;
 
 					setInterval(function() {
 						timediff = Math.round((departureTime - new Date()) / (1000 * 60));
@@ -280,18 +280,18 @@ function updateTable(data) {
 					// Show countdown instead of departing times when departing time is <= 60 min away from now
 					if (delayDifference > 5) {
 						// Delay more than 5 minutes -> time in red
-						countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}"><span style="color: #ec0016;">` + timediff + `<span class="additional">&nbsp;min.</span></span></a>`;
+						countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}"><span style="color: #ec0016;">` + timediff + `<span class="additional">&nbsp;min.</span></span></a>`;
 					} else {
-						countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}">` + timediff + '<span class="additional">&nbsp;min.</span></a>';
+						countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}">` + timediff + '<span class="additional">&nbsp;min.</span></a>';
 					}
 
 					// Reload every 60 secs
 					setInterval(function() {
 						timediff = Math.round((departureTime - new Date()) / (1000 * 60));
 						if (timediff <= 60) {
-							countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}">${timediff} min.</a>`;
+							countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}">${timediff} min.</a>`;
 						} else {
-							countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}">${formatTime(entry.when)}</a>`;
+							countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}">${formatTime(entry.when)}</a>`;
 						}
 					}, 60000);
 				}
@@ -299,12 +299,12 @@ function updateTable(data) {
 		} else {
 			if (entry.when !== null) {
 				if (delayDifference > 0) {
-					countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}"><nobr class='mobilebreak'><s class='disabled'>${formatTime(entry.plannedWhen)}</s> ${formatTime(entry.when)}</nobr></a>`;
+					countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}"><nobr class='mobilebreak'><s class='disabled'>${formatTime(entry.plannedWhen)}</s> ${formatTime(entry.when)}</nobr></a>`;
 				} else {
-					countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}"><span class="timetable">${formatTime(entry.when)}</span></a>`;
+					countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}"><span class="timetable">${formatTime(entry.when)}</span></a>`;
 				}
 			} else {
-				countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}"><span class="timetable">${formatTime(entry.plannedWhen)}</span></a>`;
+				countdownCell.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}"><span class="timetable">${formatTime(entry.plannedWhen)}</span></a>`;
 			}
 		}
 
@@ -314,22 +314,22 @@ function updateTable(data) {
 		if (isCancelled) {
 			if (entry.plannedPlatform === null) {
 				if (entry.platform === null) {
-					row.insertCell(3).innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}"></a>`;
+					row.insertCell(3).innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}"></a>`;
 				} else {
-					row.insertCell(3).innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}"><s>${entry.platform}</s></a>`;
+					row.insertCell(3).innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}"><s>${entry.platform}</s></a>`;
 				}
 			} else {
-				row.insertCell(3).innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}"><nobr class='mobilebreak'><s class='disabled'>${entry.plannedPlatform}</s></nobr></a>`;
+				row.insertCell(3).innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}"><nobr class='mobilebreak'><s class='disabled'>${entry.plannedPlatform}</s></nobr></a>`;
 			}
 		} else {
 			if (entry.platform == null) {
-				row.insertCell(3).innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}">-</a>`;
+				row.insertCell(3).innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}">-</a>`;
 			} else if (entry.platform == entry.plannedPlatform) {
-				row.insertCell(3).innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}">${entry.plannedPlatform}</a>`;
+				row.insertCell(3).innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}">${entry.plannedPlatform}</a>`;
 			} else if (entry.plannedPlatform === null) {
-				row.insertCell(3).innerHTML = `<a class="red" href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}">${entry.platform}</a>`;
+				row.insertCell(3).innerHTML = `<a class="red" href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}">${entry.platform}</a>`;
 			} else {
-				row.insertCell(3).innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}"><nobr class='mobilebreak'><s class='disabled'>${entry.plannedPlatform}</s><span class="red"> ${entry.platform}</span></nobr></a>`;
+				row.insertCell(3).innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}"><nobr class='mobilebreak'><s class='disabled'>${entry.plannedPlatform}</s><span class="red"> ${entry.platform}</span></nobr></a>`;
 			}
 		}
 
@@ -347,9 +347,9 @@ function updateTable(data) {
 		cell.classList.add("zerotable");
 
 		if (siteType !== 'A') {
-			wideCell2.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}"><span class="scrolling-wrapper"><span class="scrolling-text"> ${entry.destination.name} </span></span> </a>`;
+			wideCell2.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}"><span class="scrolling-wrapper"><span class="scrolling-text"> ${entry.destination.name} </span></span> </a>`;
 		} else {
-			wideCell2.innerHTML = `<span class="prefix">Von&nbsp;</span><a href="trip.html?stationID=${encodeURIComponent(stationID)}&tripId=${encodeURIComponent(entry.tripId)}">${entry.provenance}</a>`;
+			wideCell2.innerHTML = `<span class="prefix">Von&nbsp;</span><a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}">${entry.provenance}</a>`;
 		}
 
 		if (InfoMessage !== undefined) {

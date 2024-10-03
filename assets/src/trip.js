@@ -499,7 +499,7 @@ async function fetchAndDisplayData() {
             let stopname;
             if (stationId === stop.stop.id) {
                 stopname = stop.stop.name + ` huhu`;
-                stopElement.classList.add('marked-stopover')
+                stopElement.classList.add('marked-stopover');
             } else {
                 stopname = stop.stop.name;
             }

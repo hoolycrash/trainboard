@@ -98,12 +98,21 @@
         </div>
 
         <a href="https://www.bahn.de/buchung/jetzt-einchecken?dbkanal_007=tutorialSlider_14-1_link_KomfortCheckinimBrowseraufrufen">
-            <div class="tinybutton hidden" id="comfortbutton">
+            <div class="tinybutton" id="comfortbutton">
                 <img src="./assets/icons/comfortcheckin.svg" class="slidericon"><br>
                 Komfort-Checkin<br>
                 <small class="disabled">Jetzt einchecken</small>
             </div>
         </a>
+
+        
+       <a id="wagonorderbutton">
+        <div class="tinybutton">
+            <img src="./assets/icons/wagonorder.svg" class="slidericon"><br>
+            Wagenreihung<br>
+            <small>Würfelsektoren</small>
+         </div>
+       </a>
 
        <a href="#remarks">
         <div class="tinybutton yellowbutton">
@@ -112,6 +121,7 @@
              <small>Hinweise zur Fahrt</small>
          </div>
        </a>
+
        
     </div>
     
@@ -660,6 +670,31 @@
             stopoversContainer.appendChild(stopElement);
         });
 
+
+
+        // Wagenreihungsbutton
+        var wagonorderbutton = document.getElementById('wagonorderbutton');
+
+        var test = '2';
+        // Setze das href-Attribut
+
+        const tripdepartureTime = new Date(new URLSearchParams(window.location.search).get('departureTime')).toISOString();
+
+        console.log(tripdepartureTime);
+;        
+        if ((stationId === null) || tripdepartureTime === null) {
+            var choosenstation = data.trip.stopovers[0].stop.id;
+            const tripdepartureTime = data.trip.stopovers[0].plannedDeparture;
+        } else {
+            var choosenstation = stationId;
+            const tripdepartureTime = new URLSearchParams(window.location.search).get('departureTime');
+        }
+
+        
+        if (wagonorderbutton) {
+            wagonorderbutton.href = `wagonorder.html?trainnumber=${data.trip.line.fahrtNr}&station=${choosenstation}&producttype=${data.trip.line.productName}&departure=${tripdepartureTime}`;
+        }
+
         // Funktion zum Entfernen von HTML-Tags aus Text (ohne Veränderung der Groß-/Kleinschreibung)
         function sanitizeText(text) {
             const tempDiv = document.createElement('div');
@@ -680,6 +715,7 @@
             sanitizedText = sanitizedText.replace(/\d+/g, '#');
             return sanitizedText;
         }
+        
 
         // Warnungen dynamisch hinzufügen
         const warningsList = document.getElementById('remarksTable');

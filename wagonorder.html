@@ -71,6 +71,14 @@
             background-color: #ceb214;
         }
 
+        .HALFDININGCAR_FIRST_CLASS {
+            background-image: linear-gradient(yellow, red);
+        }
+
+        .HALFDININGCAR_ECONOMY {
+            background-image: linear-gradient(green, red);
+        }
+
         .classestruetrue {
             background-image: linear-gradient(green, #ceb214);
         }
@@ -119,17 +127,22 @@
         }
 
 
+       
         #vehiclesColumn div:nth-child(2) {
-            border-radius: 200% 200% 0px 0px;
-        }
-
-        #vehiclesColumn div:nth-child(2).LOCOMOTIVE {
-            border-radius: 10px 10px 0px 0px !important;
+            border-top-right-radius: 200%;
+            border-top-left-radius: 200%;
         }
 
         #vehiclesColumn div:last-child {
-            border-radius: 0px 0px 200% 200%;
+            border-bottom-right-radius: 200%;
+            border-bottom-left-radius: 200%;
         }
+
+        
+        #vehiclesColumn div:nth-child(2).LOCOMOTIVE {
+            border-radius: 10px 10px 0px 0px !important;
+        }
+        
 
         #vehiclesColumn div:last-child.LOCOMOTIVE {
             border-radius: 0px 0px 10px 10px !important;
@@ -211,7 +224,6 @@
         let isFirstInfoPlaceholder = true;  
         data.groups.forEach((group) => {
 
-
             if (data.platform.sectors) {
                 
 
@@ -242,16 +254,15 @@
                 }
             }
 
-           
-
             let isFirstVehicle = true;  
             const vehicles = group.vehicles || [];
             vehicles.forEach((vehicle) => {
                 const vehicleDiv = document.createElement('div');
 
-                if (isFirstVehicle) {
+                if (isFirstVehicle === true) {
                     vehicleDiv.id = 'start';  // Nur beim ersten Durchlauf wird die ID 'start' gesetzt
-                    isFirstVehicle = false;   // Danach wird das Flag auf 'false' gesetzt
+                       // Danach wird das Flag auf 'false' gesetzt
+                    isFirstVehicle = false;
                 }
 
                 vehicleDiv.classList.add('vehicle');
@@ -269,8 +280,8 @@
                     vehicleDiv.style.height = `${Math.floor(vehicleHeight)}px`; // Apply height in pixels
                 }
                 
-                vehiclesColumn.appendChild(vehicleDiv);
 
+                vehiclesColumn.appendChild(vehicleDiv);
                 document.getElementById('start').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
                 // Nach einer kurzen Verzögerung, um das erste smooth scrolling abzuwarten
@@ -284,6 +295,8 @@
                 
                 
             });
+
+            isFirstVehicle = 1;
         });
 
         // Process all groups and their vehicles
@@ -293,8 +306,8 @@
                 const vehicleDiv = document.createElement('div');
                 vehicleDiv.classList.add('vehicledescription');
 
-                if (vehicle.typeDetails.category === 'DININGCAR') {
-                    vehicleDiv.innerHTML += `<span class=\"diningcarBadge\"><img src=\"./assets/icons/RESTAURANT.svg\" class=\"badgeicon\"> Restaurant</span><br>`;
+                if ((vehicle.typeDetails.category === 'DININGCAR') || (vehicle.typeDetails.category === 'HALFDININGCAR_FIRST_CLASS') || (vehicle.typeDetails.category === 'HALFDININGCAR_ECONOMY')) {
+                    vehicleDiv.innerHTML += `<span class=\"diningcarBadge\"><img src=\"./assets/icons/RESTAURANT.svg\" class=\"badgeicon\"> Speisewagen</span><br>`;
                 }
 
                 if (vehicle.type.hasEconomyClass === true) {

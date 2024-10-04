@@ -223,6 +223,13 @@
                     isFirstPlaceholder = false;   // Danach wird das Flag auf 'false' gesetzt
                 }
                 
+            } else {
+                if (isFirstPlaceholder) {
+                    const placeholderDiv = document.createElement('div');
+                    placeholderDiv.style.height = `0px`;
+                    vehiclesColumn.appendChild(placeholderDiv);
+                    isFirstPlaceholder = false;
+                }
             }
 
             if (data.platform.sectors) {

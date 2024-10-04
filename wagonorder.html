@@ -198,7 +198,7 @@
                 sectorDiv.innerHTML = `<div class="sectoricon">${sector.name}</div>`;
 
                 // Calculate height as 2 times the absolute difference between end and start
-                const height = Math.abs(sector.end - sector.start) * 8;
+                const height = Math.abs(sector.end - sector.start) * 6;
                 sectorDiv.style.height = `${Math.floor(height)}px`;    // Apply height in pixels
 
                 sectorsColumn.appendChild(sectorDiv);
@@ -217,7 +217,7 @@
 
                 if (isFirstPlaceholder) {
                     const placeholderDiv = document.createElement('div');
-                    const placeholderHeight = Math.abs(group.vehicles[0].platformPosition.start) * 12;
+                    const placeholderHeight = Math.abs(data.platform.end - (group.vehicles[0].platformPosition.end));
                     placeholderDiv.style.height = `${Math.floor(placeholderHeight)}px`;
                     vehiclesColumn.appendChild(placeholderDiv);
                     isFirstPlaceholder = false;   // Danach wird das Flag auf 'false' gesetzt
@@ -228,7 +228,7 @@
             if (data.platform.sectors) {
                 if (isFirstInfoPlaceholder) {
                     const infoplaceholderDiv = document.createElement('div');
-                    const infoplaceholderHeight = Math.abs(group.vehicles[0].platformPosition.start) * 12;
+                    const infoplaceholderHeight = Math.abs(data.platform.end - (group.vehicles[0].platformPosition.end));
                     infoplaceholderDiv.style.height = `${Math.floor(infoplaceholderHeight)}px`;
                     vehiclesDescriptionColumn.appendChild(infoplaceholderDiv);
                     isFirstInfoPlaceholder = false;

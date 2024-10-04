@@ -144,7 +144,7 @@
 
     </style>
 </head>
-<body>
+<body id="body">
 
 <noscript> You need to enable JavaScript to run this app. </noscript>
 
@@ -176,6 +176,13 @@
         
         const response = await fetch(`https://data.cuzimmartin.dev/wagenreihung?train_number=${trainnumber}&eva=${station}&train_type=${producttype}&departure_time=${departure}`);
         const data = await response.json();
+
+        if (data.departureID) {
+            console.log(data.departureID)
+ 
+        } else {
+            document.getElementById('body').innerHTML += '<br><br>&nbsp;&nbsp;Für diese Fahrt ist keine Wagenreihung verfügbar'
+        }
 
         const sectorsColumn = document.getElementById('sectorsColumn');
         const vehiclesColumn = document.getElementById('vehiclesColumn');
@@ -322,6 +329,10 @@
                 vehiclesDescriptionColumn.appendChild(vehicleDiv);
             });
         });
+
+
+       
+    
     }
 
     // Fetch and display the train data

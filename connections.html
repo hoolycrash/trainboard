@@ -74,7 +74,7 @@
                     const row = document.createElement("tr");
 
                     const lineCell = document.createElement("td");
-                    lineCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + transfer.plannedWhen + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><div class="linebadge ' + transfer.lineDetails.productName + ' ' + transfer.lineDetails.product + ' ' + transfer.lineDetails.name.replace(" ", "") + transfer.lineDetails.operator.id + ' '+ transfer.lineDetails.operator.id + '">' + transfer.line + '</div></a>';
+                    lineCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><div class="linebadge ' + transfer.lineDetails.productName + ' ' + transfer.lineDetails.product + ' ' + transfer.lineDetails.name.replace(" ", "") + transfer.lineDetails.operator.id + ' '+ transfer.lineDetails.operator.id + '">' + transfer.line + '</div></a>';
                     row.appendChild(lineCell);
 
                     const formatTime = (dateString) => {
@@ -85,9 +85,9 @@
                     const whenCell = document.createElement("td");
 
                     if(transfer.when === transfer.plannedWhen) {
-                        whenCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + transfer.plannedWhen + '&tripId=' + encodeURIComponent(transfer.toTripId) + '">' + formatTime(transfer.when) + '</a>';
+                        whenCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '">' + formatTime(transfer.when) + '</a>';
                     } else {
-                        whenCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + transfer.plannedWhen + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><s class="disabled">' + formatTime(transfer.plannedWhen) + '</s>&nbsp;' + formatTime(transfer.when) + '</a>';
+                        whenCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><s class="disabled">' + formatTime(transfer.plannedWhen) + '</s>&nbsp;' + formatTime(transfer.when) + '</a>';
                     }
 
                     whenCell.classList.add('bigonly')
@@ -97,17 +97,17 @@
 
                     const directionCell = document.createElement("td");
                     directionCell.classList.add('wide');
-                    directionCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + transfer.plannedWhen + '&tripId=' + encodeURIComponent(transfer.toTripId) + '">' + transfer.direction + '</a>';
+                    directionCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '">' + transfer.direction + '</a>';
                     row.appendChild(directionCell);
 
                     const platformCell = document.createElement("td");
                     platformCell.style.textAlign = 'right';
 
                     if (transfer.platformsLinked === true) {
-                        platformCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + transfer.plannedWhen + '&tripId=' + encodeURIComponent(transfer.toTripId) + '">' + transfer.platform + '<br></a>';
+                        platformCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '">' + transfer.platform + '<br></a>';
                     } else {
 
-                        platformCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + transfer.plannedWhen + '&tripId=' + encodeURIComponent(transfer.toTripId) + '">' + transfer.platform + '</a>';
+                        platformCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '">' + transfer.platform + '</a>';
                     }
                     
                     row.appendChild(platformCell);
@@ -115,9 +115,9 @@
                     const availableTransferTimeCell = document.createElement("td");
 
                     if(transfer.when === transfer.plannedWhen) {
-                        availableTransferTimeCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + transfer.plannedWhen + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><span class="smallonly">' + formatTime(transfer.when) + '<br></span><span class="connectionbadge ' + transfer.status + '"><img src="./assets/icons/' + transfer.status + '.svg" class="transfericon">' + transfer.availableTransferTime + '&nbsp;min</span></a>';
+                        availableTransferTimeCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><span class="smallonly">' + formatTime(transfer.when) + '<br></span><span class="connectionbadge ' + transfer.status + '"><img src="./assets/icons/' + transfer.status + '.svg" class="transfericon">' + transfer.availableTransferTime + '&nbsp;min</span></a>';
                     } else {
-                        availableTransferTimeCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + transfer.plannedWhen + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><span class="smallonly"><s class="disabled">' + formatTime(transfer.plannedWhen) + '</s>&nbsp;' + formatTime(transfer.when) + '<br></span><span class="connectionbadge ' + transfer.status + '"><img src="./assets/icons/' + transfer.status + '.svg" class="transfericon">' + transfer.availableTransferTime + '&nbsp;min</span></a>';
+                        availableTransferTimeCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><span class="smallonly"><s class="disabled">' + formatTime(transfer.plannedWhen) + '</s>&nbsp;' + formatTime(transfer.when) + '<br></span><span class="connectionbadge ' + transfer.status + '"><img src="./assets/icons/' + transfer.status + '.svg" class="transfericon">' + transfer.availableTransferTime + '&nbsp;min</span></a>';
                     }
 
 

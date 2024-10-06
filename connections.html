@@ -16,11 +16,11 @@
 
 <center>
 
-<nav id="navbar"><div class="tabs"><span class="active">&nbsp;Anschlüsse&nbsp;</a></div><div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div><div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg" class="mediumicon"></a></div></nav>
+<nav id="navbar"><div class="tabs"><span class="active">&nbsp;Anschlüsse&nbsp;<span id="arrivallineheader"></span></a></div><div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div><div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg" class="mediumicon"></a></div></nav>
 
     <br>
     <br>
-    <h3>Akunft um <span id="arrivaltime"></span> auf Gleis <span id="arrivalPlatform"></span>.</h3>
+    <h3>Akunft mit <span id="arrivalline"></span> in <span id="changestation"></span> um <span id="arrivaltime"></span> auf Gleis <span id="arrivalPlatform"></span>.</h3>
     <br>
     <br>
    
@@ -130,6 +130,9 @@
 
                     tableBody.appendChild(row);
 
+                    document.getElementById('arrivalline').innerHTML = data.arrivalLine;
+                    document.getElementById('arrivallineheader').innerHTML = data.arrivalLine;
+                    document.getElementById('changestation').innerHTML = data.arrivalStationName;
                     document.getElementById('arrivaltime').innerHTML = formatTime(data.arrivalTime);
                     document.getElementById('arrivalPlatform').innerHTML = data.arrivalPlatform;
                 });

@@ -112,5 +112,14 @@
 		background-color: #00004d!important;
 	}
 
+	.connectionbadge {
+		background-color: #101010;
+		color: #fff;
+	}
+
+	.transfericon {
+		filter: invert(1);
+	}
+
 	
 }

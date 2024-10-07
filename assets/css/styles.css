@@ -44,6 +44,11 @@ body {
 
 }
 
+
+.firstbutton {
+	border-width: 0px!important;
+}
+
 .yellowbutton {
 	background-color: #c9cb3b;
 	color: #000;
@@ -120,23 +125,34 @@ span {
 }
 
 .connectionbadge {
-	background-color: #b0b0b0;
-	border: solid 1.5px #fff;
+	background-color: #262626;
+	border: solid 1.5px #1e1e1e;
 	color: #000;
 	border-radius: 5px;
 	padding: 3px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 25px;
+	max-width: 200px;
 }
 
 .IMPOSSIBLE {
-	background-image: linear-gradient(to right, rgba(255,0,0,0), rgba(255,0,0,0.1) , rgba(255,0,0,0.3));
+	background-color: #e4bdbd;
+	color: red;
+	border-color: red;
 }
 
 .QUICK_TRANSFER {
-	background-image: linear-gradient(to right, rgba(255,255,0,0), rgba(255,255,0,0.1) , rgba(255,255,0,0.3));
+	background-color: #faebc6;
+	color: #1e1e1e;
+	border-color: #e4a504;
 }
 
 .POSSIBLE {
-	background-image: linear-gradient(to right, rgba(0,255,0,0), rgba(0,255,0,0.1) , rgba(0,255,0,0.3));
+	background-color: #ceffd6;
+	color: #0ca724;
+	border-color: #0ca724;
 }
 
 .transfericon {
@@ -837,10 +853,6 @@ td {
 		display: none;
 	}
 
-	.connectionbadge {
-		line-height: 30px;
-		
-	}
 
 	.smallonly {
 		display: inline;
@@ -986,7 +998,18 @@ td {
 	.prefix {
 		margin-top: 3px;
 	}
+
+	
 }
+
+@media (min-width: 1200px) {
+	.center {
+		justify-content: center;
+	}
+}
+
+
+
 
 
 /* Container für zentrierten Inhalt */
@@ -1483,20 +1506,6 @@ td {
 	height: 100%; /* Volle Höhe nutzen */
 }
 
-.close {
-	position: absolute;
-	top: 10px;
-	right: 20px;
-	font-size: 30px;
-	color: red;
-	cursor: pointer;
-	z-index: 10;
-}
-
-
-.close:hover,
-.close:focus {
-	color: #d3d3d3;
-	text-decoration: none;
+.close:hover {
 	cursor: pointer;
 }

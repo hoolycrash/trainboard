@@ -253,7 +253,7 @@ span#clock {
 	height: 16px;
 	padding: 25px 16px 25px 16px;
 	font-size: 16px;
-	overflow-x: clip;
+	overflow-x: scroll;
 }
 
 .navsearch:before {

@@ -63,6 +63,7 @@
 		
 	<div class="searchcontainer">
 		<div class="container">
+                <input class="searchbar datebar" type="date" autocomplete="off" id="dateInput">
 				<input class="searchbar" type="text" autocomplete="off" id="searchInput" placeholder="Suche nach Zugnummer" oninput="searchLocations()" autofocus>
 
 		</div>
@@ -79,9 +80,17 @@
 	<div class="isle"><a href="about.html">About</a> | <a href="https://github.com/hoolycrash/trainboard">Github</a></div>
 
     <script>
+
+        //Today date for searchbar default
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+        document.getElementById('dateInput').value = formattedDate;
+
+
         function searchLocations() {
             const userInput = document.getElementById('searchInput').value;
-            const apiUrl = `https://data.cuzimmartin.dev/search-train/${userInput}`;
+            const userDateInput = document.getElementById('dateInput').value;
+            const apiUrl = `https://data.cuzimmartin.dev/search-train/${userInput}?day=${userDateInput}`;
     
             fetch(apiUrl)
                 .then(response => response.json())

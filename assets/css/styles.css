@@ -393,6 +393,15 @@ a {
 	color: #fff;
 }
 
+.datebar {
+	background-image: url('.././icons/calendar.svg')!important;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+	display: none;
+	-webkit-appearance: none;
+}
+
 .searchbar:focus {
 	outline: none;
 }

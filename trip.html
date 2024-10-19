@@ -360,6 +360,7 @@
     }
 
     // Funktion zum Abrufen und Anzeigen der Daten
+    // Funktion zum Abrufen und Anzeigen der Daten
     async function fetchAndDisplayData() {
         const currentUrl = window.location.href;
 
@@ -578,7 +579,7 @@
 
         // Dauer berechnen
         const departureTime = new Date(data.trip.plannedDeparture);
-        
+
 
         // Datum setzen
         const tripDate = departureTime.toLocaleDateString('de-DE', {
@@ -590,9 +591,9 @@
 
         // Ursprungsstation und Zielstation setzen
         document.getElementById('originStation').textContent = data.trip.origin.name;
-        
+
         document.getElementById('destinationStation').textContent = data.trip.destination.name;
-        
+
         // Haltestellen dynamisch hinzufügen
         const stopoversContainer = document.querySelector('.trip-stopovers');
         stopoversContainer.innerHTML = '';
@@ -601,13 +602,13 @@
             if (stop.cancelled) {
                 stopElement.classList.add('trip-stopover');
                 stopElement.innerHTML = `
-                    <div class="trip-stop-time">
-                        <div class="trip-delay" style="font-size: 16px">Entfällt</div>
-                    </div>
-                    <div class="trip-stop-info">
-                        <span class="trip-stop-name">${stop.stop.name}</span>
-                    </div>
-                `;
+                <div class="trip-stop-time">
+                    <div class="trip-delay" style="font-size: 16px">Entfällt</div>
+                </div>
+                <div class="trip-stop-info">
+                    <span class="trip-stop-name">${stop.stop.name}</span>
+                </div>
+            `;
             } else {
 
                 const plannedArrivalTime = stop.plannedArrival ? new Date(stop.plannedArrival).toLocaleTimeString('de-DE', {
@@ -637,37 +638,36 @@
 
                 stopElement.classList.add('trip-stopover');
 
-                    if (stop.arrival !== null) {
+                if (stop.arrival !== null) {
                     stopElement.innerHTML = `
-                        <div class="trip-stop-time">
-                            <div>${arrivalTimeDisplay}</div>
-                            <div>${departureTimeDisplay}</div>
-                        </div>
-                        <div class="trip-stop-info">
-                            <span class="trip-stop-name">${stopname}</span>
-                            <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class=\"bigonly\">eis</span> ${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
-                        </div>
+                    <div class="trip-stop-time">
+                        <div>${arrivalTimeDisplay}</div>
+                        <div>${departureTimeDisplay}</div>
+                    </div>
+                    <div class="trip-stop-info">
+                        <span class="trip-stop-name">${stopname}</span>
+                        <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class=\"bigonly\">eis</span> ${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
+                    </div>
 
-                        <div>
-                            <a href="connections.html?stop=${stop.stop.location.id}&tripID=${encodeURIComponent(tripId)}">&nbsp;<img src="./assets/icons/connectingTrain.svg"></a>
-                        </div>
-                    `;
-
+                    <div>
+                        <a href="connections.html?stop=${stop.stop.location.id}&tripID=${encodeURIComponent(tripId)}">&nbsp;<img src="./assets/icons/connectingTrain.svg"></a>
+                    </div>
+                `;
                 } else {
                     stopElement.innerHTML = `
-                        <div class="trip-stop-time">
-                            <div>${arrivalTimeDisplay}</div>
-                            <div>${departureTimeDisplay}</div>
-                        </div>
-                        <div class="trip-stop-info">
-                            <span class="trip-stop-name">${stopname}</span>
-                            <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class=\"bigonly\">eis</span> ${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
-                        </div>
+                    <div class="trip-stop-time">
+                        <div>${arrivalTimeDisplay}</div>
+                        <div>${departureTimeDisplay}</div>
+                    </div>
+                    <div class="trip-stop-info">
+                        <span class="trip-stop-name">${stopname}</span>
+                        <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class=\"bigonly\">eis</span> ${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
+                    </div>
 
-                        <div>
-                            &nbsp;<img src="./assets/icons/placeholder.svg">
-                        </div>
-                    `;
+                    <div>
+                        &nbsp;<img src="./assets/icons/placeholder.svg">
+                    </div>
+                `;
                 }
             }
             stopoversContainer.appendChild(stopElement);
@@ -684,7 +684,7 @@
         const tripdepartureTime = new Date(new URLSearchParams(window.location.search).get('departureTime')).toISOString();
 
         console.log(tripdepartureTime);
-;        
+        ;
         if ((stationId === null) || tripdepartureTime === null) {
             var choosenstation = data.trip.stopovers[0].stop.id;
             const tripdepartureTime = data.trip.stopovers[0].plannedDeparture;
@@ -693,7 +693,7 @@
             const tripdepartureTime = new URLSearchParams(window.location.search).get('departureTime');
         }
 
-        
+
         if (wagonorderbutton) {
             wagonorderbutton.href = `wagonorder.html?trainnumber=${data.trip.line.fahrtNr}&station=${choosenstation}&producttype=${data.trip.line.productName}&departure=${tripdepartureTime}`;
         }
@@ -718,7 +718,7 @@
             sanitizedText = sanitizedText.replace(/\d+/g, '#');
             return sanitizedText;
         }
-        
+
 
         // Warnungen dynamisch hinzufügen
         const warningsList = document.getElementById('remarksTable');
@@ -747,10 +747,14 @@
 
             combinedRemarks.forEach(remark => {
                 const normalizedText = sanitizeAndNormalizeText(remark.text);
-                const remarkcode = (remark.code);
+                // Check ob remark.code definiert ist
+                let code = 'default';
+                if (remark.code) {
+                    code = sanitizeText(remark.code.replace(/\./g, ''));
+                }
                 if (!uniqueMessages.has(normalizedText)) {
                     uniqueMessages.add(normalizedText);
-                    uniqueRemarks.push(remark);
+                    uniqueRemarks.push({...remark, code});
                 }
             });
 
@@ -765,7 +769,8 @@
 
             uniqueRemarks.forEach(remark => {
                 const warningItem = document.createElement('tr');
-                warningItem.innerHTML += (`<td class="clear"><img src="./assets/icons/remark${sanitizeText(remark.code.replace(/\./g, ''))}.svg" class="serviceicon"></td><td class="clear wide">${sanitizeText(remark.text)}</td>`);
+                const code = remark.code || 'default';
+                warningItem.innerHTML += (`<td class="clear"><img src="./assets/icons/remark${code}.svg" class="serviceicon"></td><td class="clear wide">${sanitizeText(remark.text)}</td>`);
                 warningsList.appendChild(warningItem);
             });
         } else {
@@ -872,7 +877,7 @@
         const modal = document.getElementById("mapModal");
         const btn = document.getElementById("openMapBtn");
         const closeBtn = document.getElementsByClassName("close")[0];
-        
+
 
         btn.onclick = function () {
             modal.style.display = "block";
@@ -903,7 +908,6 @@
         // Alle 30 Sekunden die Daten aktualisieren
         setInterval(fetchAndDisplayData, 30000); // 30 Sekunden in Millisekunden
     });
-
 
 
 function fetchtraincomposition(zugnummer, datetime, stationId) {

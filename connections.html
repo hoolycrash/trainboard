@@ -43,9 +43,9 @@
 <br>
 <div style="padding: 20px;">
     <i>Legende:</i><br><br>
-    <img src="./assets/icons/IMPOSSIBLE.svg" class="transfericon"> Nicht erreicht <br><br>
-    <img src="./assets/icons/QUICK_TRANSFER.svg" class="transfericon"> Knapp erreicht<br><br>
-    <img src="./assets/icons/POSSIBLE.svg" class="transfericon"> Erreicht
+    <img src="./assets/icons/IMPOSSIBLE.svg" class="transfericon" title="Nicht erreicht"> Nicht erreicht <br><br>
+    <img src="./assets/icons/QUICK_TRANSFER.svg" class="transfericon" title="Knapp erreicht"> Knapp erreicht<br><br>
+    <img src="./assets/icons/POSSIBLE.svg" class="transfericon" title="Erreicht"> Erreicht
 </div>
 
 <script>
@@ -56,6 +56,12 @@
     const station = siteurl.searchParams.get("stop");
     console.log(station)
 
+    // Mapping der Statuswerte zu Tooltip-Texten
+    const statusTooltips = {
+        'POSSIBLE': 'Umstieg wird erreicht',
+        'QUICK_TRANSFER': 'Schnelles Umsteigen nötig',
+        'IMPOSSIBLE': 'Nicht erreichbar'
+    };
 
     const url = "https://data.cuzimmartin.dev/transfers?tripId=" + encodeURIComponent(tripId) + "&stationId=" + station;
 
@@ -119,10 +125,13 @@
 
                 const availableTransferTimeCell = document.createElement("td");
 
+                // Tooltip-Text basierend auf dem Status
+                const tooltipText = statusTooltips[transfer.status] || 'Status unbekannt';
+
                 if(transfer.when === transfer.plannedWhen) {
-                    availableTransferTimeCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><span class="smallonly">' + formatTime(transfer.when) + '<br></span><span class="connectionbadge ' + transfer.status + '"><img src="./assets/icons/' + transfer.status + '.svg" class="transfericon">' + transfer.availableTransferTime + '&nbsp;min</span></a>';
+                    availableTransferTimeCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><span class="smallonly">' + formatTime(transfer.when) + '<br></span><span class="connectionbadge ' + transfer.status + '" title="' + tooltipText + '"><img src="./assets/icons/' + transfer.status + '.svg" class="transfericon">' + transfer.availableTransferTime + '&nbsp;min</span></a>';
                 } else {
-                    availableTransferTimeCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><span class="smallonly"><s class="disabled">' + formatTime(transfer.plannedWhen) + '</s>&nbsp;' + formatTime(transfer.when) + '<br></span><span class="connectionbadge ' + transfer.status + '"><img src="./assets/icons/' + transfer.status + '.svg" class="transfericon">' + transfer.availableTransferTime + '&nbsp;min</span></a>';
+                    availableTransferTimeCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><span class="smallonly"><s class="disabled">' + formatTime(transfer.plannedWhen) + '</s>&nbsp;' + formatTime(transfer.when) + '<br></span><span class="connectionbadge ' + transfer.status + '" title="' + tooltipText + '"><img src="./assets/icons/' + transfer.status + '.svg" class="transfericon">' + transfer.availableTransferTime + '&nbsp;min</span></a>';
                 }
 
                 availableTransferTimeCell.style.textAlign = 'right';

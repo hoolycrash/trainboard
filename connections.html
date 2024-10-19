@@ -40,6 +40,10 @@
     </tbody>
 </table>
 
+<div id="noTransfersMessage" style="text-align: center; display: none; margin: 85px 0;">
+    <p>Keine Anschlüsse in den nächsten 45 Minuten verfügbar.</p>
+</div>
+
 <br>
 <div style="padding: 20px;">
     <i>Legende:</i><br><br>
@@ -56,11 +60,19 @@
     const station = siteurl.searchParams.get("stop");
     console.log(station)
 
+
     // Mapping der Statuswerte zu Tooltip-Texten
     const statusTooltips = {
         'POSSIBLE': 'Umstieg wird erreicht',
         'QUICK_TRANSFER': 'Schnelles Umsteigen nötig',
         'IMPOSSIBLE': 'Nicht erreichbar'
+    };
+
+    // Funktion zum Formatieren der Zeit
+    const formatTime = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     };
 
     const url = "https://data.cuzimmartin.dev/transfers?tripId=" + encodeURIComponent(tripId) + "&stationId=" + station;
@@ -70,6 +82,7 @@
         .then(data => {
             const transfers = data.transfers;
             const tableBody = document.querySelector("#transfersTable tbody");
+            let hasValidTransfers = false;
 
             transfers.forEach(transfer => {
 
@@ -82,16 +95,14 @@
                     return;
                 }
 
+                // Wenn wir hier ankommen, gibt es mindestens einen gültigen Transfer
+                hasValidTransfers = true;
+
                 const row = document.createElement("tr");
 
                 const lineCell = document.createElement("td");
                 lineCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><div class="linebadge ' + transfer.lineDetails.productName + ' ' + transfer.lineDetails.product + ' ' + transfer.lineDetails.name.replace(" ", "") + transfer.lineDetails.operator.id + ' '+ transfer.lineDetails.operator.id + '">' + transfer.line + '</div></a>';
                 row.appendChild(lineCell);
-
-                const formatTime = (dateString) => {
-                    const date = new Date(dateString);
-                    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                };
 
                 const whenCell = document.createElement("td");
 
@@ -141,12 +152,22 @@
 
                 tableBody.appendChild(row);
 
-                document.getElementById('arrivalline').innerHTML = data.arrivalLine;
-                document.getElementById('arrivallineheader').innerHTML = data.arrivalLine;
-                document.getElementById('changestation').innerHTML = data.arrivalStationName;
-                document.getElementById('arrivaltime').innerHTML = formatTime(data.arrivalTime);
-                document.getElementById('arrivalPlatform').innerHTML = data.arrivalPlatform;
+
             });
+
+            // Aktualisiere die Header-Informationen
+            document.getElementById('arrivalline').innerHTML = data.arrivalLine || '';
+            document.getElementById('arrivallineheader').innerHTML = data.arrivalLine || '';
+            document.getElementById('changestation').innerHTML = data.arrivalStationName || '';
+            document.getElementById('arrivaltime').innerHTML = formatTime(data.arrivalTime);
+            document.getElementById('arrivalPlatform').innerHTML = data.arrivalPlatform || '';
+
+            // Wenn keine Transfers vorhanden sind
+            if (!hasValidTransfers) {
+                document.getElementById('noTransfersMessage').style.display = 'block';
+                document.getElementById('transfersTable').style.display = 'none';
+            }
+
         })
         .catch(error => console.error("Error fetching or processing data:", error));
 </script>

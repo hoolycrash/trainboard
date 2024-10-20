@@ -1,8 +1,7 @@
 {
   "name": "Trainboard",
   "short_name": "Trainboard",
-  "display": "fullscreen",
-  "orientation": "portrait",
+  "display": "standalone",
   "background_color": "#000000",
   "scope": "/",
   "start_url": "/index.html",

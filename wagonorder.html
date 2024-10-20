@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title id="title">Wagenreihung</title>
-	<link rel="stylesheet" href="./assets/css/styles.css">
-	<link rel="stylesheet" href="./assets/css/dark-styles.css">
-	<link rel="stylesheet" href="./assets/css/line-colors.css">
-	<link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
-	<link rel="manifest" href="/manifest.json" type="application/json" >
-	<meta name="theme-color" content="#000">
-	<meta name="robots" content="noindex">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title">Wagenreihung</title>
+    <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/dark-styles.css">
+    <link rel="stylesheet" href="./assets/css/line-colors.css">
+    <link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
+    <link rel="manifest" href="/manifest.json" type="application/json" >
+    <meta name="theme-color" content="#000">
+    <meta name="robots" content="noindex">
 
 
     <style>
         .wagonordertable {
             width: 100% !important;
             border-collapse: collapse !important;
-            margin-top: 20px !;
+            margin-top: 20px !important;
         }
         .wagonordertd {
             vertical-align: top;
@@ -27,7 +27,7 @@
             margin-bottom: 5px;
             text-align: center;
             align-items: center;
-           
+
         }
 
         .vehicledescription {
@@ -40,7 +40,7 @@
             padding-left: 5px;
             padding-right: 5px;
         }
-        
+
         .cubesector {
             background-color: #d9d9d9;
         }
@@ -50,7 +50,7 @@
             justify-content: center;
         }
 
-           
+
         .LOCOMOTIVE, .POWERCAR {
             color: #fff;
         }
@@ -93,7 +93,7 @@
             color: #fff;
             border-radius: 5px;
             padding: 3px;
-           line-height: 40px;
+            line-height: 40px;
         }
 
         .economyBadge {
@@ -101,7 +101,7 @@
             color: #fff;
             border-radius: 5px;
             padding: 3px;
-           line-height: 40px;
+            line-height: 40px;
         }
 
         .firstclassBadge {
@@ -109,7 +109,7 @@
             color: #262626;
             border-radius: 5px;
             padding: 3px;
-           line-height: 40px;
+            line-height: 40px;
         }
 
         .badgeicon {
@@ -127,7 +127,7 @@
         }
 
 
-       
+
         #vehiclesColumn div:nth-child(2) {
             border-top-right-radius: 200%;
             border-top-left-radius: 200%;
@@ -138,11 +138,11 @@
             border-bottom-left-radius: 200%;
         }
 
-        
+
         #vehiclesColumn div:nth-child(2).LOCOMOTIVE {
             border-radius: 10px 10px 0px 0px !important;
         }
-        
+
 
         #vehiclesColumn div:last-child.LOCOMOTIVE {
             border-radius: 0px 0px 10px 10px !important;
@@ -155,6 +155,10 @@
             width: -webkit-fill-available;
         }
 
+        /* Neue CSS-Stile für die Tooltips */
+        .serviceicon {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body id="body">
@@ -170,9 +174,9 @@
 </nav>
 
 
-    <br>
-    <br>
-    <br>
+<br>
+<br>
+<br>
 
 <table id="content" class="wagonordertable">
     <tr>
@@ -190,13 +194,13 @@
         const station = new URLSearchParams(window.location.search).get('station');
         const producttype = new URLSearchParams(window.location.search).get('producttype');
         const departure = new URLSearchParams(window.location.search).get('departure');
-        
+
         const response = await fetch(`https://data.cuzimmartin.dev/wagenreihung?train_number=${trainnumber}&eva=${station}&train_type=${producttype}&departure_time=${departure}`);
         const data = await response.json();
 
         if (data.departureID) {
             console.log(data.departureID)
- 
+
         } else {
             document.getElementById('body').innerHTML += '<br><br>&nbsp;&nbsp;Für diese Fahrt ist keine Wagenreihung verfügbar'
         }
@@ -224,12 +228,12 @@
 
         // Process all groups and their vehicles
 
-        let isFirstPlaceholder = true; 
-        let isFirstInfoPlaceholder = true;  
+        let isFirstPlaceholder = true;
+        let isFirstInfoPlaceholder = true;
         data.groups.forEach((group) => {
 
             if (data.platform.sectors) {
-                
+
 
                 if (isFirstPlaceholder) {
                     const placeholderDiv = document.createElement('div');
@@ -238,7 +242,7 @@
                     vehiclesColumn.appendChild(placeholderDiv);
                     isFirstPlaceholder = false;   // Danach wird das Flag auf 'false' gesetzt
                 }
-                
+
             } else {
                 if (isFirstPlaceholder) {
                     const placeholderDiv = document.createElement('div');
@@ -258,14 +262,14 @@
                 }
             }
 
-            let isFirstVehicle = true;  
+            let isFirstVehicle = true;
             const vehicles = group.vehicles || [];
             vehicles.forEach((vehicle) => {
                 const vehicleDiv = document.createElement('div');
 
                 if (isFirstVehicle === true) {
                     vehicleDiv.id = 'start';  // Nur beim ersten Durchlauf wird die ID 'start' gesetzt
-                       // Danach wird das Flag auf 'false' gesetzt
+                    // Danach wird das Flag auf 'false' gesetzt
                     isFirstVehicle = false;
                 }
 
@@ -277,13 +281,13 @@
                 if (vehicle.wagonIdentificationNumber){
                     vehicleDiv.innerHTML += '<h2 style=\"display: unset!important;\">' + (vehicle.wagonIdentificationNumber) + '</h2>';
                 }
-                
+
                 // Calculate height as 2 times the absolute difference between end and start for platformPosition
                 if (vehicle.platformPosition) {
                     const vehicleHeight = Math.abs(vehicle.platformPosition.end - vehicle.platformPosition.start) * 6;
                     vehicleDiv.style.height = `${Math.floor(vehicleHeight)}px`; // Apply height in pixels
                 }
-                
+
 
                 vehiclesColumn.appendChild(vehicleDiv);
                 document.getElementById('start').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -296,8 +300,8 @@
                         behavior: 'smooth'  // Smooth scrolling
                     });
                 }, 800);
-                
-                
+
+
             });
 
             isFirstVehicle = 1;
@@ -310,23 +314,39 @@
                 const vehicleDiv = document.createElement('div');
                 vehicleDiv.classList.add('vehicledescription');
 
+                // Map für die Amenities
+                const amenityNames = {
+                    "AIR_CONDITION": "Klimaanlage",
+                    "ZONE_QUIET": "Ruhezone",
+                    "SEATS_BAHN_COMFORT": "BahnComfort Sitzplätze",
+                    "SEATS_SEVERELY_DISABLED": "Sitzplätze für Schwerbehinderte",
+                    "INFO": "Information",
+                    "WHEELCHAIR_SPACE": "Rollstuhlplatz",
+                    "ZONE_FAMILY": "Familienbereich",
+                    "CABIN_INFANT": "Kleinkindabteil",
+                    "TOILET_WHEELCHAIR": "Rollstuhlgerechte Toilette",
+                    "BIKE_SPACE": "Fahrradstellplatz"
+                    // Weitere Amenities hier hinzufügen
+                };
+
                 if ((vehicle.typeDetails.category === 'DININGCAR') || (vehicle.typeDetails.category === 'HALFDININGCAR_FIRST_CLASS') || (vehicle.typeDetails.category === 'HALFDININGCAR_ECONOMY')) {
-                    vehicleDiv.innerHTML += `<span class=\"diningcarBadge\"><img src=\"./assets/icons/RESTAURANT.svg\" class=\"badgeicon\"> Speisewagen</span><br>`;
+                    vehicleDiv.innerHTML += `<span class=\"diningcarBadge\" title=\"Speisewagen\"><img src=\"./assets/icons/RESTAURANT.svg\" class=\"badgeicon\"> Speisewagen</span><br>`;
                 }
 
                 if (vehicle.type.hasEconomyClass === true) {
-                    vehicleDiv.innerHTML += `<img src=\"./assets/icons/badgeEconomy.svg\" class=\"serviceicon\">`;
+                    vehicleDiv.innerHTML += `<img src=\"./assets/icons/badgeEconomy.svg\" class=\"serviceicon\" title=\"2. Klasse\">`;
                 }
-                
-        
+
+
                 if (vehicle.type.hasFirstClass === true) {
-                    vehicleDiv.innerHTML += `<img src=\"./assets/icons/badgeFirstclass.svg\" class=\"serviceicon\">`;
+                    vehicleDiv.innerHTML += `<img src=\"./assets/icons/badgeFirstclass.svg\" class=\"serviceicon\" title=\"1. Klasse\">`;
                 }
-                
+
 
                 const amenities = vehicle.amenities || [];
                 amenities.forEach((amenitie) => {
-                    vehicleDiv.innerHTML += `<img src=\"./assets/icons/` + (amenitie.type) + `.svg\" class=\"serviceicon\">`;
+                    const amenityName = amenityNames[amenitie.type] || amenitie.type;
+                    vehicleDiv.innerHTML += `<img src=\"./assets/icons/${amenitie.type}.svg\" class=\"serviceicon\" title=\"${amenityName}\">`;
                 });
 
                 vehicleDiv.innerHTML += `<br>`;
@@ -339,10 +359,10 @@
                 } else {
                     vehicleDiv.innerHTML += `${vehicle.vehicleID} <br>`;
                 };
-               
+
                 vehicleDiv.innerHTML += `<small class=\"disabled\">${vehicle.typeDetails.constructionType}</small>`;
 
-               
+
 
                 // Calculate height as 2 times the absolute difference between end and start for platformPosition
                 if (vehicle.platformPosition) {
@@ -354,9 +374,6 @@
             });
         });
 
-
-       
-    
     }
 
     // Fetch and display the train data

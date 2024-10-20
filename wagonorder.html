@@ -317,16 +317,29 @@
                 // Map für die Amenities
                 const amenityNames = {
                     "AIR_CONDITION": "Klimaanlage",
-                    "ZONE_QUIET": "Ruhezone",
+                    "ZONE_QUIET": "Ruhebereich",
                     "SEATS_BAHN_COMFORT": "BahnComfort Sitzplätze",
-                    "SEATS_SEVERELY_DISABLED": "Sitzplätze für Schwerbehinderte",
-                    "INFO": "Information",
-                    "WHEELCHAIR_SPACE": "Rollstuhlplatz",
+                    "SEATS_SEVERELY_DISABLED": "Vorrangplätze für Reisende mit eingeschränkter Mobilität",
+                    "INFO": "Info-Abteil",
+                    "WHEELCHAIR_SPACE": "Rollstuhlstellplätze",
                     "ZONE_FAMILY": "Familienbereich",
                     "CABIN_INFANT": "Kleinkindabteil",
                     "TOILET_WHEELCHAIR": "Rollstuhlgerechte Toilette",
-                    "BIKE_SPACE": "Fahrradstellplatz"
-                    // Weitere Amenities hier hinzufügen
+                    "BIKE_SPACE": "Fahrradstellplatz",
+                    "ZONE_MULTI_PURPOSE": "Mehrzweckbereich"
+                    // Weitere Ameneties hier hinzufügen
+                };
+
+                // Map für die Kategorienamen
+                const categoryNames = {
+                    "PASSENGERCARRIAGE_FIRST_CLASS": "1. Klasse Wagen",
+                    "PASSENGERCARRIAGE_ECONOMY_CLASS": "2. Klasse Wagen",
+                    "LOCOMOTIVE": "Lokomotive",
+                    "HALFDININGCAR_FIRST_CLASS": "Speisewagen & 1. Klasse",
+                    "CONTROLCAR_FIRST_CLASS": "Steuerwagen & 1. Klasse",
+                    "HALFDININGCAR_ECONOMY_CLASS": "Speisewagen & 2. Klasse",
+                    "CONTROLCAR_ECONOMY_CLASS": "Steuerwagen & 2. Klasse"
+                    // Weitere Kategorien hier hinzufügen
                 };
 
                 if ((vehicle.typeDetails.category === 'DININGCAR') || (vehicle.typeDetails.category === 'HALFDININGCAR_FIRST_CLASS') || (vehicle.typeDetails.category === 'HALFDININGCAR_ECONOMY')) {
@@ -357,7 +370,9 @@
                     vehicleDiv.innerHTML += `BR ${vehicle.typeDetails.series} <br>`;
 
                 } else {
-                    vehicleDiv.innerHTML += `${vehicle.vehicleID} <br>`;
+                    // Kategorietitel umbenennen, falls erforderlich
+                    const categoryDisplayName = categoryNames[vehicle.typeDetails.category] || vehicle.typeDetails.category;
+                    vehicleDiv.innerHTML += `<span title="${vehicle.vehicleID}">${categoryDisplayName}</span><br>`;
                 };
 
                 vehicleDiv.innerHTML += `<small class=\"disabled\">${vehicle.typeDetails.constructionType}</small>`;

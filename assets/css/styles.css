@@ -1542,7 +1542,7 @@ td {
 	position: relative;
 	padding-left: 15px; /* Platz für die linke Border */
 	--progress-percentage: 0%; /* Standardwert */
-	--progress-px: 0px;
+	--progress-px: 40px;
 	
 }
 
@@ -1587,7 +1587,7 @@ td {
 .trainposition {
 	height: 30px;
 	position: absolute;
-	margin-left: -12px;
+	margin-left: -10.4px;
 	margin-top: var(--progress-px);
 	z-index: 10;
 }

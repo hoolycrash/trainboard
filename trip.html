@@ -692,7 +692,7 @@
 
                 // Setze die CSS-Variable mit dem Fortschrittsprozentsatz
                 stopElement.style.setProperty('--progress-percentage', `${progressPercentage}%`);
-                stopElement.style.setProperty('--progress-px', `${20 / 100 * progressPercentage - 10}px`);
+                stopElement.style.setProperty('--progress-px', `${40 / 100 * (progressPercentage - 1) - 40}px`);
                 stopElement.innerHTML = `
                 <picture>
                     <source srcset="./assets/icons/train-top-dark.svg" media="(prefers-color-scheme: dark)">

@@ -41,7 +41,7 @@
                     <div class="trip-progress-bar">
                         <div class="trip-station-info">
                             <div class="trip-origin-info">
-                        </div>
+                            </div>
                             <div class="trip-destination-info">
                             </div>
                         </div>
@@ -59,7 +59,7 @@
         </div>
 
 
-        
+
         <div class="tinybutton" id="openMapBtn">
             <img src="./assets/icons/train-map.svg" class="slidericon"><br>
             Karte<br>
@@ -80,26 +80,26 @@
             </div>
         </a>
 
-        
-       <a id="wagonorderbutton">
-        <div class="tinybutton">
-            <img src="./assets/icons/wagonorder.svg" class="slidericon"><br>
-            Wagenreihung<br>
-            <small>Würfelsektoren</small>
-         </div>
-       </a>
 
-       <a href="#remarks">
-        <div class="tinybutton yellowbutton">
-            <div class="trip-warning-counter" id="trip-warning-counter-button">&nbsp;Keine&nbsp;</div>
-             <span id="pinIt">aktuelle Meldung</span><br>
-             <small>Hinweise zur Fahrt</small>
-         </div>
-       </a>
+        <a id="wagonorderbutton">
+            <div class="tinybutton">
+                <img src="./assets/icons/wagonorder.svg" class="slidericon"><br>
+                Wagenreihung<br>
+                <small>Würfelsektoren</small>
+            </div>
+        </a>
 
-       
+        <a href="#remarks">
+            <div class="tinybutton yellowbutton">
+                <div class="trip-warning-counter" id="trip-warning-counter-button">&nbsp;Keine&nbsp;</div>
+                <span id="pinIt">aktuelle Meldung</span><br>
+                <small>Hinweise zur Fahrt</small>
+            </div>
+        </a>
+
+
     </div>
-    
+
 
     <div class="trip-container-centered">
 
@@ -107,60 +107,60 @@
         <!-- Header der Seite mit Zugdetails -->
 
 
-        
 
 
-       
+
+
 
         <!-- Modal -->
-        
-            <div class="secondary" id="tripStatus"><img src="./assets/blackSpinner.svg" class="loadingspinner multicolorspinner"></div>
-        </div>
-        <div id="mapModal" style="display: none;">
-            <div class="modal-content">
-                <nav id="navbar">
-                    <div class="tabs"><span class="active">&nbsp;<span id ="mapHeader"></span>&nbsp;</span></div>
-                    <a class="close">
-                        <div class="iconbar bigonly">Schließen</div>
-                        <div class="iconbar"><img src="./assets/icons/close.svg" class="mediumicon close"></div>
-                    </a>
-                </nav>
 
-                
-                <div id="map"></div>
-            </div>
-            
+        <div class="secondary" id="tripStatus"><img src="./assets/blackSpinner.svg" class="loadingspinner multicolorspinner"></div>
+    </div>
+    <div id="mapModal" style="display: none;">
+        <div class="modal-content">
+            <nav id="navbar">
+                <div class="tabs"><span class="active">&nbsp;<span id ="mapHeader"></span>&nbsp;</span></div>
+                <a class="close">
+                    <div class="iconbar bigonly">Schließen</div>
+                    <div class="iconbar"><img src="./assets/icons/close.svg" class="mediumicon close"></div>
+                </a>
+            </nav>
+
+
+            <div id="map"></div>
         </div>
 
-
-        <!-- Liste der Haltestellen -->
-        <div class="trip-stopovers blanktext">
-            <!-- Dynamisch generierte Stopover-Elemente werden hier eingefügt -->
-        </div>
-
-        <!-- Warnungen und Hinweise -->
-
-        <div class="gray" id="remarks">
-            <div class="blanktext">
-                <table id="remarksTable" cellpadding="10"></table>
-            </div>
-
-            <br>
-        </div>
-        
-
-        <br>
-
-        <small>Datenanbieter:</small><br>
-        <img class="trip-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Logo_%C3%96BB.svg/2560px-Logo_%C3%96BB.svg.png" alt="ÖBB Logo" class="dataproviderLogo">
-    
-    
-    
-        <br><br><br>
     </div>
 
 
-   
+    <!-- Liste der Haltestellen -->
+    <div class="trip-stopovers blanktext">
+        <!-- Dynamisch generierte Stopover-Elemente werden hier eingefügt -->
+    </div>
+
+    <!-- Warnungen und Hinweise -->
+
+    <div class="gray" id="remarks">
+        <div class="blanktext">
+            <table id="remarksTable" cellpadding="10"></table>
+        </div>
+
+        <br>
+    </div>
+
+
+    <br>
+
+    <small>Datenanbieter:</small><br>
+    <img class="trip-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Logo_%C3%96BB.svg/2560px-Logo_%C3%96BB.svg.png" alt="ÖBB Logo" class="dataproviderLogo">
+
+
+
+    <br><br><br>
+    </div>
+
+
+
 
 </center>
 
@@ -441,14 +441,14 @@
                 <center>
                 <br><br>
                 <h1>⛓️‍💥</h1>
-                <h2>Fehler beim Abrufen der Daten</h2>
+                <h3>Fehler beim Abrufen der Daten</h3>
 
                 <p>Dieser Link ist ungültig oder deine Internet-Verbindung wurde unterbrochen.</p>
 
                 <br>
 
                 <div onClick=\"history.go(0)\" class="button reload">Erneut laden</div>
-            
+
             `;
             return;
         }
@@ -614,85 +614,133 @@
 
         document.getElementById('mapHeader').innerHTML = `${lineName} -> ${data.trip.destination.name}`;
 
-        // Haltestellen dynamisch hinzufügen
+// Funktion zur Bestimmung des Haltestellenstatus
+        function getStopStatus(stop, currentTime, isLastStop) {
+            if (stop.cancelled) {
+                console.log(`Haltestelle ${stop.stop.name} ist storniert.`);
+                return 'cancelled';
+            }
+
+            const plannedArrival = stop.plannedArrival ? new Date(stop.plannedArrival) : null;
+            const actualArrival = stop.arrival ? new Date(stop.arrival) : null;
+            const plannedDeparture = stop.plannedDeparture ? new Date(stop.plannedDeparture) : null;
+            const actualDeparture = stop.departure ? new Date(stop.departure) : null;
+
+            const arrivalTime = actualArrival || plannedArrival;
+            const departureTime = actualDeparture || plannedDeparture;
+
+            console.log(`Haltestelle: ${stop.stop.name}`);
+            console.log(`Ankunftszeit: ${arrivalTime}`);
+            console.log(`Abfahrtszeit: ${departureTime}`);
+            console.log(`Aktuelle Zeit: ${currentTime}`);
+
+            // Wenn es sich um die Endhaltestelle handelt und die Ankunftszeit vergangen ist, setze den Status auf 'past'
+            if (isLastStop && arrivalTime && arrivalTime < currentTime) {
+                console.log(`Status: past (Endhaltestelle)`);
+                return 'past';
+            }
+
+            if (departureTime && departureTime < currentTime) {
+                console.log(`Status: past`);
+                return 'past';
+            } else if (!stop.nextToCurrent && arrivalTime && arrivalTime > currentTime) {
+                console.log(`Status: future`);
+                return 'future';
+            } else {
+                console.log(`Status: unknown`);
+                return 'unknown';
+            }
+        }
+
+// Haltestellen dynamisch hinzufügen
         const stopoversContainer = document.querySelector('.trip-stopovers');
         stopoversContainer.innerHTML = '';
-        data.trip.stopovers.forEach(stop => {
+
+        const currentTime = new Date(); // Aktuelle Zeit
+
+        let currentStopFound = false;
+
+        data.trip.stopovers.forEach((stop, index) => {
             const stopElement = document.createElement('div');
+            stopElement.classList.add('trip-stopover');
+
+            const isLastStop = index === data.trip.stopovers.length - 1;
+            let stopStatus = getStopStatus(stop, currentTime, isLastStop);
+
+            if (!currentStopFound && stopStatus === 'future') {
+                // Setze die erste zukünftige Haltestelle als 'current'
+                stopStatus = 'current';
+                currentStopFound = true;
+
+                // Berechne den Fortschrittsprozentsatz basierend auf der Abfahrtszeit der vorherigen Haltestelle
+                // Falls es keine vorherige Haltestelle gibt, setze den Fortschritt auf 0%
+                let progressPercentage = 0;
+
+                if (index > 0) {
+                    const previousStop = data.trip.stopovers[index - 1];
+                    const previousDepartureTime = previousStop.departure ? new Date(previousStop.departure) : new Date(previousStop.plannedDeparture);
+                    const arrivalTime = stop.arrival ? new Date(stop.arrival) : new Date(stop.plannedArrival);
+                    const departureTime = stop.departure ? new Date(stop.departure) : new Date(stop.plannedDeparture);
+
+                    const totalTime = arrivalTime - previousDepartureTime;
+                    const timePassed = currentTime - previousDepartureTime;
+
+                    progressPercentage = (timePassed / totalTime) * 100;
+                    progressPercentage = Math.min(Math.max(progressPercentage, 0), 100); // Begrenze zwischen 0% und 100%
+                    console.log(`Fortschritt für ${stop.stop.name}: ${progressPercentage}%`);
+                }
+
+                // Setze die CSS-Variable mit dem Fortschrittsprozentsatz
+                stopElement.style.setProperty('--progress-percentage', `${progressPercentage}%`);
+            }
+
+            // Füge eine Klasse basierend auf dem Status hinzu
+            stopElement.classList.add(`stop-${stopStatus}`);
+
+            // Generiere den Inhalt der Haltestelle
             if (stop.cancelled) {
-                stopElement.classList.add('trip-stopover');
                 stopElement.innerHTML = `
-                <div class="trip-stop-time">
-                    <div class="trip-delay" style="font-size: 16px">Entfällt</div>
-                </div>
-                <div class="trip-stop-info">
-                    <span class="trip-stop-name">${stop.stop.name}</span>
-                </div>
-            `;
+            <div class="trip-stop-time">
+                <div class="trip-delay" style="font-size: 16px">Entfällt</div>
+            </div>
+            <div class="trip-stop-info">
+                <span class="trip-stop-name">${stop.stop.name}</span>
+            </div>
+            <div class="connection-cell">
+                &nbsp;
+            </div>
+        `;
             } else {
+                const plannedArrivalTime = stop.plannedArrival ? new Date(stop.plannedArrival).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
+                const actualArrivalTime = stop.arrival ? new Date(stop.arrival).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
+                const plannedDepartureTime = stop.plannedDeparture ? new Date(stop.plannedDeparture).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
+                const actualDepartureTime = stop.departure ? new Date(stop.departure).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
 
-                const plannedArrivalTime = stop.plannedArrival ? new Date(stop.plannedArrival).toLocaleTimeString('de-DE', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                }) : '';
-                const actualArrivalTime = stop.arrival ? new Date(stop.arrival).toLocaleTimeString('de-DE', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                }) : '';
-                const plannedDepartureTime = stop.plannedDeparture ? new Date(stop.plannedDeparture).toLocaleTimeString('de-DE', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                }) : '';
-                const actualDepartureTime = stop.departure ? new Date(stop.departure).toLocaleTimeString('de-DE', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                }) : '';
-
-                const arrivalTimeDisplay = plannedArrivalTime === actualArrivalTime || !actualArrivalTime ? plannedArrivalTime : `<s class=\"disabled\">${plannedArrivalTime}</s> <span>${actualArrivalTime}</span>`;
-                const departureTimeDisplay = plannedDepartureTime === actualDepartureTime || !actualDepartureTime ? plannedDepartureTime : `<s class=\"disabled\">${plannedDepartureTime}</s> <span>${actualDepartureTime}</span>`;
+                const arrivalTimeDisplay = plannedArrivalTime === actualArrivalTime || !actualArrivalTime ? plannedArrivalTime : `<s class="disabled">${plannedArrivalTime}</s> <span>${actualArrivalTime}</span>`;
+                const departureTimeDisplay = plannedDepartureTime === actualDepartureTime || !actualDepartureTime ? plannedDepartureTime : `<s class="disabled">${plannedDepartureTime}</s> <span>${actualDepartureTime}</span>`;
 
                 let stopname = stop.stop.name;
                 if (stationId === stop.stop.id) {
                     stopElement.classList.add('marked-stopover');
                 }
 
-                stopElement.classList.add('trip-stopover');
-
-                if (stop.arrival !== null) {
-                    stopElement.innerHTML = `
-                    <div class="trip-stop-time">
-                        <div>${arrivalTimeDisplay}</div>
-                        <div>${departureTimeDisplay}</div>
-                    </div>
-                    <div class="trip-stop-info">
-                        <span class="trip-stop-name">${stopname}</span>
-                        <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class=\"bigonly\">eis</span> ${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
-                    </div>
-
-                    <div>
-                        <a href="connections.html?stop=${stop.stop.location.id}&tripID=${encodeURIComponent(tripId)}">&nbsp;<img src="./assets/icons/connectingTrain.svg"></a>
-                    </div>
-                `;
-                } else {
-                    stopElement.innerHTML = `
-                    <div class="trip-stop-time">
-                        <div>${arrivalTimeDisplay}</div>
-                        <div>${departureTimeDisplay}</div>
-                    </div>
-                    <div class="trip-stop-info">
-                        <span class="trip-stop-name">${stopname}</span>
-                        <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class=\"bigonly\">eis</span> ${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
-                    </div>
-
-                    <div>
-                        &nbsp;<img src="./assets/icons/placeholder.svg">
-                    </div>
-                `;
-                }
+                stopElement.innerHTML = `
+            <div class="trip-stop-time">
+                <div>${arrivalTimeDisplay}</div>
+                <div>${departureTimeDisplay}</div>
+            </div>
+            <div class="trip-stop-info">
+                <span class="trip-stop-name">${stopname}</span>
+                <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class="bigonly">eis</span> ${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
+            </div>
+            <div class="connection-cell">
+                ${stop.arrival !== null ? `<a href="connections.html?stop=${stop.stop.location.id}&tripID=${encodeURIComponent(tripId)}">&nbsp;<img src="./assets/icons/connectingTrain.svg"></a>` : '&nbsp;<img src="./assets/icons/placeholder.svg">'}
+            </div>
+        `;
             }
+
             stopoversContainer.appendChild(stopElement);
         });
-
 
 
         // Wagenreihungsbutton
@@ -929,300 +977,8 @@
         setInterval(fetchAndDisplayData, 30000); // 30 Sekunden in Millisekunden
     });
 
-
-function fetchtraincomposition(zugnummer, datetime, stationId) {
-
-
-fetch(`https://ist-wr.noncd.db.de/wagenreihung/1.0/${zugnummer}/${datetime}`)
-.then(response => response.json())
-.then(data => {
-
-
-// Check for valid JSON
-if (data.error) {
-document.getElementById('notice').innerHTML = '<br><br>Wagenreihung für diesen Zug nicht verfügbar.<br><br>';
-document.getElementById('coacheswrapper').classList.add('hidden');
-return;
-}
-if (data.data.istformation.halt.evanummer !== stationId) { //Check if Wagenreihung is for the right station
-console.log("StationID does not match:", stationId, data.data.istformation);
-document.getElementById('notice').innerHTML = '<br><br>Wagenreihung für diesen Zug nicht verfügbar.<br><br>';
-document.getElementById('coacheswrapper').classList.add('hidden');
-document.getElementById('git-info').className = '';
-//Create direct link for Issue report on GitHub
-document.getElementById('git-error').innerHTML = `<a
-        href="https://github.com/hoolycrash/trainboard/issues/new?title=Bug%20Wagenreihung:&body=Train:${zugnummer}%20Datetime:${datetime}%20Station:${stationId}"
-        target="_blank" class="black">Open new Issue with Train data on Github</a>`;
-return;
-}
-document.getElementById('git-info').className = '';
-document.getElementById('git-error').innerHTML = `<a
-        href="https://github.com/hoolycrash/trainboard/issues/new?title=Bug%20Wagenreihung:&body=Train:${zugnummer}%20Datetime:${datetime}%20Station:${stationId}"
-        target="_blank" class="black">Open new Issue with Train data on Github</a>`;
-rendertraincomposition(data.data.istformation);
-});
-}
-
-function rendertraincomposition(data) {
-
-/* //Did not work with more then one train set
-const allFahrzeuggruppe = data.allFahrzeuggruppe;
-const firstElementsMap = new Map();
-for (let i = 0; i < allFahrzeuggruppe.length; i++) {
-let fahrzeuggruppe = allFahrzeuggruppe[i];
-for ( let j = 0; j < fahrzeuggruppe.allFahrzeug.length; j++) {
-const fahrzeug = fahrzeuggruppe.allFahrzeug[j];
-const positioningruppe = fahrzeug.positioningruppe;
-if (!firstElementsMap.has(positioningruppe)) {
-firstElementsMap.set(positioningruppe, fahrzeug);
-} else {
-console.log("Already set", positioningruppe, fahrzeug);
-//const existingFahrzeuge = firstElementsMap.get(positioningruppe);
-//existingFahrzeuge.push(fahrzeug);
-//firstElementsMap.set(positioningruppe, existingFahrzeuge);
-} } }
-
-// Sort elements
-const sortedFahrzeuge = Array.from(firstElementsMap.values()).sort((a, b) => {
-return parseInt(a.positioningruppe) - parseInt(b.positioningruppe);
-});
-console.log(firstElementsMap);
-*/
-
-const blocksContainer = document.getElementById('blocksContainer');
-let vehiclename = "";
-const imgpath = 'assets/icons/carriage';
-const allFahrzeuggruppe = data.allFahrzeuggruppe;
-console.log("Wagenreihung:", data);
-
-// several trains -> every train
-for (let i = 0; i < allFahrzeuggruppe.length; i++) {
-let fahrzeuggruppe = allFahrzeuggruppe[i];
-let setLOK = false; //Boolean TrainSet has LOK
-
-//
-let vehicletype;
-let getvehicleType = getVehicleType(fahrzeuggruppe.fahrzeuggruppebezeichnung);
-if (getvehicleType[2] !== "") {
-vehicletype = getvehicleType[1] + " (BR" + getvehicleType[2] + ")";
-} else {
-vehicletype = getvehicleType[1];
-}
-if (vehicletype !== "") {
-console.log(vehicletype);
-}
-vehiclename = +vehicletype;
-
-//one train set -> every coach ("Wagon")
-for (let j = 0; j < fahrzeuggruppe.allFahrzeug.length; j++) {
-let fahrzeug = fahrzeuggruppe.allFahrzeug[j];
-
-const wagenordnungsnummer = fahrzeug.wagenordnungsnummer;
-const fahrzeugnummer = 'fzg' + fahrzeug.fahrzeugnummer;
-const kategorie = fahrzeug.kategorie;
-const ausstattungsDiv = document.createElement('div');
-ausstattungsDiv.classList.add('coach');
-//Boolean for Show IMG
-let showIMG = true;
-
-//check TrainSET has LOK -> Add Head on Coach
-
-ausstattungsDiv.classList.add(fahrzeugnummer);
-
-if (setLOK === true) {
-ausstattungsDiv.classList.add('head');
-setLOK = false;
-}
-
-if (kategorie === "LOK") {
-ausstattungsDiv.classList.add('lok');
-ausstattungsDiv.innerHTML = `LOK`;
-setLOK = true;
-showIMG = false;
-}
-
-if (j === 0 && kategorie !== "LOK") {
-if (kategorie === "TRIEBKOPF" || kategorie.includes("STEUERWAGEN")) {
-ausstattungsDiv.classList.add('steuerHead');
-if (kategorie === "TRIEBKOPF") {
-showIMG = false
-}
-} else {
-ausstattungsDiv.classList.add('head');
-}
-}
-
-if (j === (fahrzeuggruppe.allFahrzeug.length - 1) && kategorie !== "LOK" && !(i === 0 && j === 0)) {
-if (kategorie === "TRIEBKOPF" || kategorie.includes("STEUERWAGEN")) {
-ausstattungsDiv.classList.add('steuerBack');
-if (kategorie === "TRIEBKOPF") {
-showIMG = false
-}
-} else {
-ausstattungsDiv.classList.add('back');
-}
-}
-
-//if next coach == LOK -> Back
-if (j === (fahrzeuggruppe.allFahrzeug.length - 2)
-&& fahrzeuggruppe.allFahrzeug[j + 1].kategorie === "LOK") {
-ausstattungsDiv.classList.add('back');
-}
-
-//single Coach in Train
-if (j === 0 && (fahrzeuggruppe.allFahrzeug.length - 1) === 0) {
-//Train-Set has only one Coach or is BR650 (RS1)
-if (i === 0 && (allFahrzeuggruppe.length - 1) === 0 || getvehicleType[2] === "650") {
-ausstattungsDiv.className = 'coach';
-ausstattungsDiv.classList.add('single');
-} else {
-if (i > 0 && kategorie !== "LOK") {
-ausstattungsDiv.className = 'coach';
-//if 2th vehicle after LOK
-if (i === 1 && allFahrzeuggruppe[0].allFahrzeug[0].kategorie === "LOK") {
-ausstattungsDiv.classList.add('head');
-}
-//if last Coach befor LOK
-if (i === (allFahrzeuggruppe.length - 2) && allFahrzeuggruppe[i + 1].allFahrzeug[0].kategorie === "LOK") {
-ausstattungsDiv.classList.add('back');
-}
-// if Last Coach
-if (i === (allFahrzeuggruppe.length - 1) && kategorie !== "LOK") {
-if (kategorie.includes("STEUERWAGEN")) {
-ausstattungsDiv.classList.add('steuerBack');
-} else {
-ausstattungsDiv.classList.add('back');
-}
-}
-}
-}
-}
-
-if (fahrzeug.status === "GESCHLOSSEN") {
-ausstattungsDiv.innerHTML = `x`;
-showIMG = false;
-//ausstattungsDiv.innerHTML += `<br><br>${fahrzeug.fahrzeugsektor}`;
-}
-
-if (showIMG) {
-
-ausstattungsDiv.innerHTML = `
-<div class='sector'>${fahrzeug.fahrzeugsektor}`;
-
-    if (kategorie !== "STEUERWAGENZWEITEKLASSE" && kategorie !== "REISEZUGWAGENZWEITEKLASSE" && kategorie !==
-    "DOPPELSTOCKSTEUERWAGENZWEITEKLASSE" && kategorie !== "DOPPELSTOCKWAGENZWEITEKLASSE") {
-    ausstattungsDiv.innerHTML += `${wagenordnungsnummer}<br><img src="${imgpath}/${kategorie}.svg">`;
-    } else {
-    ausstattungsDiv.innerHTML += `${wagenordnungsnummer}<br>`;
-    }
-    ;
-
-    //let countausstatt = 0;
-    fahrzeug.allFahrzeugausstattung.forEach(ausstattung => {
-    if (
-    //countausstatt < 2 &&
-    !["KLIMA"].includes(ausstattung.ausstattungsart)) {
-    //countausstatt++;
-    ausstattungsDiv.innerHTML += `<img src="${imgpath}/${ausstattung.ausstattungsart}.svg">`;
-    }
-    //TODO: Optimize which AUSSTATTUNG are shown
-    });
-
-    }
-    blocksContainer.appendChild(ausstattungsDiv);
-    //Next Coach
-    }
-    //Next Train
-    }
-
-
-    }
-
-
-    function getVehicleType(fahrzeugbezeichnung) {
-    let type = "";
-    let series = "";
-    let name = "";
-    if (fahrzeugbezeichnung.startsWith("ICE")) {
-    let name = fahrzeugbezeichnung.substring(0, 3);
-    let number = fahrzeugbezeichnung.substring(3);
-    let firstnum = number.substring(0, 2);
-    let lastnum = number.substring(2);
-    switch (firstnum) {
-    case "01":
-    type = "ICE 1";
-    series = "401";
-    break;
-    case "02":
-    type = "ICE 2";
-    series = "402";
-    break;
-    case "03":
-    type = "ICE 3";
-    series = "403";
-    break;
-    case "46":
-    type = "ICE 3";
-    series = "406";
-    break;
-    case "47":
-    type = "ICE 3";
-    series = "407";
-    break;
-    case "80":
-    type = "ICE 3";
-    series = "408";
-    break;
-    case "90":
-    type = "ICE 4";
-    series = "412.0";
-    break;
-    case "92":
-    type = "ICE 4";
-    series = "412.2";
-    break;
-    case "94":
-    type = "ICE 4";
-    series = "412.4";
-    break;
-    case "11":
-    type = "ICE T";
-    series = "411";
-    break;
-    case "15":
-    type = "ICE T";
-    series = "415";
-    break;
-    default:
-    }
-    }
-    if (fahrzeugbezeichnung.startsWith("ICK")) {
-    type = "IC2 KISS";
-    }
-    if (fahrzeugbezeichnung.startsWith("ICD")) {
-    type = "IC2";
-    }
-    if (fahrzeugbezeichnung.startsWith("T0442")) {
-    type = "Talent 2";
-    series = "442";
-    }
-    if (fahrzeugbezeichnung.startsWith("T1442")) {
-    type = "Talent 2";
-    series = "1442";
-    }
-    if (fahrzeugbezeichnung.startsWith("D0650")) {
-    type = "RS1";
-    series = "650";
-    }
-
-    return [fahrzeugbezeichnung, type, series, name];
-
-
-    }
-
-
     fetchAndDisplayData();
 
-    </script>
+</script>
 </body>
 </html>

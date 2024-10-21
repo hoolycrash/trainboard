@@ -32,6 +32,11 @@ body {
 
 }
 
+
+.button:hover {
+	cursor: pointer;
+}
+
 .tinybutton {
 	background-color: #222222;
 	padding: 15px;
@@ -86,6 +91,15 @@ body {
 	background-image: url('.././icons/sevlogo.svg');
 	background-size: contain;
 	background-repeat: no-repeat;
+
+}
+
+.reload {
+	background-image: url('.././icons/refresh.svg');
+	background-size: contain;
+	background-repeat: no-repeat;
+	max-width: 300px;
+	color: #fff;
 
 }
 

@@ -37,7 +37,11 @@ Please read comments carefully.
 .EN, .NJ, .ICN, .ES{
 	background-image: url('../stars.jpg');
 	background-size: 200px;
-	color: #fff ;
+	color: #fff;
+}
+
+.EN#linebadge, .NJ#linebadge, .ICN#linebadge, .ES#linebadge  {
+	border: 1px solid #2f2e2e;
 }
 
 .FLX {

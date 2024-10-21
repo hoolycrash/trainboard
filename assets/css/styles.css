@@ -205,7 +205,7 @@ span {
 	box-shadow: inset #000 0px -70px 60px;
 	background-position: center;
 	top: 5px;
-	
+
 }
 
 .stationimagecontent {
@@ -1026,7 +1026,7 @@ td {
 		margin-top: 3px;
 	}
 
-	
+
 }
 
 @media (min-width: 1200px) {
@@ -1229,7 +1229,7 @@ td {
 
 .pinnedPopup {
 	background-color: rgba(38, 38, 38, 0.8);
-    backdrop-filter: blur(9px);
+	backdrop-filter: blur(9px);
 	color: #000;
 	border-radius: 10px!important;
 	position: fixed;
@@ -1237,7 +1237,7 @@ td {
 	left: 10px;
 	right: 10px;
 	z-index: 3;
-	overflow: hidden; 
+	overflow: hidden;
 	max-width: 700px;
 }
 
@@ -1386,7 +1386,7 @@ td {
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
-		
+
 	}
 
 	.trip-title {
@@ -1422,7 +1422,7 @@ td {
 		font-size: 0.9rem;
 	}
 
-	
+
 
 	.trip-card-icon {
 		max-width: 25px;
@@ -1489,7 +1489,7 @@ td {
 		height: 3px;
 		margin-top: 0px;
 	}
-	
+
 
 	.trip-progress {
 		height: 3px;
@@ -1511,7 +1511,7 @@ td {
 	width: 100%;
 	height: 100%;
 	box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Optional: Schatteneffekt */
-	
+
 }
 
 .modal-content {
@@ -1535,4 +1535,43 @@ td {
 
 .close:hover {
 	cursor: pointer;
+}
+
+
+.trip-stopover {
+	position: relative;
+	padding-left: 15px; /* Platz für die linke Border */
+	--progress-percentage: 0%; /* Standardwert */
+}
+
+/* Linke Border als Pseudo-Element */
+.trip-stopover::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 5px; /* Breite der linken Border */
+	height: 100%;
+	background-color: #ccc; /* Standardfarbe für zukünftige Haltestellen */
+}
+
+/* Vergangene Haltestellen */
+.trip-stopover.stop-past::before {
+	background-color: #2eff00;
+}
+
+/* Aktuelle Haltestelle mit progress-percentage */
+.trip-stopover.stop-current::before {
+	background: linear-gradient(to bottom, #2eff00 0%, #2eff00 var(--progress-percentage), #ccc var(--progress-percentage), #ccc 100%);
+}
+
+/* Ausgefallene Haltestellen */
+.trip-stopover.stop-cancelled::before {
+	background-color: #999;
+	color: #999;
+}
+
+/* Optional: Styling für die aktuelle Haltestelle */
+.trip-stopover.stop-current {
+	/* Weitere Stile, falls benötigt */
 }

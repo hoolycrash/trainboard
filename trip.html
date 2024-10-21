@@ -17,7 +17,7 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
 </head>
 
-<body>
+<body id="body">
 
 <center>
     <noscript> You need to enable JavaScript to run this app.</noscript>
@@ -119,7 +119,7 @@
         <div id="mapModal" style="display: none;">
             <div class="modal-content">
                 <nav id="navbar">
-                    <div class="tabs"><span class="active">&nbsp;Karte&nbsp;</span></div>
+                    <div class="tabs"><span class="active">&nbsp;<span id ="mapHeader"></span>&nbsp;</span></div>
                     <a class="close">
                         <div class="iconbar bigonly">Schließen</div>
                         <div class="iconbar"><img src="./assets/icons/close.svg" class="mediumicon close"></div>
@@ -431,7 +431,25 @@
             // Beide Profile haben keine Daten geliefert
             console.error('Fehler beim Abrufen der Trip-Daten mit beiden Profilen.');
             const statusElement = document.getElementById('tripStatus');
-            statusElement.textContent = `Fehler beim Abrufen der Zugdaten.`;
+            document.getElementById('body').innerHTML= `
+                <nav id="navbar">
+                    <div class="tabs"><span class="active">&nbsp;Zuginformationen&nbsp;</span></div>
+                    <div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div>
+                    <div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg" class="mediumicon"></a></div>
+                </nav>
+
+                <center>
+                <br><br>
+                <h1>⛓️‍💥</h1>
+                <h2>Fehler beim Abrufen der Daten</h2>
+
+                <p>Dieser Link ist ungültig oder deine Internet-Verbindung wurde unterbrochen.</p>
+
+                <br>
+
+                <div onClick=\"history.go(0)\" class="button reload">Erneut laden</div>
+            
+            `;
             return;
         }
 
@@ -593,6 +611,8 @@
         document.getElementById('originStation').textContent = data.trip.origin.name;
 
         document.getElementById('destinationStation').textContent = data.trip.destination.name;
+
+        document.getElementById('mapHeader').innerHTML = `${lineName} -> ${data.trip.destination.name}`;
 
         // Haltestellen dynamisch hinzufügen
         const stopoversContainer = document.querySelector('.trip-stopovers');

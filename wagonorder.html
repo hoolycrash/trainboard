@@ -202,7 +202,25 @@
             console.log(data.departureID)
 
         } else {
-            document.getElementById('body').innerHTML += '<br><br>&nbsp;&nbsp;Für diese Fahrt ist keine Wagenreihung verfügbar'
+            document.getElementById('body').innerHTML= `
+                <nav id="navbar">
+                    <div class="tabs"><span class="active">&nbsp;Zuginformationen&nbsp;</span></div>
+                    <div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div>
+                    <div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg" class="mediumicon"></a></div>
+                </nav>
+
+                <center>
+                <br><br>
+                <h1>🚂</h1>
+                <h2>Wagenreihung nicht verfügbar.</h2>
+
+                <p>Für diese Fahrt liegen keine Informationen vor.</p>
+
+                <br>
+
+                <div onClick=\"history.go(-1)\" class="maxwidthbutton button">Zurück</div>
+            
+            `;
         }
 
         const sectorsColumn = document.getElementById('sectorsColumn');

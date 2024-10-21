@@ -100,7 +100,11 @@ body {
 	background-repeat: no-repeat;
 	max-width: 300px;
 	color: #fff;
+}
 
+.maxwidthbutton {
+	width: fit-content;
+	color: #fff;
 }
 
 .weatherwarning {

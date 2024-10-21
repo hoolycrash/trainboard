@@ -670,7 +670,7 @@
             if (!currentStopFound && stopStatus === 'future') {
                 // Setze die erste zukünftige Haltestelle als 'current'
                 stopStatus = 'current';
-                currentStopFound = true;
+                
 
                 // Berechne den Fortschrittsprozentsatz basierend auf der Abfahrtszeit der vorherigen Haltestelle
                 // Falls es keine vorherige Haltestelle gibt, setze den Fortschritt auf 0%
@@ -692,14 +692,25 @@
 
                 // Setze die CSS-Variable mit dem Fortschrittsprozentsatz
                 stopElement.style.setProperty('--progress-percentage', `${progressPercentage}%`);
+                stopElement.style.setProperty('--progress-px', `${20 / 100 * progressPercentage - 10}px`);
+                stopElement.innerHTML = `
+                <picture>
+                    <source srcset="./assets/icons/train-top-dark.svg" media="(prefers-color-scheme: dark)">
+                    <source srcset="./assets/icons/train-top.svg" media="(prefers-color-scheme: light)">
+                    <img src="./assets/icons/train-top.svg" alt="Location" class="trainposition">
+                </picture>
+                `;
+
             }
 
             // Füge eine Klasse basierend auf dem Status hinzu
             stopElement.classList.add(`stop-${stopStatus}`);
+            
 
             // Generiere den Inhalt der Haltestelle
             if (stop.cancelled) {
-                stopElement.innerHTML = `
+                stopElement.innerHTML += `
+            
             <div class="trip-stop-time">
                 <div class="trip-delay" style="font-size: 16px">Entfällt</div>
             </div>
@@ -710,6 +721,39 @@
                 &nbsp;
             </div>
         `;
+            } else if (stopStatus === 'current') {
+
+                currentStopFound = true;
+
+                const plannedArrivalTime = stop.plannedArrival ? new Date(stop.plannedArrival).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
+                const actualArrivalTime = stop.arrival ? new Date(stop.arrival).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
+                const plannedDepartureTime = stop.plannedDeparture ? new Date(stop.plannedDeparture).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
+                const actualDepartureTime = stop.departure ? new Date(stop.departure).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
+
+                const arrivalTimeDisplay = plannedArrivalTime === actualArrivalTime || !actualArrivalTime ? plannedArrivalTime : `<s class="disabled">${plannedArrivalTime}</s> <span>${actualArrivalTime}</span>`;
+                const departureTimeDisplay = plannedDepartureTime === actualDepartureTime || !actualDepartureTime ? plannedDepartureTime : `<s class="disabled">${plannedDepartureTime}</s> <span>${actualDepartureTime}</span>`;
+
+                let stopname = stop.stop.name;
+                if (stationId === stop.stop.id) {
+                    stopElement.classList.add('marked-stopover');
+                }
+
+                stopElement.innerHTML += `
+                
+            <div class="trip-stop-time">
+                <div>${arrivalTimeDisplay}</div>
+                <div>${departureTimeDisplay}</div>
+            </div>
+            <div class="trip-stop-info">
+                <span class="trip-stop-name">${stopname}</span>
+                <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class="bigonly">eis</span> ${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
+            </div>
+            <div class="connection-cell">
+                ${stop.arrival !== null ? `<a href="connections.html?stop=${stop.stop.location.id}&tripID=${encodeURIComponent(tripId)}">&nbsp;<img src="./assets/icons/connectingTrain.svg"></a>` : '&nbsp;<img src="./assets/icons/placeholder.svg">'}
+            </div>
+        `;
+
+
             } else {
                 const plannedArrivalTime = stop.plannedArrival ? new Date(stop.plannedArrival).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
                 const actualArrivalTime = stop.arrival ? new Date(stop.arrival).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
@@ -724,7 +768,8 @@
                     stopElement.classList.add('marked-stopover');
                 }
 
-                stopElement.innerHTML = `
+                stopElement.innerHTML += `
+                
             <div class="trip-stop-time">
                 <div>${arrivalTimeDisplay}</div>
                 <div>${departureTimeDisplay}</div>

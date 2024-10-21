@@ -1542,22 +1542,29 @@ td {
 	position: relative;
 	padding-left: 15px; /* Platz für die linke Border */
 	--progress-percentage: 0%; /* Standardwert */
+	--progress-px: 0px;
+	
 }
+
+
 
 /* Linke Border als Pseudo-Element */
 .trip-stopover::before {
-	content: '';
+	content: '  ';
 	position: absolute;
-	left: 0;
+	left: 14px;
 	top: 0;
-	width: 5px; /* Breite der linken Border */
+	width: 2px; /* Breite der linken Border */
 	height: 100%;
 	background-color: #ccc; /* Standardfarbe für zukünftige Haltestellen */
+	
+	
 }
 
 /* Vergangene Haltestellen */
 .trip-stopover.stop-past::before {
 	background-color: #2eff00;
+	
 }
 
 /* Aktuelle Haltestelle mit progress-percentage */
@@ -1567,11 +1574,20 @@ td {
 
 /* Ausgefallene Haltestellen */
 .trip-stopover.stop-cancelled::before {
-	background-color: #999;
+	background-color: #ff0000;
 	color: #999;
 }
 
 /* Optional: Styling für die aktuelle Haltestelle */
-.trip-stopover.stop-current {
-	/* Weitere Stile, falls benötigt */
+.trip-stop-time {
+	margin-left: 15px;
+
+}
+
+.trainposition {
+	height: 30px;
+	position: absolute;
+	margin-left: -12px;
+	margin-top: var(--progress-px);
+	z-index: 10;
 }

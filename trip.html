@@ -692,7 +692,8 @@
 
                 // Setze die CSS-Variable mit dem Fortschrittsprozentsatz
                 stopElement.style.setProperty('--progress-percentage', `${progressPercentage}%`);
-                stopElement.style.setProperty('--progress-px', `${40 / 100 * (progressPercentage - 1) - 40}px`);
+                stopElement.style.setProperty('--progress-px', `${40 / 100 * (progressPercentage - 1) - 50}px`);
+                console.log(progressPercentage)
                 stopElement.innerHTML = `
                 <picture>
                     <source srcset="./assets/icons/train-top-dark.svg" media="(prefers-color-scheme: dark)">
@@ -746,7 +747,7 @@
             </div>
             <div class="trip-stop-info">
                 <span class="trip-stop-name">${stopname}</span>
-                <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class="bigonly">eis</span> ${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
+                <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class="bigonly">eis</span>&nbsp;${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
             </div>
             <div class="connection-cell">
                 ${stop.arrival !== null ? `<a href="connections.html?stop=${stop.stop.location.id}&tripID=${encodeURIComponent(tripId)}">&nbsp;<img src="./assets/icons/connectingTrain.svg"></a>` : '&nbsp;<img src="./assets/icons/placeholder.svg">'}
@@ -760,8 +761,8 @@
                 const plannedDepartureTime = stop.plannedDeparture ? new Date(stop.plannedDeparture).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
                 const actualDepartureTime = stop.departure ? new Date(stop.departure).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
 
-                const arrivalTimeDisplay = plannedArrivalTime === actualArrivalTime || !actualArrivalTime ? plannedArrivalTime : `<s class="disabled">${plannedArrivalTime}</s> <span>${actualArrivalTime}</span>`;
-                const departureTimeDisplay = plannedDepartureTime === actualDepartureTime || !actualDepartureTime ? plannedDepartureTime : `<s class="disabled">${plannedDepartureTime}</s> <span>${actualDepartureTime}</span>`;
+                const arrivalTimeDisplay = plannedArrivalTime === actualArrivalTime || !actualArrivalTime ? plannedArrivalTime : `<s class="disabled">${plannedArrivalTime}</s>&nbsp;<span>${actualArrivalTime}</span>`;
+                const departureTimeDisplay = plannedDepartureTime === actualDepartureTime || !actualDepartureTime ? plannedDepartureTime : `<s class="disabled">${plannedDepartureTime}</s>&nbsp;<span>${actualDepartureTime}</span>`;
 
                 let stopname = stop.stop.name;
                 if (stationId === stop.stop.id) {
@@ -776,7 +777,7 @@
             </div>
             <div class="trip-stop-info">
                 <span class="trip-stop-name">${stopname}</span>
-                <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class="bigonly">eis</span> ${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
+                <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class="bigonly">eis</span>&nbsp;${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
             </div>
             <div class="connection-cell">
                 ${stop.arrival !== null ? `<a href="connections.html?stop=${stop.stop.location.id}&tripID=${encodeURIComponent(tripId)}">&nbsp;<img src="./assets/icons/connectingTrain.svg"></a>` : '&nbsp;<img src="./assets/icons/placeholder.svg">'}

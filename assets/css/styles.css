@@ -1562,8 +1562,14 @@ td {
 }
 
 /* Vergangene Haltestellen */
-.trip-stopover.stop-past::before {
+.trip-stopover.stop-past::before,  .stop-unknown::before {
 	background-color: #2eff00;
+	
+}
+
+.trip-stop-name {
+	overflow-x: hidden;
+	white-space: nowrap;
 	
 }
 

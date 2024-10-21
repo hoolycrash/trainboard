@@ -617,7 +617,6 @@
 // Funktion zur Bestimmung des Haltestellenstatus
         function getStopStatus(stop, currentTime, isLastStop) {
             if (stop.cancelled) {
-                console.log(`Haltestelle ${stop.stop.name} ist storniert.`);
                 return 'cancelled';
             }
 
@@ -629,25 +628,16 @@
             const arrivalTime = actualArrival || plannedArrival;
             const departureTime = actualDeparture || plannedDeparture;
 
-            console.log(`Haltestelle: ${stop.stop.name}`);
-            console.log(`Ankunftszeit: ${arrivalTime}`);
-            console.log(`Abfahrtszeit: ${departureTime}`);
-            console.log(`Aktuelle Zeit: ${currentTime}`);
-
             // Wenn es sich um die Endhaltestelle handelt und die Ankunftszeit vergangen ist, setze den Status auf 'past'
             if (isLastStop && arrivalTime && arrivalTime < currentTime) {
-                console.log(`Status: past (Endhaltestelle)`);
                 return 'past';
             }
 
             if (departureTime && departureTime < currentTime) {
-                console.log(`Status: past`);
                 return 'past';
             } else if (!stop.nextToCurrent && arrivalTime && arrivalTime > currentTime) {
-                console.log(`Status: future`);
                 return 'future';
             } else {
-                console.log(`Status: unknown`);
                 return 'unknown';
             }
         }
@@ -687,7 +677,6 @@
 
                     progressPercentage = (timePassed / totalTime) * 100;
                     progressPercentage = Math.min(Math.max(progressPercentage, 0), 100); // Begrenze zwischen 0% und 100%
-                    console.log(`Fortschritt für ${stop.stop.name}: ${progressPercentage}%`);
                 }
 
                 // Setze die CSS-Variable mit dem Fortschrittsprozentsatz

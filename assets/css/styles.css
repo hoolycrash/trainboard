@@ -1272,9 +1272,10 @@ td {
 	color: #000;
 	position: relative;
 	z-index: 1;
-	width: 22%;
+	width: 40%;
 	font-size: 20px;
 }
+
 
 .trip-stop-info {
 	display: flex;
@@ -1289,6 +1290,7 @@ td {
 	z-index: 1;
 	color: #000;
 	margin-right: 10px;
+	
 }
 
 .trip-platform {
@@ -1567,11 +1569,7 @@ td {
 	
 }
 
-.trip-stop-name {
-	overflow-x: hidden;
-	white-space: nowrap;
-	
-}
+
 
 /* Aktuelle Haltestelle mit progress-percentage */
 .trip-stopover.stop-current::before {

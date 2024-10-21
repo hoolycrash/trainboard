@@ -731,8 +731,8 @@
                 const plannedDepartureTime = stop.plannedDeparture ? new Date(stop.plannedDeparture).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
                 const actualDepartureTime = stop.departure ? new Date(stop.departure).toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }) : '';
 
-                const arrivalTimeDisplay = plannedArrivalTime === actualArrivalTime || !actualArrivalTime ? plannedArrivalTime : `<s class="disabled">${plannedArrivalTime}</s> <span>${actualArrivalTime}</span>`;
-                const departureTimeDisplay = plannedDepartureTime === actualDepartureTime || !actualDepartureTime ? plannedDepartureTime : `<s class="disabled">${plannedDepartureTime}</s> <span>${actualDepartureTime}</span>`;
+                const arrivalTimeDisplay = plannedArrivalTime === actualArrivalTime || !actualArrivalTime ? plannedArrivalTime : `<s class="disabled">${plannedArrivalTime}</s>&nbsp;<span>${actualArrivalTime}</span>`;
+                const departureTimeDisplay = plannedDepartureTime === actualDepartureTime || !actualDepartureTime ? plannedDepartureTime : `<s class="disabled">${plannedDepartureTime}</s>&nbsp;<span>${actualDepartureTime}</span>`;
 
                 let stopname = stop.stop.name;
                 if (stationId === stop.stop.id) {

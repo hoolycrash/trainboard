@@ -1591,9 +1591,9 @@ td {
 }
 
 .trainposition {
-	height: 30px;
+	height: 36px;
 	position: absolute;
-	margin-left: -10.4px;
+	margin-left: -12.5px;
 	margin-top: var(--progress-px);
 	z-index: 10;
 }

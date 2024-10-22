@@ -29,7 +29,9 @@ body {
 	border-radius: 10px;
 	text-align: center;
 	font-size: 17px;
-
+	margin-bottom: 10px;
+	margin-top: 10px;
+	color: #fff;
 }
 
 
@@ -91,7 +93,13 @@ body {
 	background-image: url('.././icons/sevlogo.svg');
 	background-size: contain;
 	background-repeat: no-repeat;
+}
 
+.changebutton {
+	background-image: url('.././icons/kichange.svg');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-size: 40px;
 }
 
 .reload {
@@ -171,6 +179,14 @@ span {
 	background-color: #ceffd6;
 	color: #0ca724;
 	border-color: #0ca724;
+}
+
+.transfertime {
+	font-size: 40px;
+	font-weight: bold;
+	background: -webkit-linear-gradient(#ffe600, #9b09a5);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
 
 .transfericon {
@@ -418,6 +434,28 @@ a {
 input[type="date"]::-webkit-calendar-picker-indicator {
 	display: none;
 	-webkit-appearance: none;
+}
+
+.platforminput {
+	margin-top: 18px;
+	background-color: #0f0f0f;
+	font-size: 18px;
+	height: 40px;
+	border: none;
+	color: #fff;
+	width: 100%;
+}
+
+.platforminput:focus {
+	outline: none;
+}
+
+.leftcorners {
+	border-radius: 10px 0px 0px 10px;
+}
+
+.rightcorners {
+	border-radius: 0px 10px 10px 0px;
 }
 
 .searchbar:focus {
@@ -1299,6 +1337,15 @@ td {
 	z-index: 1;
 	font-size: 20px;
 }
+
+.marker {
+	background-image: url('https://penstore.de/bilder/artiklar/zoom/105537_1.jpg?m=1598348662');
+	background-size: cover;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	cursor: pointer;
+  }
 
 .trip-stopover.trip-cancelled::before {
 	background-color: red;

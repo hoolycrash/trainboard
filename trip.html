@@ -335,7 +335,7 @@
 
                 if (tripData.trip.currentLocation) {
                     const currentLocation = [tripData.trip.currentLocation.longitude, tripData.trip.currentLocation.latitude];
-                    marker = new mapboxgl.Marker({color: "red"})
+                    marker = new mapboxgl.Marker({color: "black"})
                         .setLngLat(currentLocation)
                         .addTo(map);
                 } else {

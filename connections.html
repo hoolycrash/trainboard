@@ -20,7 +20,7 @@
 
     <br>
     <br>
-    <h3>Ankunft mit <span id="arrivalline"></span> in 🔻 <span id="changestation"></span> um <span id="arrivaltime"></span> auf Gleis <span id="arrivalPlatform"></span>.</h3>
+    <h3 id="headertext"><img src="./assets/blackSpinner.svg" class="loadingspinner multicolorspinner"></h3>
     <br>
     <br>
 
@@ -45,12 +45,7 @@
 </div>
 
 <br>
-<div style="padding: 20px;">
-    <i>Legende:</i><br><br>
-    <img src="./assets/icons/IMPOSSIBLE.svg" class="transfericon" title="Nicht erreicht"> Nicht erreicht <br><br>
-    <img src="./assets/icons/QUICK_TRANSFER.svg" class="transfericon" title="Knapp erreicht"> Knapp erreicht<br><br>
-    <img src="./assets/icons/POSSIBLE.svg" class="transfericon" title="Erreicht"> Erreicht
-</div>
+
 
 <script>
 
@@ -156,11 +151,8 @@
             });
 
             // Aktualisiere die Header-Informationen
-            document.getElementById('arrivalline').innerHTML = data.arrivalLine || '';
+            document.getElementById('headertext').innerHTML = 'Ankunft mit ' + data.arrivalLine + ' in ' + data.arrivalStationName + ' um ' + formatTime(data.arrivalTime) + ' auf Gleis ' + data.arrivalPlatform;
             document.getElementById('arrivallineheader').innerHTML = data.arrivalLine || '';
-            document.getElementById('changestation').innerHTML = data.arrivalStationName || '';
-            document.getElementById('arrivaltime').innerHTML = formatTime(data.arrivalTime);
-            document.getElementById('arrivalPlatform').innerHTML = data.arrivalPlatform || '';
 
             // Wenn keine Transfers vorhanden sind
             if (!hasValidTransfers) {

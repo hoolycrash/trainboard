@@ -102,8 +102,26 @@ body {
 	background-size: 40px;
 }
 
+.statisticbutton {
+	background-image: url('.././icons/monitoring.svg');
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-size: 40px;
+}
+
+
+
 .reload {
 	background-image: url('.././icons/refresh.svg');
+	background-size: contain;
+	background-repeat: no-repeat;
+	max-width: 300px;
+	color: #fff;
+}
+
+
+.chartadd {
+	background-image: url('.././icons/chartadd.svg');
 	background-size: contain;
 	background-repeat: no-repeat;
 	max-width: 300px;
@@ -208,6 +226,11 @@ span {
 
 .loadingspinner {
 	height: 60px;
+}
+
+.buttonspinner {
+	height: 30px;
+	
 }
 
 .stationimage {

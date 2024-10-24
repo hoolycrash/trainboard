@@ -81,6 +81,8 @@
 
 				<span id="weather"></span>
 
+				<span id="statistics"></span>
+
 				<div class="changebutton button">
 					Umsteigezeit<br>
 
@@ -215,6 +217,8 @@ fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
 
 	document.getElementById('sevmap').innerHTML = "<a href=\"https://www.bahnhof.de/downloads/replacement-service-maps/" +  data.number + ".pdf\"><div class=\"sevbutton button \">Lageplan</div></a>";	  
 	
+	document.getElementById('statistics').innerHTML = "<a href=\"dashboard.html?stationID=" +  data.evaNumber + "\"><div class=\"statisticbutton button \">Statistiken</div></a>";
+
 	var imgurl = data.photoPath;
 	document.getElementById("stationimage").style.backgroundImage = "url(" + imgurl + ")";
 	

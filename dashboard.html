@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dashboard</title>
+	<link rel="stylesheet" href="./assets/css/styles.css">
+	<link rel="stylesheet" href="./assets/css/dark-styles.css">
+	<link rel="stylesheet" href="./assets/css/line-colors.css">
+	<link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
+	<link rel="manifest" href="/manifest.json" type="application/json" >
+	<meta name="theme-color" content="#000">
+</head>
+
+<body>
+
+<nav id="navbar"><div class="tabs"><span class="active">&nbsp;Dashboard&nbsp;</a></div><div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div><div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg" class="mediumicon"></a></div></nav>
+
+<span id="content">
+
+
+</span>
+	
+
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const stationID = urlParams.get('stationID');
+
+const apiUrl = `https://data.cuzimmartin.dev/station-exists?stationId=${stationID}`;
+
+fetch(apiUrl)
+  .then(response => response.json())  
+  .then(data => {
+    // Check if requested station exists
+    if (data.exists) {
+      document.getElementById('content').innerHTML=`
+        <center>
+        <br><br>
+        <h1>📈</h1>
+        <h3>Daten werden bald verfügbar sein.</h3>
+        </center>
+      `;
+    } else {
+      // Button und Message bei nicht vorhandener Station anzeigen
+      document.getElementById('content').innerHTML = `
+        <center>
+          <br><br>
+          <h1>💤</h1>
+          <h3>Für diese Station sind aktuell keine Statistiken verfügbar.</h3>
+          <p>Füge diese Station hinzu, damit wir Statistiken für diese Station erstellen.</p>
+          <br>
+          <div id="addStationButton" class="button chartadd">Hinzufügen</div>
+        </center>
+      `;
+
+      // Füge einen Klick-Event-Listener hinzu
+      document.getElementById('addStationButton').addEventListener('click', function() {
+
+        document.getElementById('addStationButton').innerHTML = `<img src="./assets/whiteSpinner.svg" class="loadingspinner buttonspinner">`;
+        // URL zum Hinzufügen der Station
+        const addStationUrl = `https://data.cuzimmartin.dev/add-station?stationId=${stationID}`;
+
+        // Anfrage zum Hinzufügen der Station ausführen
+        fetch(addStationUrl)
+          .then(response => response.json())  // Die Antwort als JSON verarbeiten
+          .then(addStationData => {
+            if (addStationData.message && addStationData.message.includes("erfolgreich")) {
+                document.getElementById('content').innerHTML = `
+                    <center>
+                    <br><br>
+                    <h1>✅</h1>
+                    <h3>Station wurde hinzugefügt.</h3>
+                    <p>Statistiken werden bald verfügbar sein.</p>
+                    </center>
+                `;
+            } else {
+                console.error('station-add:', error);
+            }
+          })
+          .catch(error => {
+            console.error('fetch-station-available:', error);
+          });
+      });
+    }
+  })
+  .catch(error => {
+    console.error('Fehler bei der API-Anfrage:', error);
+  });
+
+
+</script>
+
+</body>
+</html>

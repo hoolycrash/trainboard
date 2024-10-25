@@ -89,24 +89,14 @@
     <div class="dashboardSide" id="dashboardContainer2">
       <div class="dashboardSection">
         <span id="choosenminutes"></span>-Minuten-Pünktlichkeit<br>
-        <span class="disabled">365-Tage Trend</span>
-        <center>
-          
-          <h1>⏱️</h1>
-          <h3>Bald verfügbar.</h3>
-        </center>
-        <br>
+        <span class="disabled"><span id="countDays1"></span>-Tage Trend</span>
+        <canvas id="punctualityChart" style="height: 30%; width: 100%;"></canvas>
       </div>
 
       <div class="dashboardSection">
         Anzahl Ausfälle<br>
-        <span class="disabled">365-Tage Trend</span>
-        <center>
-          
-          <h1>🚂</h1>
-          <h3>Bald verfügbar.</h3>
-          <br>
-        </center>
+        <span class="disabled"><span id="countDays2"></span>-Tage Trend</span>
+        <canvas id="cancelChart" style="height: 30%; width: 100%;"></canvas>
       </div>
     </div>
   </div>
@@ -129,8 +119,6 @@ fetch(apiUrl)
     if (data.exists) {
       document.getElementById('content').classList.add('hidden')
 
-      
-
       // Funktion zum Abrufen der JSON-Daten
       async function fetchData() {
             var delayMinutes = document.getElementById("delayMinutes").value;
@@ -145,13 +133,10 @@ fetch(apiUrl)
 
                 const totaltrainsWithCancelled = (data.totalTrains + data.cancelledTrains)
 
-                
-
                 document.getElementById('punctualityPercentage').innerHTML = `${Math.floor(Number(data.punctualityPercentage))}%`;
 
                 document.getElementById('stationName').innerHTML = `&nbsp;${data.stationName}&nbsp;`;
 
-                
                 if (data.averageDelay <= delayMinutes) {
                   document.getElementById('averageDelay').innerHTML = `&oslash;&nbsp;Verspätung:<br><span class="alwaysbig green">${data.averageDelay}</span>&nbsp;min.`;
                 } else 
@@ -182,6 +167,87 @@ fetch(apiUrl)
                   pieChartIconColor = '#ec0016';
                 }
 
+                //-------------- 30  TAGE STATISTIK ----------------
+                //Start / Ende Datums
+                const today = new Date();
+                const thirtyDaysAgo = new Date(today);
+                thirtyDaysAgo.setDate(today.getDate() - 30);
+
+                const formatDate = (date) => {
+                  const day = String(date.getDate()).padStart(2, '0');
+                  const month = String(date.getMonth() + 1).padStart(2, '0');
+                  const year = date.getFullYear();
+                  return `${day}.${month}.${year}`;
+                };
+
+                const startDate = formatDate(thirtyDaysAgo);
+                const endDate = formatDate(today);
+
+                const baseurl = `https://data.cuzimmartin.dev/station-monitoring-range?stationID=${stationID}&startDate=${startDate}&endDate=${endDate}&delayMinutes=${delayMinutes}&perDay=true`;
+
+                fetch(baseurl)
+                  .then(response => {
+                    if (!response.ok) {
+                      throw new Error('Error at fetching');
+                    }
+                    return response.json();
+                  })
+                  .then(data => {
+                    const DatapunctualityPercentage = [];
+                    const DatacancelledTrains = [];
+                    const Datadates = [];
+
+                    data.dataPerDay.forEach(dayData => {
+                      DatapunctualityPercentage.push(dayData.punctualityPercentage);
+                      DatacancelledTrains.push(dayData.cancelledTrains);
+
+                      // Konvertiere  Datum in  Format "DD.MM"
+                      const date = new Date(dayData.date);
+                      const day = String(date.getDate()).padStart(2, '0');
+                      const month = String(date.getMonth() + 1).padStart(2, '0');
+                      Datadates.push(`${day}.${month}`);
+                    });
+
+                    document.getElementById("countDays1").innerText = data.dataPerDay.length;
+                    document.getElementById("countDays2").innerText = data.dataPerDay.length;
+
+                    console.log("DatapunctualityPercentage:", DatapunctualityPercentage.join(', '));
+                    console.log("DatacancelledTrains:", DatacancelledTrains.join(', '));
+                    console.log("Datadates:", Datadates.join(', '));
+
+                    new Chart("cancelChart", {
+                      type: "line",
+                      data: {
+                        labels: Datadates,
+                        datasets: [{
+                          data: DatacancelledTrains,
+                          fill: true,
+                          backgroundColor: 'rgba(209, 0, 21, 0.1)',
+                          borderColor: '#d10015',
+                          pointRadius: 1,
+                        }]
+                      },
+                    });
+
+                    new Chart("punctualityChart", {
+                      type: "line",
+                      data: {
+                        labels: Datadates,
+                        datasets: [{
+                          data: DatapunctualityPercentage,
+                          fill: true,
+                          backgroundColor: 'rgba(255, 163, 15, 0.1)',
+                          borderColor: '#ffa30f',
+                          pointRadius: 1,
+                        }]
+                      },
+                     });
+
+                  })
+
+                  .catch(error => console.error('Fehler beim Abrufen der Daten:', error));
+
+
                
                 
                 const xyValuesLittlePiechart = [data.punctualityPercentage, (100 - data.punctualityPercentage)];
@@ -207,10 +273,10 @@ fetch(apiUrl)
                   },
                   options: {
                     plugins: {
-      legend: {
-        display: false // Legende ausblenden
-      }
-    },
+                    legend: {
+                      display: false // Legende ausblenden
+                    }
+                  },
                     scales: {
                       x: {
                         min: 40,
@@ -223,9 +289,6 @@ fetch(apiUrl)
                     }
                   }
                 });
-
-
-
 
                 //Pie Chart
                 const xyValues = [data.punctualTrains, data.delayOverXMinutes, data.cancelledTrains];
@@ -246,13 +309,7 @@ fetch(apiUrl)
                       pointBackgroundColor: "rgb(0,0,255)"
                     }]
                   },
-
-                  
-                  
                 });
-
-
-
 
             } catch (error) {
                 console.error("Fehler beim Abrufen der Daten:", error);
@@ -265,12 +322,6 @@ fetch(apiUrl)
 
         // Abruf der Daten direkt beim Seitenaufruf
         fetchData(); // Direkt beim Seitenaufruf
-
-        
-   
-
-
-
     } else {
 
       document.getElementById('totalcontent').classList.add('hidden')

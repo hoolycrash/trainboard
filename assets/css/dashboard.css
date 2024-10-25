@@ -1,0 +1,68 @@
+.dashboardContainer, .diagramContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px; /* Abstand zwischen den divs */
+}
+
+.diagramContainer {
+    align-items: center;
+}
+  
+.dashboardSide, .diagramSide {
+    flex: 1 1 50%;
+    box-sizing: border-box; /* Damit Padding zur Breite gehört */
+    padding: 10px;
+}
+
+.dashboardSection {
+	background-color: #fff;
+    box-shadow: #cecece 0px 0px 5px;
+	padding: 10px;
+	border-radius: 10px;
+	text-align: left;
+	font-size: 17px;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	color: #000;
+}
+
+.dashboardCard {
+	background-color: #d9d9d9;
+	padding: 10px;
+	border-radius: 10px;
+	text-align: left;
+	font-size: 17px;
+	margin: 5px;
+	color: #000;
+    min-height: 70px;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+
+@media (prefers-color-scheme: dark) {
+    .dashboardSection {
+        background-color: #000;
+        color: #fff;
+        box-shadow: none;
+    }
+    
+    .dashboardCard {
+        background-color: #0f0f0f;
+        color: #fff;
+    }
+}
+  
+@media (max-width: 900px) {
+    .dashboardSide {
+        flex-basis: 100%; /* Bei kleineren Bildschirmen werden sie untereinander gestapelt */
+    }
+}
+
+@media (max-width: 500px) {
+    .diagramSide {
+        flex-basis: 100%; /* Bei kleineren Bildschirmen werden sie untereinander gestapelt */
+    }
+}
+  

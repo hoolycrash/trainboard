@@ -287,6 +287,11 @@ span {
 	font-size: 35px;
 }
 
+.alwaysbig {
+	font-weight: bold;
+	font-size: 35px;
+}
+
 .map {
 	height: 1000px;
 	width: 1000px;
@@ -468,6 +473,25 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 	color: #fff;
 	width: 100%;
 }
+
+.tinyinput {
+	margin-top: 18px;
+	background-color: #d9d9d9;
+	font-size: 18px;
+	height: 40px;
+	border: none;
+	color: #000;
+	width: 100%;
+	border-radius: 10px;
+	width: 140px;
+	padding: 10px;
+}
+
+.tinyinput:focus {
+	outline: none;
+}
+
+
 
 .platforminput:focus {
 	outline: none;
@@ -813,6 +837,10 @@ td {
 
 .green {
 	color: #2f9d12;
+}
+
+.actualyellow {
+	color: #ffa30f;
 }
 
 .underlined {

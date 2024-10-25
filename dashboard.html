@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="./assets/css/styles.css">
 	<link rel="stylesheet" href="./assets/css/dark-styles.css">
 	<link rel="stylesheet" href="./assets/css/line-colors.css">
+  <link rel="stylesheet" href="./assets/css/dashboard.css">
 	<link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
 	<link rel="manifest" href="/manifest.json" type="application/json" >
 	<meta name="theme-color" content="#000">
@@ -14,13 +15,105 @@
 
 <body>
 
-<nav id="navbar"><div class="tabs"><span class="active">&nbsp;Dashboard&nbsp;</a></div><div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div><div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg" class="mediumicon"></a></div></nav>
+  <nav id="navbar">
+    <div class="tabs">
+      <a href="#" class="active" id="stationName"></a>
+    </div>
+          <div class="iconbar"><a class="navsearch" href="dashboardsearch.html">Bahnhofsuche</a></div>
+</nav>
 
 <span id="content">
 
 
 </span>
-	
+
+<center>
+<div class="blanktext" id="totalcontent">
+
+  <input class="tinyinput darkinput" type="number" id="delayMinutes" name="delayMinutes" min="0" placeholder="XX" value="6" style="margin-left: 10px; width: 30px; height: 25px;">-Minuten-Pünktlichkeit
+    
+  <div class="dashboardContainer">
+    <div class="dashboardSide" id="dashboardContainer1">
+      <div class="dashboardSection">
+        Letzte 
+
+        <select class="tinyinput" id="days" name="days" style="margin-top: 0px;">
+          <option value="1">24 Stunden</option>
+          <option value="7">7 Tage</option>
+          <option value="30">30 Tage</option>
+          <option value="365">365 Tage</option>
+        </select>
+
+        <table>
+          <tr>
+            <td style="width: 50%;">
+              <div class="dashboardCard">
+                Pünktlichkeit:<br>
+                <table>
+                  <tr>
+                    <td><canvas id="littlePieChart" style="max-width: 40px; height: 40px;"></canvas></td><td class="wide">&nbsp;<span id="punctualityPercentage" class="alwaysbig"></span></td>
+                  </tr>
+                </table>
+                
+                
+              </div>
+
+              <br>
+
+              
+            </td>
+            <td style="width: 50%;">
+              <div class="dashboardCard" id="averageDelay">
+                
+              </div>
+
+
+            
+            </td>
+          </tr>
+        </table>
+
+
+        <div class="diagramContainer">
+          <div class="diagramSide">
+            <canvas id="bigPieChart" style="height: 30vh; max-width: 100%;"></canvas>
+          </div>
+          <div class="diagramSide">
+            <span id="values"><img src="./assets/blackSpinner.svg" class="loadingspinner multicolorspinner"></span>
+          </div>
+        </div>
+        <br>
+
+      </div>
+    </div>
+    <div class="dashboardSide" id="dashboardContainer2">
+      <div class="dashboardSection">
+        <span id="choosenminutes"></span>-Minuten-Pünktlichkeit<br>
+        <span class="disabled">365-Tage Trend</span>
+        <center>
+          
+          <h1>⏱️</h1>
+          <h3>Bald verfügbar.</h3>
+        </center>
+        <br>
+      </div>
+
+      <div class="dashboardSection">
+        Anzahl Ausfälle<br>
+        <span class="disabled">365-Tage Trend</span>
+        <center>
+          
+          <h1>🚂</h1>
+          <h3>Bald verfügbar.</h3>
+          <br>
+        </center>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="./assets/src/chart.js">
+</script>
 
 
 <script>
@@ -34,14 +127,154 @@ fetch(apiUrl)
   .then(data => {
     // Check if requested station exists
     if (data.exists) {
-      document.getElementById('content').innerHTML=`
-        <center>
-        <br><br>
-        <h1>📈</h1>
-        <h3>Daten werden bald verfügbar sein.</h3>
-        </center>
-      `;
+      document.getElementById('content').classList.add('hidden')
+
+      
+
+      // Funktion zum Abrufen der JSON-Daten
+      async function fetchData() {
+            var delayMinutes = document.getElementById("delayMinutes").value;
+            var days = document.getElementById("days").value;
+
+            // Erstelle die URL mit den ausgewählten Werten
+            const url = `https://data.cuzimmartin.dev/station-monitoring?stationID=${stationID}&days=${days}&delayMinutes=${delayMinutes}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                const totaltrainsWithCancelled = (data.totalTrains + data.cancelledTrains)
+
+                
+
+                document.getElementById('punctualityPercentage').innerHTML = `${Math.floor(Number(data.punctualityPercentage))}%`;
+
+                document.getElementById('stationName').innerHTML = `&nbsp;${data.stationName}&nbsp;`;
+
+                
+                if (data.averageDelay <= delayMinutes) {
+                  document.getElementById('averageDelay').innerHTML = `&oslash;&nbsp;Verspätung:<br><span class="alwaysbig green">${data.averageDelay}</span>&nbsp;min.`;
+                } else 
+                if (data.averageDelay <= (delayMinutes + 5)) {
+                  document.getElementById('averageDelay').innerHTML = `&oslash;&nbsp;Verspätung:<br><span class="alwaysbig actualyellow">${data.averageDelay}</span>&nbsp;min.`;
+                } else {
+                  document.getElementById('averageDelay').innerHTML = `&oslash;&nbsp;Verspätung:<br><span class="alwaysbig red">${data.averageDelay}</span>&nbsp;min.`;
+                } 
+
+                document.getElementById('values').innerHTML = `
+                  <span class="alwaysbig green">${data.punctualTrains}</span>/${totaltrainsWithCancelled} pünktlich</span><br>
+                  <span class="alwaysbig actualyellow">${data.delayOverXMinutes}</span>/${totaltrainsWithCancelled} verspätet</span><br>
+                  <span class="alwaysbig red">${data.cancelledTrains}</span>/${totaltrainsWithCancelled} ausgefallen</span><br>
+                `;
+
+                document.getElementById('choosenminutes').innerHTML = delayMinutes;
+
+                //Little Pie Chart
+                
+                //Colors:
+
+                if (data.punctualityPercentage > 90) {
+                  pieChartIconColor = '#229e00';
+                } else 
+                if (data.punctualityPercentage > 75) {
+                  pieChartIconColor = '#ffa30f';
+                } else {
+                  pieChartIconColor = '#ec0016';
+                }
+
+               
+                
+                const xyValuesLittlePiechart = [data.punctualityPercentage, (100 - data.punctualityPercentage)];
+
+                Chart.defaults.global.legend.display = false;
+                Chart.defaults.global.tooltips.enabled = true;
+
+
+                new Chart("littlePieChart", {
+                  type: "doughnut",
+                  data: {
+                    labels: ['Pünktlich', 'Verspätet'],
+                    datasets: [{
+                      data: xyValuesLittlePiechart,
+                      backgroundColor: [
+                        pieChartIconColor,
+                        'gray',
+                      ],
+                      hoverOffset: 4,
+                      pointRadius: 4,
+                      pointBackgroundColor: "rgb(0,0,255)"
+                    }]
+                  },
+                  options: {
+                    plugins: {
+      legend: {
+        display: false // Legende ausblenden
+      }
+    },
+                    scales: {
+                      x: {
+                        min: 40,
+                        max: 40
+                      },
+                      y: {
+                        min:  40,
+                        max: 40
+                      }
+                    }
+                  }
+                });
+
+
+
+
+                //Pie Chart
+                const xyValues = [data.punctualTrains, data.delayOverXMinutes, data.cancelledTrains];
+
+                new Chart("bigPieChart", {
+                  type: "doughnut",
+                  data: {
+                    labels: ['Pünktlich', 'Verspätet', 'Ausfall'],
+                    datasets: [{
+                      data: xyValues,
+                      backgroundColor: [
+                        '#2f9d12',
+                        '#ffb02e',
+                        '#ec0016'
+                      ],
+                      hoverOffset: 4,
+                      pointRadius: 4,
+                      pointBackgroundColor: "rgb(0,0,255)"
+                    }]
+                  },
+
+                  
+                  
+                });
+
+
+
+
+            } catch (error) {
+                console.error("Fehler beim Abrufen der Daten:", error);
+            }
+        }
+
+        // Event-Listener für Änderungen der Eingabefelder
+        document.getElementById("delayMinutes").addEventListener("input", fetchData);
+        document.getElementById("days").addEventListener("change", fetchData);
+
+        // Abruf der Daten direkt beim Seitenaufruf
+        fetchData(); // Direkt beim Seitenaufruf
+
+        
+   
+
+
+
     } else {
+
+      document.getElementById('totalcontent').classList.add('hidden')
+
       // Button und Message bei nicht vorhandener Station anzeigen
       document.getElementById('content').innerHTML = `
         <center>

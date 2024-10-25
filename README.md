@@ -1,7 +1,7 @@
 
 # Trainboard
 
-Trainboard is a departure/arrival board for trains that uses real-time data from Deutsche Bahn. It is supposed to stand out by a clear user interface that is strongly inspired by its Danish competitor "Mit Tog".
+Trainboard is a departure/arrival board for trains that uses real-time data from Deutsche Bahn (DB) and Österreichische Bundesbahnen (ÖBB). It is supposed to stand out by a clear user interface that is strongly inspired by its Danish competitor "Mit Tog".
 
 Check it out at [https://trainboard.de.cool/](https://trainboard.de.cool/)
 

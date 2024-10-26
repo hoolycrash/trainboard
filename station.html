@@ -75,16 +75,23 @@
 				</div>
                 
 			
-				<div class="stationdetails">
+				<span id="adress"></span>
+				
+				<span id="sevmap"></span>
+
+				<span id="weather"></span>
+
+				<span id="statistics"></span>
+
+				<div class="changebutton button">
+					Umsteigezeit<br>
+
+					<table><tr><td><select name="startplatforms" type="text" id="platStart" class="platforminput leftcorners"><option value="" disabled selected hidden>von Gl.</option></select><td><select name="startplatforms" type="text" id="platEnd" class="platforminput rightcorners"><option value="" disabled selected hidden>nach Gl.</option></select></td></tr></table>
 					
-					
-					<small id="adress"></small>
+					<span id="timeSpan"></span>
 					
 				</div>
 				
-				<span id="sevmap"></span>
-				
-				<span id="weather"></span>
                 <br><br>
             </div>
 
@@ -104,6 +111,101 @@ const urlParams = new URLSearchParams(window.location.search);
 
 var stationID = urlParams.get('station');
 
+
+
+
+/*    KI UMSTEIGEZEIT   */
+
+// Die URL der JSON-Daten
+const baseTransferUrl = 'https://data.cuzimmartin.dev/calculate-transfer-time/' + stationID;
+
+    
+    // Beide select-Elemente und das span-Element
+    const selectStart = document.getElementById('platStart');
+    const selectEnd = document.getElementById('platEnd');
+    const timeSpan = document.getElementById('timeSpan');
+
+    // Funktion zum Aktualisieren des Textes mit der Umstiegszeit
+    function updateTransferTime() {
+        const startValue = selectStart.value;
+        const endValue = selectEnd.value;
+
+        // Überprüfen, ob beide Felder einen Wert haben
+        if (startValue && endValue) {
+            // Überprüfen, ob die Gleise unterschiedlich sind
+            if (startValue === endValue) {
+                timeSpan.textContent = 'Wähle unterschiedliche Gleise aus';
+            } else {
+                // URL für den API-Aufruf erstellen
+                const transferUrl = `${baseTransferUrl}/${startValue}/${endValue}`;
+
+                // API-Aufruf machen, um die Umstiegszeit zu holen
+                fetch(transferUrl)
+                    .then(response => response.json())
+                    .then(data => {
+                        // MinTransferTime und linked aus der JSON-Antwort holen
+                        const transferTime = data.minTransferTime;
+                        const isLinked = data.linked;
+
+                        // Basis-Text für die Umstiegszeit
+                        let output = `<span class="transfertime">~${transferTime}</span> min`;
+
+                        // Wenn linked true ist, "Gleicher Bahnsteig" hinzufügen
+                        if (isLinked) {
+                            output += '<br><br>(Gleicher Bahnsteig)<br>';
+                        }
+
+                        // Text im span-Element anzeigen
+                        timeSpan.innerHTML = output;
+                    })
+                    .catch(error => {
+                        console.error('Fehler beim Abrufen der Umstiegszeit:', error);
+                        timeSpan.textContent = 'Fehler beim Abrufen der Umstiegszeit';
+                    });
+            }
+        } else {
+            // Text leeren, wenn nicht beide Felder ausgefüllt sind
+            timeSpan.textContent = '';
+        }
+    }
+
+    // Event Listener für beide select-Elemente
+    selectStart.addEventListener('change', updateTransferTime);
+    selectEnd.addEventListener('change', updateTransferTime);
+
+    // Die URL der Plattformen, um die Optionen zu laden
+    const platformsUrl = 'https://data.cuzimmartin.dev/platforms/' + stationID;
+
+    // JSON-Daten laden und <option> Elemente hinzufügen
+    fetch(platformsUrl)
+        .then(response => response.json())
+        .then(data => {
+            const platforms = data.availablePlatforms;
+
+            // Funktion, um Optionen zu beiden select-Elementen hinzuzufügen
+            const addOptions = (selectElement) => {
+                platforms.forEach(platform => {
+                    // Plattformen mit Bereich ignorieren (z.B. "10 A-C", "11 D-F"), aber "2b" zulassen
+                    if (!/ \w-\w/.test(platform)) {
+                        const option = document.createElement('option');
+                        option.value = platform;
+                        option.textContent = platform;
+                        selectElement.appendChild(option);
+                    }
+                });
+            };
+
+            // Optionen zu platStart und platEnd hinzufügen
+            addOptions(selectStart);
+            addOptions(selectEnd);
+        })
+        .catch(error => {
+            console.error('Fehler beim Laden der Plattform-Daten:', error);
+        });
+
+
+	/*-----------------------------*/
+
 fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
 .then(response => response.json())
 .then(data => {
@@ -111,10 +213,12 @@ fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
 	
 	document.getElementById('productline').textContent = data.productLine.productLine;
 	
-	document.getElementById('adress').innerHTML = "<a href=\"https://www.google.com/maps/dir/?api=1&=true&destination=" +  data.mailingAddress.street + " " + data.mailingAddress.zipcode + " " + data.mailingAddress.city  + "\" class=\"black\">" + data.mailingAddress.street + "<br>" + data.mailingAddress.zipcode + "<br>" + data.mailingAddress.city + "</a>";
+	document.getElementById('adress').innerHTML = "<a href=\"https://www.google.com/maps/dir/?api=1&=true&destination=" +  data.mailingAddress.street + " " + data.mailingAddress.zipcode + " " + data.mailingAddress.city  + "\" class=\"black\"><div class=\"button \">" + data.mailingAddress.street + "<br>" + data.mailingAddress.zipcode + "<br>" + data.mailingAddress.city + "</div></a>";
 
 	document.getElementById('sevmap').innerHTML = "<a href=\"https://www.bahnhof.de/downloads/replacement-service-maps/" +  data.number + ".pdf\"><div class=\"sevbutton button \">Lageplan</div></a>";	  
 	
+	document.getElementById('statistics').innerHTML = "<a href=\"dashboard.html?stationID=" +  data.evaNumber + "\"><div class=\"statisticbutton button \">Statistiken</div></a>";
+
 	var imgurl = data.photoPath;
 	document.getElementById("stationimage").style.backgroundImage = "url(" + imgurl + ")";
 	

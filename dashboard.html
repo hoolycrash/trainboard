@@ -88,25 +88,29 @@
     </div>
     <div class="dashboardSide" id="dashboardContainer2">
 
-      <select class="tinyinput darkinput" id="statisticdate" name="days" style="margin-top: 0px; width: 100%">
-        <option value="3">3-Tage Trend</option>
-        <option value="7">7-Tage Trend</option>
-        <option value="14">14-Tage Trend</option>
-        <option value="30" selected="selected">30-Tage Trend</option>
-        <option value="365">365-Tage-Trend</option>
-      </select>
-
       <div class="dashboardSection">
-        <span id="choosenminutes"></span>-Minuten-Pünktlichkeit<br>
-        <span class="disabled"><span id="countDays1"></span>-Tage Trend</span>
-        <canvas id="punctualityChart" style="height: 30%; width: 100%;"></canvas>
+        <select class="tinyinput" id="statisticdate" name="days" style="margin-top: 0px; width: 300px; max-width: 100%">
+          <option value="3">3-Tage Trend</option>
+          <option value="7">7-Tage Trend</option>
+          <option value="14">14-Tage Trend</option>
+          <option value="30" selected="selected">30-Tage Trend</option>
+          <option value="365">365-Tage-Trend</option>
+        </select>
+
+        <div class="dashboardSection innerDashboardSection">
+          <span id="choosenminutes"></span>-Minuten-Pünktlichkeit<br>
+          <span class="disabled"><span id="countDays1"></span>-Tage Trend</span>
+          <canvas id="punctualityChart" style="height: 30%; width: 100%;"></canvas>
+        </div>
+  
+        <div class="dashboardSection innerDashboardSection">
+          Anzahl Ausfälle<br>
+          <span class="disabled"><span id="countDays2"></span>-Tage Trend</span>
+          <canvas id="cancelChart" style="height: 30%; width: 100%;"></canvas>
+        </div>
       </div>
 
-      <div class="dashboardSection">
-        Anzahl Ausfälle<br>
-        <span class="disabled"><span id="countDays2"></span>-Tage Trend</span>
-        <canvas id="cancelChart" style="height: 30%; width: 100%;"></canvas>
-      </div>
+      
     </div>
   </div>
 </div>

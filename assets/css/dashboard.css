@@ -26,6 +26,10 @@
 	color: #000;
 }
 
+.innerDashboardSection {
+    background-color: #0f0f0f!important;
+}
+
 .dashboardCard {
 	background-color: #fff;
     box-shadow: #cecece 0px 0px 5px;

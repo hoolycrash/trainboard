@@ -145,32 +145,6 @@ window.scroll({
   top: 300,
   behavior: "smooth",
 });
-// Profilzustände über Seitenaktualisierungen hinweg speichern
-let profileFailureCache = {};
-let currentTripId = null;
-let profileUsed;
-
-// Funktion zur Bestimmung der Profile basierend auf Zugtyp und Betreiber
-function determineProfiles(train) {
-    const operatorId = train.line.operator && train.line.operator.id ? train.line.operator.id.toLowerCase() : '';
-    const productName = train.line.productName ? train.line.productName.toLowerCase() : '';
-
-    let mainProfile = 'oebb';
-    let fallbackProfile = 'db';
-
-    // Prüfen, ob der Zug eine S-Bahn oder ein Regionalzug der DB ist
-    const isRegionalDBTrain = (
-        (productName.includes('s') || productName.includes('re') || productName.includes('fex') || productName.includes('rb') || productName.includes('bus')) &&
-        operatorId.includes('db')
-    );
-
-    if (isRegionalDBTrain) {
-        mainProfile = 'db';
-        fallbackProfile = 'oebb';
-    }
-
-    return {mainProfile, fallbackProfile};
-}
 
 // Funktion, um Parameter aus der URL zu extrahieren
 function getParameterByName(name, url = window.location.href) {
@@ -187,22 +161,9 @@ let marker;
 let intervalId;
 
 // Funktion zur Aktualisierung der aktuellen Position auf der Karte
-async function updateCurrentPosition(tripId, profile) {
-    let tripApiUrl = `https://data.cuzimmartin.dev/${profile === 'oebb' ? 'oebb-trip' : 'trip'}?tripId=${encodeURIComponent(tripId)}`;
-    let tripResponse;
-
-    try {
-        tripResponse = await fetch(tripApiUrl);
-        if (!tripResponse.ok) {
-            throw new Error('Request failed');
-        }
-    } catch (error) {
-        // Falls die Anfrage fehlschlägt, auf die alternative API umstellen
-        const fallbackProfile = profile === 'oebb' ? 'db' : 'oebb';
-        tripApiUrl = `https://data.cuzimmartin.dev/${fallbackProfile === 'oebb' ? 'oebb-trip' : 'trip'}?tripId=${encodeURIComponent(tripId)}`;
-        tripResponse = await fetch(tripApiUrl);
-        profile = fallbackProfile;
-    }
+async function updateCurrentPosition(tripId) {
+    let tripApiUrl = `https://data.cuzimmartin.dev/dynamic-trip?tripId=${encodeURIComponent(tripId)}&stationID=${stationId}`;
+    tripResponse = await fetch(tripApiUrl);
 
     const tripData = await tripResponse.json();
 
@@ -213,7 +174,7 @@ async function updateCurrentPosition(tripId, profile) {
 }
 
 // Funktion zum Initialisieren der Karte
-async function initMap(profileUsed) {
+async function fetchAndDisplayMapData() {
     const tripId = decodeURIComponent(getParameterByName('tripId'));
     const stationId = getParameterByName('stationID');
 
@@ -222,42 +183,15 @@ async function initMap(profileUsed) {
         return;
     }
 
-    let profile = profileUsed;
 
-    let polylineApiUrl = `https://data.cuzimmartin.dev/trip/${encodeURIComponent(tripId)}/polyline?profile=${profile}`;
-    let polylineResponse;
-
-    try {
+        let polylineApiUrl = `https://data.cuzimmartin.dev/trip/${encodeURIComponent(tripId)}/polyline?stationID=${stationId}`;       
+        let polylineResponse;
         polylineResponse = await fetch(polylineApiUrl);
-        if (!polylineResponse.ok) {
-            throw new Error('Polyline request failed');
-        }
-    } catch (error) {
-        // Falls die Anfrage fehlschlägt, auf das alternative Profil umstellen
-        const fallbackProfile = profile === 'oebb' ? 'db' : 'oebb';
-        profile = fallbackProfile;
-        polylineApiUrl = `https://data.cuzimmartin.dev/trip/${encodeURIComponent(tripId)}/polyline?profile=${profile}`;
-        polylineResponse = await fetch(polylineApiUrl);
-    }
+        const polylineData = await polylineResponse.json();
 
-    const polylineData = await polylineResponse.json();
-
-    let tripApiUrl = `https://data.cuzimmartin.dev/${profile === 'oebb' ? 'oebb-trip' : 'trip'}?tripId=${encodeURIComponent(tripId)}`;
+    let tripApiUrl = `https://data.cuzimmartin.dev/dynamic-trip?tripId=${encodeURIComponent(tripId)}&stationID=${stationId}`;
     let tripResponse;
-
-    try {
-        tripResponse = await fetch(tripApiUrl);
-        if (!tripResponse.ok) {
-            throw new Error('Trip request failed');
-        }
-    } catch (error) {
-        // Falls die Anfrage fehlschlägt, auf das alternative Profil umstellen
-        const fallbackProfile = profile === 'oebb' ? 'db' : 'oebb';
-        profile = fallbackProfile;
-        tripApiUrl = `https://data.cuzimmartin.dev/${profile === 'oebb' ? 'oebb-trip' : 'trip'}?tripId=${encodeURIComponent(tripId)}`;
-        tripResponse = await fetch(tripApiUrl);
-    }
-
+    tripResponse = await fetch(tripApiUrl);
     const tripData = await tripResponse.json();
 
     // Bestimmen der Startposition aus den Polyline-Daten
@@ -410,7 +344,7 @@ async function initMap(profileUsed) {
             });
 
             if (tripData.trip.currentLocation) {
-                intervalId = setInterval(() => updateCurrentPosition(tripId, profile), 10000);
+                intervalId = setInterval(() => updateCurrentPosition(tripId), 10000);
             }
         });
     } else {
@@ -418,30 +352,21 @@ async function initMap(profileUsed) {
     }
 }
 
+fetchAndDisplayMapData();
 
 
-    // Funktion zum Abrufen und Anzeigen der Daten
-    // Funktion zum Abrufen und Anzeigen der Daten
+
     async function fetchAndDisplayData() {
         const currentUrl = window.location.href;
 
         const tripId = decodeURIComponent(getParameterByName('tripId', currentUrl));
         stationId = getParameterByName('stationID', currentUrl);
 
-        if (tripId !== currentTripId) {
-            // Fehlercache für den neuen Trip initialisieren
-            profileFailureCache = {
-                'db': false,
-                'oebb': false
-            };
-            currentTripId = tripId;
-        }
+      
 
         let data;
 
-        // Prüfe, welche Profile zuvor fehlgeschlagen sind (für diesen Trip)
-        const oebbFailedPreviously = profileFailureCache['oebb'] === true;
-        const dbFailedPreviously = profileFailureCache['db'] === true;
+        
 
         console.log(stationId)
         if (stationId !== null) {
@@ -449,52 +374,11 @@ async function initMap(profileUsed) {
             let response = await fetch(apiUrl);
             data = await response.json();
             profileUsed = 'dynamic';
-        } else {
+        } 
         
-        if (!oebbFailedPreviously || stationId === null) {
-            try {
-                // Versuche, die Daten über das ÖBB-Profil abzurufen
-                let apiUrl = `https://data.cuzimmartin.dev/oebb-trip?tripId=${encodeURIComponent(tripId)}`;
-                let response = await fetch(apiUrl);
-                if (!response.ok) {
-                    throw new Error('Request failed');
-                }
-                data = await response.json();
+       
 
-                if (!data.trip) {
-                    throw new Error('Keine Daten für diese Reise gefunden.');
-                }
-
-                profileUsed = 'oebb';
-            } catch (error) {
-                console.warn('Problem mit der ÖBB API, markiere als fehlgeschlagen.', error);
-                // Markiere ÖBB als fehlgeschlagen
-                profileFailureCache['oebb'] = true;
-            }
-        }
-
-        if (!data && !dbFailedPreviously || stationId === null) {
-            try {
-                // Fallback auf das DB-Profil
-                let apiUrl = `https://data.cuzimmartin.dev/trip?tripId=${encodeURIComponent(tripId)}`;
-                let response = await fetch(apiUrl);
-                if (!response.ok) {
-                    throw new Error('Request failed');
-                }
-                data = await response.json();
-
-                if (!data.trip) {
-                    throw new Error('Keine Daten für diese Reise gefunden.');
-                }
-
-                profileUsed = 'db';
-            } catch (secondError) {
-                console.warn('Problem mit der DB API, markiere als fehlgeschlagen.', secondError);
-                // Markiere DB als fehlgeschlagen
-                profileFailureCache['db'] = true;
-            }
-        }}
-
+       
         if (!data) {
             // Beide Profile haben keine Daten geliefert
             console.error('Fehler beim Abrufen der Trip-Daten mit beiden Profilen.');
@@ -521,11 +405,6 @@ async function initMap(profileUsed) {
             return;
         }
 
-        // Erfolgreiches Profil zurücksetzen
-        profileFailureCache[profileUsed] = false;
-
-        // Bestimme die Profile basierend auf den Trip-Daten
-        const {mainProfile, fallbackProfile} = determineProfiles(data.trip);
 
         // Funktion zur Aktualisierung des Zugstatus
         function updateTrainStatus(trip) {
@@ -1046,16 +925,16 @@ async function initMap(profileUsed) {
         }
 
         // Datenanbieter-Logo aktualisieren
-        const dataProviderLogo = document.querySelector('.trip-logo');
-        if (profileUsed === 'oebb') {
-            dataProviderLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Logo_%C3%96BB.svg/2560px-Logo_%C3%96BB.svg.png";
-            dataProviderLogo.alt = "ÖBB Logo";
-        } else if (profileUsed === 'db') {
-            dataProviderLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Deutsche_Bahn_AG-Logo.svg/512px-Deutsche_Bahn_AG-Logo.svg.png";
-            dataProviderLogo.alt = "DB Logo";
-        }
+        //const dataProviderLogo = document.querySelector('.trip-logo');
+        //if (profileUsed === 'oebb') {
+          //  dataProviderLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Logo_%C3%96BB.svg/2560px-Logo_%C3%96BB.svg.png";
+            //dataProviderLogo.alt = "ÖBB Logo";
+        //} else if (profileUsed === 'db') {
+          //  dataProviderLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Deutsche_Bahn_AG-Logo.svg/512px-Deutsche_Bahn_AG-Logo.svg.png";
+            //dataProviderLogo.alt = "DB Logo";
+       // }
 
-        initMap(profileUsed);
+        //initMap(profileUsed);
     }
 
     // Event-Handler für das Öffnen und Schließen des Modals
@@ -1063,13 +942,13 @@ async function initMap(profileUsed) {
 
 
         
-            setTimeout(() => {
-                if (!map) {
-                    initMap(profileUsed);
-                } else {
-                    map.resize();
-                }
-            }, 300);
+            // setTimeout(() => {
+                //if (!map) {
+                  //  initMap(profileUsed);
+                //} else {
+               //     map.resize();
+             //   }
+           // }, 300);
 
         
 

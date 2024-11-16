@@ -19,83 +19,67 @@
 
 <body id="body">
 
-<center>
+    
+
     <noscript> You need to enable JavaScript to run this app.</noscript>
 
-    <nav id="navbar">
-        <div class="tabs"><span class="active">&nbsp;Zuginformationen&nbsp;</span></div>
-        <div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div>
-        <div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg" class="mediumicon"></a></div>
-    </nav>
 
+    <div id="map"></div>
+
+    <div class="TRIPcontent">
+    <center>
     <div class="coloredSpace" id="bigheaderbox">
         <div class="darker">
-            <br>
+            <div class="dragbar"></div>
             <div class="blanktable">
                 <div class="tripcontainer">
-                    <div class="trip-header">
-                        <div class="trip-title">
-                            <table><tr><td style="vertical-align: middle;"><div class="whiteBadge" id="linebadge"></div></td><td style="vertical-align: middle; padding-left: 10px;"><span id="originStation"></span> - <span id="destinationStation">Destination Station</span><br><small class="disabled" id="trip-date">Tag </small><br></td></tr></table><br>
-                        </div>
-                    </div>
-                    <div class="trip-progress-bar">
-                        <div class="trip-station-info">
-                            <div class="trip-origin-info">
-                            </div>
-                            <div class="trip-destination-info">
-                            </div>
-                        </div>
-                    </div>
+
+                    <table class="wide"><tr><td><div class="smallBadge whiteBadge" id="linebadge"></div></td><td style="padding-top: 4px; padding-left: 4px;"><span id="trainTitle"></span></td><td class="wide"></td><td><a href="#" onclick="history.go(-1)" style="padding: 0px !important;"><img src="./assets/icons/close.svg" class="mediumicon"></a></td></tr></table>
+                    <small class="disabled" id="operatorName"></small>•<small class="disabled" id="trip-date"></small>
+                    
+                    
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="station-container">
+        <div class="station"><span id="originStation"></span></div>
+        <div class="arrow-circle">•►</div>
+        <div class="station"><span id="destinationStation"></span></div>
+    </div>
+
+    <div class="displayflex actiontable" id="pinDiv">
+        <div class="actiontableelement"><img src="./assets/icons/addtrain.png" id="addtrainIcon" class="inverted noinvert actionicon"></div>
+        <div class="actiontableelement"><span id="pinIt">Anheften</span></div>
+    </div>
+
+    <a href="https://www.bahn.de/buchung/jetzt-einchecken?dbkanal_007=tutorialSlider_14-1_link_KomfortCheckinimBrowseraufrufen">
+        <div class="displayflex actiontable hidden" id="comfortbutton">
+            <div class="actiontableelement"><img src="./assets/icons/comfortcheckin.svg" class="inverted noinvert actionicon"></div>
+            <div class="actiontableelement"><span id="pinIt">Jetzt einchecken</span></div>
+        </div>
+    </a>
+    <a id="wagonorderbutton">
+        <div class="displayflex actiontable">
+            <div class="actiontableelement"><img src="./assets/icons/wagonorder.svg" class="inverted noinvert actionicon"></div>
+            <div class="actiontableelement"><span id="pinIt">Wagenreihung</span></div>
+        </div>
+    </a>
+
+    <a href="#remarks">
+        <div class="displayflex actiontable">
+            <div class="actiontableelement"><img src="./assets/icons/arrow.svg" class="actionicon" id="warningicon"></div>
+            <div class="actiontableelement"><span id="trip-warning-counter-button">Keine</span>&nbsp;<span id="pinIt">akuelle Meldungen</span></div>
+        </div>
+    </a>
+
     <div class="coloredSpace displayflex center">
-        <div class="tinybutton firstbutton">
-            <img src="./assets/icons/train.svg" class="slidericon"><br>
-            <span id="trainTitle">Zugnummer</span><br>
-            <small class="disabled">Zugnummer</small>
-        </div>
+        
 
+       
 
-
-        <div class="tinybutton" id="openMapBtn">
-            <img src="./assets/icons/train-map.svg" class="slidericon"><br>
-            Karte<br>
-            <small class="disabled">Strecke & Live-Position</small>
-        </div>
-
-        <div class="tinybutton" id="myDiv">
-            <img src="./assets/icons/addtrain.png" id="addtrainIcon" class="slidericon"><br>
-            <span id="pinIt">Anheften</span><br>
-            <small class="disabled">Fahrt anpinnen</small>
-        </div>
-
-        <a href="https://www.bahn.de/buchung/jetzt-einchecken?dbkanal_007=tutorialSlider_14-1_link_KomfortCheckinimBrowseraufrufen">
-            <div class="tinybutton hidden" id="comfortbutton">
-                <img src="./assets/icons/comfortcheckin.svg" class="slidericon"><br>
-                Komfort-Checkin<br>
-                <small class="disabled">Jetzt einchecken</small>
-            </div>
-        </a>
-
-
-        <a id="wagonorderbutton">
-            <div class="tinybutton">
-                <img src="./assets/icons/wagonorder.svg" class="slidericon"><br>
-                Wagenreihung<br>
-                <small class="disabled">Würfelsektoren</small>
-            </div>
-        </a>
-
-        <a href="#remarks">
-            <div class="tinybutton yellowbutton">
-                <div class="trip-warning-counter" id="trip-warning-counter-button">&nbsp;Keine&nbsp;</div>
-                <span id="pinIt">aktuelle Meldung</span><br>
-                <small>Hinweise zur Fahrt</small>
-            </div>
-        </a>
+       
 
 
     </div>
@@ -116,22 +100,7 @@
 
         <div class="secondary" id="tripStatus"><img src="./assets/blackSpinner.svg" class="loadingspinner multicolorspinner"></div>
     </div>
-    <div id="mapModal" style="display: none;">
-        <div class="modal-content">
-            <nav id="navbar">
-                <div class="tabs"><span class="active">&nbsp;<span id ="mapHeader"></span>&nbsp;</span></div>
-                <a class="close">
-                    <div class="iconbar bigonly">Schließen</div>
-                    <div class="iconbar"><img src="./assets/icons/close.svg" class="mediumicon close"></div>
-                </a>
-            </nav>
-
-
-            <div id="map"></div>
-        </div>
-
-    </div>
-
+    
 
     <!-- Liste der Haltestellen -->
     <div class="trip-stopovers blanktext">
@@ -157,207 +126,299 @@
 
 
     <br><br><br>
+    </center>
     </div>
+</div>
 
 
 
 
-</center>
+
 
 
 <script>
-    // Profilzustände über Seitenaktualisierungen hinweg speichern
-    let profileFailureCache = {};
-    let currentTripId = null;
-    let profileUsed;
 
-    // Funktion zur Bestimmung der Profile basierend auf Zugtyp und Betreiber
-    function determineProfiles(train) {
-        const operatorId = train.line.operator && train.line.operator.id ? train.line.operator.id.toLowerCase() : '';
-        const productName = train.line.productName ? train.line.productName.toLowerCase() : '';
 
-        let mainProfile = 'oebb';
-        let fallbackProfile = 'db';
 
-        // Prüfen, ob der Zug eine S-Bahn oder ein Regionalzug der DB ist
-        const isRegionalDBTrain = (
-            (productName.includes('s') || productName.includes('re') || productName.includes('fex') || productName.includes('rb') || productName.includes('bus')) &&
-            operatorId.includes('db')
-        );
 
-        if (isRegionalDBTrain) {
-            mainProfile = 'db';
-            fallbackProfile = 'oebb';
-        }
+window.scroll({
+  top: 300,
+  behavior: "smooth",
+});
+// Profilzustände über Seitenaktualisierungen hinweg speichern
+let profileFailureCache = {};
+let currentTripId = null;
+let profileUsed;
 
-        return {mainProfile, fallbackProfile};
+// Funktion zur Bestimmung der Profile basierend auf Zugtyp und Betreiber
+function determineProfiles(train) {
+    const operatorId = train.line.operator && train.line.operator.id ? train.line.operator.id.toLowerCase() : '';
+    const productName = train.line.productName ? train.line.productName.toLowerCase() : '';
+
+    let mainProfile = 'oebb';
+    let fallbackProfile = 'db';
+
+    // Prüfen, ob der Zug eine S-Bahn oder ein Regionalzug der DB ist
+    const isRegionalDBTrain = (
+        (productName.includes('s') || productName.includes('re') || productName.includes('fex') || productName.includes('rb') || productName.includes('bus')) &&
+        operatorId.includes('db')
+    );
+
+    if (isRegionalDBTrain) {
+        mainProfile = 'db';
+        fallbackProfile = 'oebb';
     }
 
-    // Funktion, um Parameter aus der URL zu extrahieren
-    function getParameterByName(name, url = window.location.href) {
-        name = name.replace(/[\[\]]/g, '\\$&');
-        const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
-        const results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    return {mainProfile, fallbackProfile};
+}
+
+// Funktion, um Parameter aus der URL zu extrahieren
+function getParameterByName(name, url = window.location.href) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+    const results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+let map;
+let marker;
+let intervalId;
+
+// Funktion zur Aktualisierung der aktuellen Position auf der Karte
+async function updateCurrentPosition(tripId, profile) {
+    let tripApiUrl = `https://data.cuzimmartin.dev/${profile === 'oebb' ? 'oebb-trip' : 'trip'}?tripId=${encodeURIComponent(tripId)}`;
+    let tripResponse;
+
+    try {
+        tripResponse = await fetch(tripApiUrl);
+        if (!tripResponse.ok) {
+            throw new Error('Request failed');
+        }
+    } catch (error) {
+        // Falls die Anfrage fehlschlägt, auf die alternative API umstellen
+        const fallbackProfile = profile === 'oebb' ? 'db' : 'oebb';
+        tripApiUrl = `https://data.cuzimmartin.dev/${fallbackProfile === 'oebb' ? 'oebb-trip' : 'trip'}?tripId=${encodeURIComponent(tripId)}`;
+        tripResponse = await fetch(tripApiUrl);
+        profile = fallbackProfile;
     }
 
-    let map;
-    let marker;
-    let intervalId;
+    const tripData = await tripResponse.json();
 
-    // Funktion zur Aktualisierung der aktuellen Position auf der Karte
-    async function updateCurrentPosition(tripId, profile) {
-        let tripApiUrl = `https://data.cuzimmartin.dev/${profile === 'oebb' ? 'oebb-trip' : 'trip'}?tripId=${encodeURIComponent(tripId)}`;
-        let tripResponse;
+    if (tripData.trip.currentLocation && marker) {
+        const newPosition = [tripData.trip.currentLocation.longitude, tripData.trip.currentLocation.latitude];
+        marker.setLngLat(newPosition);
+    }
+}
 
-        try {
-            tripResponse = await fetch(tripApiUrl);
-            if (!tripResponse.ok) {
-                throw new Error('Request failed');
-            }
-        } catch (error) {
-            // Falls die Anfrage fehlschlägt, auf die alternative API umstellen
-            const fallbackProfile = profile === 'oebb' ? 'db' : 'oebb';
-            tripApiUrl = `https://data.cuzimmartin.dev/${fallbackProfile === 'oebb' ? 'oebb-trip' : 'trip'}?tripId=${encodeURIComponent(tripId)}`;
-            tripResponse = await fetch(tripApiUrl);
-            profile = fallbackProfile;
+// Funktion zum Initialisieren der Karte
+async function initMap(profileUsed) {
+    const tripId = decodeURIComponent(getParameterByName('tripId'));
+    const stationId = getParameterByName('stationID');
+
+    if (!tripId) {
+        alert("Keine tripId in der URL gefunden.");
+        return;
+    }
+
+    let profile = profileUsed;
+
+    let polylineApiUrl = `https://data.cuzimmartin.dev/trip/${encodeURIComponent(tripId)}/polyline?profile=${profile}`;
+    let polylineResponse;
+
+    try {
+        polylineResponse = await fetch(polylineApiUrl);
+        if (!polylineResponse.ok) {
+            throw new Error('Polyline request failed');
         }
+    } catch (error) {
+        // Falls die Anfrage fehlschlägt, auf das alternative Profil umstellen
+        const fallbackProfile = profile === 'oebb' ? 'db' : 'oebb';
+        profile = fallbackProfile;
+        polylineApiUrl = `https://data.cuzimmartin.dev/trip/${encodeURIComponent(tripId)}/polyline?profile=${profile}`;
+        polylineResponse = await fetch(polylineApiUrl);
+    }
 
-        const tripData = await tripResponse.json();
+    const polylineData = await polylineResponse.json();
 
-        if (tripData.trip.currentLocation && marker) {
-            const newPosition = [tripData.trip.currentLocation.longitude, tripData.trip.currentLocation.latitude];
-            marker.setLngLat(newPosition);
+    let tripApiUrl = `https://data.cuzimmartin.dev/${profile === 'oebb' ? 'oebb-trip' : 'trip'}?tripId=${encodeURIComponent(tripId)}`;
+    let tripResponse;
+
+    try {
+        tripResponse = await fetch(tripApiUrl);
+        if (!tripResponse.ok) {
+            throw new Error('Trip request failed');
+        }
+    } catch (error) {
+        // Falls die Anfrage fehlschlägt, auf das alternative Profil umstellen
+        const fallbackProfile = profile === 'oebb' ? 'db' : 'oebb';
+        profile = fallbackProfile;
+        tripApiUrl = `https://data.cuzimmartin.dev/${profile === 'oebb' ? 'oebb-trip' : 'trip'}?tripId=${encodeURIComponent(tripId)}`;
+        tripResponse = await fetch(tripApiUrl);
+    }
+
+    const tripData = await tripResponse.json();
+
+    // Bestimmen der Startposition aus den Polyline-Daten
+    let startPosition = [16.3738, 48.2082]; // Standardposition
+    if (polylineData.polyline && polylineData.polyline.features && polylineData.polyline.features.length > 0) {
+        const firstFeature = polylineData.polyline.features[0];
+        if (firstFeature.geometry.type === "Point") {
+            startPosition = [firstFeature.geometry.coordinates[0], firstFeature.geometry.coordinates[1]];
         }
     }
 
-    // Funktion zum Initialisieren der Karte
-    async function initMap(profileUsed) {
-        const tripId = decodeURIComponent(getParameterByName('tripId'));
-        const stationId = getParameterByName('stationID');
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFydGlpbmhpZXIiLCJhIjoiY2x6b284ZGxtMHRlbzJpcjd5em80MDIxcSJ9.BMb9-B_QvsdFy6arQxennw';
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/dark-v10',
+        center: startPosition,
+        zoom: 10
+    });
 
-        if (!tripId) {
-            alert("Keine tripId in der URL gefunden.");
-            return;
-        }
-
-        let profile = profileUsed;
-
-        let polylineApiUrl = `https://data.cuzimmartin.dev/trip/${encodeURIComponent(tripId)}/polyline?profile=${profile}`;
-        let polylineResponse;
-
-        try {
-            polylineResponse = await fetch(polylineApiUrl);
-            if (!polylineResponse.ok) {
-                throw new Error('Polyline request failed');
+    if (polylineData.polyline && polylineData.polyline.features) {
+        const coordinates = polylineData.polyline.features.map(feature => {
+            if (feature.geometry.type === "Point") {
+                return [feature.geometry.coordinates[0], feature.geometry.coordinates[1]];
             }
-        } catch (error) {
-            // Falls die Anfrage fehlschlägt, auf das alternative Profil umstellen
-            const fallbackProfile = profile === 'oebb' ? 'db' : 'oebb';
-            profile = fallbackProfile;
-            polylineApiUrl = `https://data.cuzimmartin.dev/trip/${encodeURIComponent(tripId)}/polyline?profile=${profile}`;
-            polylineResponse = await fetch(polylineApiUrl);
-        }
+        }).filter(coord => coord);
 
-        const polylineData = await polylineResponse.json();
-
-        let tripApiUrl = `https://data.cuzimmartin.dev/${profile === 'oebb' ? 'oebb-trip' : 'trip'}?tripId=${encodeURIComponent(tripId)}`;
-        let tripResponse;
-
-        try {
-            tripResponse = await fetch(tripApiUrl);
-            if (!tripResponse.ok) {
-                throw new Error('Trip request failed');
+        const fullRoute = {
+            'type': 'Feature',
+            'geometry': {
+                'type': 'LineString',
+                'coordinates': coordinates
             }
-        } catch (error) {
-            // Falls die Anfrage fehlschlägt, auf das alternative Profil umstellen
-            const fallbackProfile = profile === 'oebb' ? 'db' : 'oebb';
-            profile = fallbackProfile;
-            tripApiUrl = `https://data.cuzimmartin.dev/${profile === 'oebb' ? 'oebb-trip' : 'trip'}?tripId=${encodeURIComponent(tripId)}`;
-            tripResponse = await fetch(tripApiUrl);
-        }
+        };
 
-        const tripData = await tripResponse.json();
+        map.on('load', () => {
 
-        // Bestimmen der Startposition aus den Polyline-Daten
-        let startPosition = [16.3738, 48.2082]; // Standardposition
-        if (polylineData.polyline && polylineData.polyline.features && polylineData.polyline.features.length > 0) {
-            const firstFeature = polylineData.polyline.features[0];
-            if (firstFeature.geometry.type === "Point") {
-                startPosition = [firstFeature.geometry.coordinates[0], firstFeature.geometry.coordinates[1]];
-            }
-        }
+            
+            // Füge die Route als Layer hinzu
+            map.addSource('fullRoute', {
+                'type': 'geojson',
+                'data': fullRoute
+            });
+            
 
-        mapboxgl.accessToken = 'pk.eyJ1IjoibWFydGlpbmhpZXIiLCJhIjoiY2x6b284ZGxtMHRlbzJpcjd5em80MDIxcSJ9.BMb9-B_QvsdFy6arQxennw';
-        map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/dark-v10',
-            center: startPosition,
-            zoom: 10
-        });
-
-        if (polylineData.polyline && polylineData.polyline.features) {
-            const coordinates = polylineData.polyline.features.map(feature => {
-                if (feature.geometry.type === "Point") {
-                    return [feature.geometry.coordinates[0], feature.geometry.coordinates[1]];
+            map.addLayer({
+                'id': 'fullRoute',
+                'type': 'line',
+                'source': 'fullRoute',
+                'layout': {
+                    'line-join': 'round',
+                    'line-cap': 'round'
+                },
+                'paint': {
+                    'line-color': '#ffffff',
+                    'line-width': 4
                 }
-            }).filter(coord => coord);
+            });
 
-            const fullRoute = {
-                'type': 'Feature',
-                'geometry': {
-                    'type': 'LineString',
-                    'coordinates': coordinates
-                }
-            };
+            // Erstelle eine Quelle für die Stopps
+            const stopFeatures = polylineData.polyline.features
+                .filter(feature => feature.geometry.type === 'Point' && feature.properties.type === 'stop')
+                .map(feature => ({
+                    type: 'Feature',
+                    geometry: feature.geometry,
+                    properties: {
+                        description: feature.properties.name || 'Unbekannter Halt',
+                    }   
+                }));
 
-            map.on('load', () => {
-                map.addSource('fullRoute', {
+
+                
+
+            // Wenn Stopps vorhanden sind, füge sie als Quelle und Layer hinzu
+            if (stopFeatures.length > 0) {
+                map.addSource('stops', {
                     'type': 'geojson',
-                    'data': fullRoute
-                });
-
-                map.addLayer({
-                    'id': 'fullRoute',
-                    'type': 'line',
-                    'source': 'fullRoute',
-                    'layout': {
-                        'line-join': 'round',
-                        'line-cap': 'round'
-                    },
-                    'paint': {
-                        'line-color': '#1db7dd',
-                        'line-width': 4
+                    'data': {
+                        'type': 'FeatureCollection',
+                        'features': stopFeatures
                     }
                 });
 
-                if (tripData.trip.currentLocation) {
-                    const currentLocation = [tripData.trip.currentLocation.longitude, tripData.trip.currentLocation.latitude];
-                    marker = new mapboxgl.Marker({color: "black"})
-                        .setLngLat(currentLocation)
-                        .addTo(map);
-                } else {
-                    console.warn("Aktuelle Position nicht verfügbar, Marker wird nicht gesetzt.");
-                }
+                map.addLayer({
+                    'id': 'poi-labels',
+                    'type': 'symbol',
+                    'source': 'stops',
+                    'layout': {
+                        'text-field': ['get', 'description'],
+                        'text-variable-anchor': ['left'],
+                        'text-radial-offset': 1,
+                        'text-justify': 'auto'
+                        
+                    },
+                    'paint': {
+                        'text-color': '#fff'
+                    }
 
-                const bounds = coordinates.reduce(function (bounds, coord) {
-                    return bounds.extend(coord);
-                }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
-
-                map.fitBounds(bounds, {
-                    padding: {top: 50, bottom: 50, left: 50, right: 50}
+                    
                 });
+            }
 
-                if (tripData.trip.currentLocation) {
-                    intervalId = setInterval(() => updateCurrentPosition(tripId, profile), 10000);
+
+
+            // Iteriere durch die Features, um Marker für Stopps hinzuzufügen
+            polylineData.polyline.features.forEach(feature => {
+                if (feature.geometry.type === "Point" && feature.properties.type === "stop") {
+                    const stopPosition = feature.geometry.coordinates;
+
+                    // Erstelle einen Marker mit einem anderen Stil für Stops
+                    const stopMarker = document.createElement('img');
+                    stopMarker.src = './assets/icons/stop-marker.svg'; // anderes Icon für Stopps
+                    stopMarker.style.width = '10px'; // Breite des Stop-Markers
+                    stopMarker.style.height = '10px'; // Höhe des Stop-Markers
+
+                    // Marker mit dem Bild erstellen und hinzufügen
+                    new mapboxgl.Marker({
+                        element: stopMarker // Das Bild als Marker verwenden
+                    })
+                        .setLngLat(stopPosition) // Position des Markers setzen
+                        .addTo(map); // Marker zur Karte hinzufügen
                 }
             });
-        } else {
-            console.error("Keine gültigen Polyline-Daten gefunden");
-        }
+
+            // Marker für den Standort des Zuges hinzufügen
+            if (tripData.trip.currentLocation) {
+                const currentLocation = [tripData.trip.currentLocation.longitude, tripData.trip.currentLocation.latitude];
+
+                // Bild-Element für den Zug-Standort
+                const imageMarker = document.createElement('img');
+                imageMarker.src = './assets/icons/mapmarker.svg'; // Hier das Icon für den Zugstandort
+                imageMarker.style.width = '40px'; // Breite des Bildes anpassen
+                imageMarker.style.height = '40px'; // Höhe des Bildes anpassen
+
+                // Marker für den Zugstandort
+                marker = new mapboxgl.Marker({
+                    element: imageMarker // Das Bild als Marker verwenden
+                })
+                    .setLngLat(currentLocation) // Position des Markers setzen
+                    .addTo(map); // Marker zur Karte hinzufügen
+            } else {
+                console.warn("Aktuelle Position nicht verfügbar, Marker wird nicht gesetzt.");
+            }
+
+            const bounds = coordinates.reduce(function (bounds, coord) {
+                return bounds.extend(coord);
+            }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+
+            map.fitBounds(bounds, {
+                padding: {top: 50, bottom: 50, left: 50, right: 50}
+            });
+
+            if (tripData.trip.currentLocation) {
+                intervalId = setInterval(() => updateCurrentPosition(tripId, profile), 10000);
+            }
+        });
+    } else {
+        console.error("Keine gültigen Polyline-Daten gefunden");
     }
+}
+
+
 
 
     // Funktion zum Abrufen und Anzeigen der Daten
@@ -365,7 +426,7 @@
         const currentUrl = window.location.href;
 
         const tripId = decodeURIComponent(getParameterByName('tripId', currentUrl));
-        const stationId = getParameterByName('stationID', currentUrl);
+        stationId = getParameterByName('stationID', currentUrl);
 
         if (tripId !== currentTripId) {
             // Fehlercache für den neuen Trip initialisieren
@@ -382,8 +443,15 @@
         const oebbFailedPreviously = profileFailureCache['oebb'] === true;
         const dbFailedPreviously = profileFailureCache['db'] === true;
 
-        // Zuerst die Trip-Daten abrufen
-        if (!oebbFailedPreviously) {
+        console.log(stationId)
+        if (stationId !== null) {
+            let apiUrl = `https://data.cuzimmartin.dev/dynamic-trip?tripId=${encodeURIComponent(tripId)}&stationID=${stationId}`;
+            let response = await fetch(apiUrl);
+            data = await response.json();
+            profileUsed = 'dynamic';
+        } else {
+        
+        if (!oebbFailedPreviously || stationId === null) {
             try {
                 // Versuche, die Daten über das ÖBB-Profil abzurufen
                 let apiUrl = `https://data.cuzimmartin.dev/oebb-trip?tripId=${encodeURIComponent(tripId)}`;
@@ -405,7 +473,7 @@
             }
         }
 
-        if (!data && !dbFailedPreviously) {
+        if (!data && !dbFailedPreviously || stationId === null) {
             try {
                 // Fallback auf das DB-Profil
                 let apiUrl = `https://data.cuzimmartin.dev/trip?tripId=${encodeURIComponent(tripId)}`;
@@ -425,7 +493,7 @@
                 // Markiere DB als fehlgeschlagen
                 profileFailureCache['db'] = true;
             }
-        }
+        }}
 
         if (!data) {
             // Beide Profile haben keine Daten geliefert
@@ -588,10 +656,12 @@
         }
 
         // Titel und Details setzen
-        document.getElementById('trainTitle').innerHTML = `${data.trip.line.fahrtNr}`;
+        document.getElementById('trainTitle').innerHTML = `(${data.trip.line.fahrtNr})`;
 
         var lineName = data.trip.line.name.split('(')[0];
         document.getElementById('linebadge').innerHTML = `${lineName}`;
+
+        document.getElementById('operatorName').innerHTML = `${data.trip.line.operator.name}`;
 
         document.getElementById('title').textContent = `${data.trip.line.productName} ${data.trip.line.fahrtNr} 🡺 ${data.trip.destination.name}`;
 
@@ -612,7 +682,6 @@
 
         document.getElementById('destinationStation').textContent = data.trip.destination.name;
 
-        document.getElementById('mapHeader').innerHTML = `${lineName} -> ${data.trip.destination.name}`;
 
 // Funktion zur Bestimmung des Haltestellenstatus
         function getStopStatus(stop, currentTime, isLastStop) {
@@ -736,7 +805,7 @@
             </div>
             <div class="trip-stop-info">
                 <span class="trip-stop-name">${stopname}</span>
-                <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class="bigonly">eis</span>&nbsp;${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
+                <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl&nbsp;${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
             </div>
             <div class="connection-cell">
                 ${stop.arrival !== null ? `<a href="connections.html?stop=${stop.stop.location.id}&tripID=${encodeURIComponent(tripId)}">&nbsp;<img src="./assets/icons/connectingTrain.svg"></a>` : '&nbsp;<img src="./assets/icons/placeholder.svg">'}
@@ -766,7 +835,7 @@
             </div>
             <div class="trip-stop-info">
                 <span class="trip-stop-name">${stopname}</span>
-                <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl<span class="bigonly">eis</span>&nbsp;${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
+                <span class="trip-platform">${(stop.arrivalPlatform || stop.departurePlatform) ? `Gl&nbsp;${stop.arrivalPlatform || stop.departurePlatform}` : '-'}</span>
             </div>
             <div class="connection-cell">
                 ${stop.arrival !== null ? `<a href="connections.html?stop=${stop.stop.location.id}&tripID=${encodeURIComponent(tripId)}">&nbsp;<img src="./assets/icons/connectingTrain.svg"></a>` : '&nbsp;<img src="./assets/icons/placeholder.svg">'}
@@ -845,6 +914,9 @@
         const combinedRemarks = [...stationRemarks, ...tripRemarks];
 
         if (combinedRemarks.length > 0) {
+
+            document.getElementById('warningicon').src = './assets/icons/warning.svg';
+
             const uniqueMessages = new Set();
             const uniqueRemarks = [];
 
@@ -864,7 +936,8 @@
             const warningCount = uniqueRemarks.length;
 
             // Aktualisiere den Warnungszähler oben
-            warningCounterElement.innerHTML = `&nbsp;${warningCount}&nbsp;`;
+            warningCounterElement.innerHTML = `${warningCount}`;
+            
 
             const WarningHeaderItem = document.createElement('tr');
             WarningHeaderItem.innerHTML = `<td colspan="2"><h3><span class=\"pill\">&nbsp;&nbsp;${warningCount}&nbsp;&nbsp;</span> aktuelle Informationen:</h3></td>`;
@@ -875,6 +948,7 @@
                 const code = remark.code || 'default';
                 warningItem.innerHTML += (`<td class="clear"><img src="./assets/icons/remark${code}.svg" class="serviceicon"></td><td class="clear wide">${sanitizeText(remark.text)}</td>`);
                 warningsList.appendChild(warningItem);
+                
             });
         } else {
             // Aktualisiere den Warnungszähler oben
@@ -884,6 +958,7 @@
             WarningHeaderItem.classList.add('trip-warning-item');
             WarningHeaderItem.textContent = 'Keine Warnungen vorhanden.';
             warningsList.appendChild(WarningHeaderItem);
+
         }
 
 
@@ -934,7 +1009,7 @@
         }
 
         // Funktion beim Klick auf das Div
-        document.getElementById('myDiv').addEventListener('click', function () {
+        document.getElementById('pinDiv').addEventListener('click', function () {
             // Setze das Cookie
             setCookie('pinnedjourney', $number, 7); // Cookie für 7 Tage speichern
             document.getElementById("pinIt").textContent = "Angeheftet";
@@ -969,21 +1044,14 @@
             dataProviderLogo.alt = "DB Logo";
         }
 
-        // Initialisiere die Karte mit dem verwendeten Profil
-        if (document.getElementById("mapModal").style.display === "block") {
-            initMap(profileUsed);
-        }
+        initMap(profileUsed);
     }
 
     // Event-Handler für das Öffnen und Schließen des Modals
     document.addEventListener('DOMContentLoaded', function () {
-        const modal = document.getElementById("mapModal");
-        const btn = document.getElementById("openMapBtn");
-        const closeBtn = document.getElementsByClassName("close")[0];
 
 
-        btn.onclick = function () {
-            modal.style.display = "block";
+        
             setTimeout(() => {
                 if (!map) {
                     initMap(profileUsed);
@@ -991,19 +1059,8 @@
                     map.resize();
                 }
             }, 300);
-        };
 
-        closeBtn.onclick = function () {
-            modal.style.display = "none";
-            clearInterval(intervalId); // Stoppe die regelmäßige Positionsabfrage, wenn das Modal geschlossen wird
-        };
-
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-                clearInterval(intervalId); // Stoppe die regelmäßige Positionsabfrage, wenn das Modal geschlossen wird
-            }
-        };
+        
 
         // Rufe fetchAndDisplayData auf
         fetchAndDisplayData();
@@ -1013,6 +1070,8 @@
     });
 
     fetchAndDisplayData();
+
+
 
 </script>
 </body>

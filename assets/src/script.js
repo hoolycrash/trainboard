@@ -141,7 +141,7 @@ function updateClock() {
 
 // Fetch departures or arrivals
 async function loadData() {
-	const apiUrl = `https://data.cuzimmartin.dev/${siteType === 'A' ? 'arrivals' : 'departures'}?stationID=${stationID}`;
+	const apiUrl = `https://data.cuzimmartin.dev/dynamic-${siteType === 'A' ? 'arrivals' : 'departures'}?stationID=${stationID}`;
 
 	try {
 		const response = await fetch(apiUrl, {
@@ -235,21 +235,27 @@ function updateTable(data) {
 
 		var abMessage = (isCancelled) ? "" : getAbMessage(entry.when);
 
+		// Extract the line name without the train number
+		let lineParts = entry.line.name.split(" ");
+		let lineName = lineParts[0] + (lineParts[1] ? " " + lineParts[1] : "");
+
 		if (hiddentrainnumbers === "show") {
 			var trainnumber = `<br>(${entry.line.fahrtNr})`;
 		} else {
 			var trainnumber = ``;
 		}
 
-		let linebadge = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}${encodeURIComponent(entry.tripId)}&stationId=${encodeURIComponent(entry.tripId)}"><div class="linebadge ${entry.line.product} ${entry.line.name.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}">`;
+		let linebadge = `<a href="trip.html?id=${entry.tripId}&station=${entry.stop.id}"><div class="linebadge ${entry.line.product} ${lineName.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}">`;
 		if (entry.line.operator.id === 'freiberger-eisenbahngesellschaft') {
 			linebadge += "FEG</div>";
 		} else if (entry.line.productName === "FEX") {
 			linebadge += "FEX</div>";
 		} else {
-			linebadge += `${entry.line.name} ${trainnumber}</div>`;
+			linebadge += `${lineName}</div>`;
 		}
 		linebadge += `</a>`;
+
+
 
 		row.insertCell(0).innerHTML = linebadge;
 

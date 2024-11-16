@@ -15,14 +15,18 @@
 	--cellpadding: 15px;
 }
 
-body, html {
+html {
+	scroll-behavior: smooth;
+}
+
+body {
 	font-family: "Twemoji Country Flags", "Kode Mono", monospace;
 	font-size: 20px;
 	margin: 0px;
 	overflow-x: clip;
 	background-color: #fff;
 	color: #000;
-	scroll-behavior: smooth;
+	
 }
 
 .button {

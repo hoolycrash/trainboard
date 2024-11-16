@@ -7,6 +7,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Kode+Mono&display=swap');
 
+
 :root {
 	--switch-color: #5F5F5F;
 	--switch-bg-color: #f0f0f0;
@@ -15,7 +16,7 @@
 }
 
 body {
-	font-family: "Kode Mono", monospace;
+	font-family: "Twemoji Country Flags", "Kode Mono", monospace;
 	font-size: 20px;
 	margin: 0px;
 	overflow-x: clip;
@@ -83,9 +84,25 @@ body {
 	overflow-x: scroll;
 }
 
-.slidericon {
-	height: 30px;
+.actionicon {
+	height: 20px;
 	padding-bottom: 10px;
+}
+
+.actiontableelement {
+	padding-left: 20px;
+	padding-top: 15px;
+	color: #000;
+}
+
+.actiontable:hover {
+	cursor: pointer;
+}
+
+.actiontable {
+	vertical-align: middle;
+	border-bottom: #333 solid 1px;
+	
 }
 
 .sevbutton {
@@ -163,6 +180,24 @@ span {
 .disabled, .secondary {
 	color: var(--disabled-color);
 }
+
+.popuptext {
+	color: #fff;
+	font-weight: bold !important;
+	font-size: 17px;
+	font-family: "Kode Mono", monospace!important;
+	text-shadow: #000 0px 0px 5px;
+}
+
+.mapboxgl-popup-tip {
+	display: none !important;
+}
+
+.mapboxgl-popup-content {
+	background-color: rgba(255,255,255,0)!important;
+	padding: 0px !important;
+	text-align: center;
+  }
 
 .hidden {
 	display: none;
@@ -295,6 +330,7 @@ span {
 .map {
 	height: 1000px;
 	width: 1000px;
+	z-index: 200;
 }
 
 .weathericon {
@@ -433,7 +469,6 @@ a {
 
 
 .tripcontainer, .blanktext {
-	width: 80%;
 	border-radius: 5px;
 	overflow-y: hidden;
 	text-align: left;
@@ -883,6 +918,7 @@ td {
 	font-weight: bold;
 }
 
+
 .linecolors {
 	background-color: #041E42!important;
 }
@@ -896,6 +932,57 @@ td {
 	font-weight: bold;
 }
 
+.smallBadge {
+	font-size: 20px;
+	width: 100px;
+}
+
+.dragbar {
+	background-color: #fff;
+	height: 4px;
+	width: 20%;	
+	border-radius: 10px;
+	margin-bottom: 15px;
+}
+
+
+
+ /* Grundlayout */
+ .station-container {
+	display: flex;
+	align-items: center;
+	position: relative;
+	padding: 20px;
+}
+
+/* Start- und Endstation */
+.station {
+	flex: 1;
+	font-size: 1.2em;
+	text-align: center;
+	width: 50%;
+	padding: 0px 13px 0px 13px;
+}
+
+
+
+/* Kreis mit Pfeil auf der Trennlinie */
+.arrow-circle {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 30px;
+	height: 30px;
+	border-radius: 50%;
+	background-color: #007bff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	font-size: 1.2em;
+	z-index: 1;
+}
 
 
 .biglinebadge {
@@ -973,6 +1060,8 @@ td {
 	.smallonly {
 		display: inline;
 	}
+
+
 
 	.mobilebreak {
 		white-space: normal!important;
@@ -1073,7 +1162,29 @@ td {
 	.mini {
 		height: 45px;
 	}
+
 }
+
+@media (max-width: 700px) {
+	.TRIPcontent {
+		position:sticky !important;
+		left: 0px !important;
+		margin-top: calc(100vh - 115px) !important;
+		width: 100% !important;
+	}
+
+}
+
+@media (min-width: 701px) {
+@media (max-width: 1200px) {
+	.TRIPcontent {
+		position:sticky !important;
+		left: 0px !important;
+		margin-top: calc(100vh - 115px) !important;
+		width: 400px;
+	}
+
+}}
 
 .tooltip {
 	position: relative;
@@ -1115,6 +1226,8 @@ td {
 		margin-top: 3px;
 	}
 
+	
+
 
 }
 
@@ -1122,6 +1235,12 @@ td {
 	.center {
 		justify-content: center;
 	}
+
+	.dragbar {
+		display: none;
+	}
+
+	
 }
 
 
@@ -1131,8 +1250,7 @@ td {
 /* Container für zentrierten Inhalt */
 .trip-container-centered {
 	margin: 0 auto;
-	padding: 20px;
-	max-width: 1200px;
+	padding: 5px;
 }
 
 /* Trip Header und Details */
@@ -1293,7 +1411,6 @@ td {
 
 /* Stopover Liste */
 .trip-stopovers {
-	padding: 20px;
 	position: relative;
 	margin-bottom: 20px;
 }
@@ -1448,34 +1565,34 @@ td {
 		font-size: 2rem;
 	}
 
-	.trip-date {
-		font-size: 0.8rem;
-		margin-top: 5px;
-	}
+	
+}
 
-	.trip-duration-info {
-		flex: 0 1 180px;
-		font-size: 0.8rem;
-	}
+.trip-date {
+	font-size: 0.8rem;
+	margin-top: 5px;
+}
 
-	.trip-stop-time {
-		font-size: 0.9rem;
-	}
+.trip-duration-info {
+	flex: 0 1 180px;
+	font-size: 0.8rem;
+}
 
-	.trip-stop-name {
-		font-size: 1rem;
-	}
+.trip-stop-time {
+	font-size: 0.9rem;
+}
 
-	.trip-platform {
-		font-size: 0.9rem;
-	}
+.trip-stop-name {
+	font-size: 1rem;
+}
+
+.trip-platform {
+	font-size: 0.9rem;
 }
 
 @media (max-width: 768px) {
 
-	.tripcontainer, .blanktext {
-		width: 95%;
-	}
+
 
 	.trip-stopovers {
 		width: auto;
@@ -1601,7 +1718,7 @@ td {
 
 
 #mapModal {
-	display: none; /* Modal standardmäßig verstecken */
+	display: block; /* Modal standardmäßig verstecken */
 	position: fixed; /* Modal über den anderen Inhalten positionieren */
 	z-index: 1000; /* Modal über allem anderen anzeigen */
 	left: 50%; /* Modal horizontal zentrieren */
@@ -1629,8 +1746,11 @@ td {
 }
 
 #map {
-	width: 100%; /* Volle Breite nutzen */
-	height: 100%; /* Volle Höhe nutzen */
+	width: 100vw; /* Volle Breite nutzen */
+	height: 100vh; /* Volle Höhe nutzen */
+	z-index: 0;
+	position: fixed;
+	top: 0px;
 }
 
 .close:hover {
@@ -1690,6 +1810,21 @@ td {
 	height: 36px;
 	position: absolute;
 	margin-left: -12.5px;
-	margin-top: var(--progress-px);
+	margin-top: calc(var(--progress-px) - 5px);
 	z-index: 10;
+	
+}
+
+
+.TRIPcontent {
+	width: 400px;
+	height: 90%;
+	position: fixed;
+	top: 5%;
+	left: 20px;
+	overflow-y: scroll;
+	border-radius: 20px;
+	z-index: 10;
+	background-color: #fff;
+	font-size: smaller;
 }

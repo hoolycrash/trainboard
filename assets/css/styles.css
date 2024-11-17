@@ -15,6 +15,10 @@
 	--cellpadding: 15px;
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
 body {
 	font-family: "Twemoji Country Flags", "Kode Mono", monospace;
 	font-size: 20px;
@@ -22,6 +26,7 @@ body {
 	overflow-x: clip;
 	background-color: #fff;
 	color: #000;
+	
 }
 
 .button {

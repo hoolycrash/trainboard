@@ -19,10 +19,7 @@
 
 <body id="body">
 
-    
-
     <noscript> You need to enable JavaScript to run this app.</noscript>
-
 
     <div id="map"></div>
 
@@ -75,12 +72,6 @@
     </a>
 
     <div class="coloredSpace displayflex center">
-        
-
-       
-
-       
-
 
     </div>
 
@@ -89,10 +80,6 @@
 
         <div class="trip-status-container"></div>
         <!-- Header der Seite mit Zugdetails -->
-
-
-
-
 
 
 
@@ -117,10 +104,9 @@
         <br>
     </div>
 
-
     <br>
 
-    <small>Datenanbieter:</small><br>
+    <small>Datenquelle:</small><br>
     <span id="logo"></span>
 
 
@@ -138,50 +124,47 @@
 
 <script>
 
+    window.scroll({
+      top: 300,
+      behavior: "smooth",
+    });
 
-
-
-window.scroll({
-  top: 300,
-  behavior: "smooth",
-});
-
-// Funktion, um Parameter aus der URL zu extrahieren
-function getParameterByName(name, url = window.location.href) {
-    name = name.replace(/[\[\]]/g, '\\$&');
-    const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
-    const results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, ' '));
-}
-
-let map;
-let marker;
-let intervalId;
-
-// Funktion zur Aktualisierung der aktuellen Position auf der Karte
-async function updateCurrentPosition(tripId) {
-    let tripApiUrl = `https://data.cuzimmartin.dev/dynamic-trip?tripId=${encodeURIComponent(tripId)}&stationID=${stationId}`;
-    tripResponse = await fetch(tripApiUrl);
-
-    const tripData = await tripResponse.json();
-
-    if (tripData.trip.currentLocation && marker) {
-        const newPosition = [tripData.trip.currentLocation.longitude, tripData.trip.currentLocation.latitude];
-        marker.setLngLat(newPosition);
+    // Funktion, um Parameter aus der URL zu extrahieren
+    function getParameterByName(name, url = window.location.href) {
+        name = name.replace(/[\[\]]/g, '\\$&');
+        const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
+        const results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, ' '));
     }
-}
 
-// Funktion zum Initialisieren der Karte
-async function fetchAndDisplayMapData() {
-    const tripId = decodeURIComponent(getParameterByName('tripId'));
-    const stationId = getParameterByName('stationID');
+    let map;
+    let marker;
+    let intervalId;
 
-    if (!tripId) {
-        alert("Keine tripId in der URL gefunden.");
-        return;
+    // Funktion zur Aktualisierung der aktuellen Position auf der Karte
+    async function updateCurrentPosition(tripId) {
+        let tripApiUrl = `https://data.cuzimmartin.dev/dynamic-trip?tripId=${encodeURIComponent(tripId)}&stationID=${stationId}`;
+        tripResponse = await fetch(tripApiUrl);
+
+        const tripData = await tripResponse.json();
+
+        if (tripData.trip.currentLocation && marker) {
+            const newPosition = [tripData.trip.currentLocation.longitude, tripData.trip.currentLocation.latitude];
+            marker.setLngLat(newPosition);
+        }
     }
+
+    // Funktion zum Initialisieren der Karte
+    async function fetchAndDisplayMapData() {
+        const tripId = decodeURIComponent(getParameterByName('tripId'));
+        const stationId = getParameterByName('stationID');
+
+        if (!tripId) {
+            alert("Keine tripId in der URL gefunden.");
+            return;
+        }
 
 
         let polylineApiUrl = `https://data.cuzimmartin.dev/trip/${encodeURIComponent(tripId)}/polyline?stationID=${stationId}`;       
@@ -367,9 +350,7 @@ fetchAndDisplayMapData();
 
         let data;
 
-        
 
-        console.log(stationId)
         if (stationId !== null) {
             let apiUrl = `https://data.cuzimmartin.dev/dynamic-trip?tripId=${encodeURIComponent(tripId)}&stationID=${stationId}`;
             let response = await fetch(apiUrl);
@@ -377,12 +358,12 @@ fetchAndDisplayMapData();
             profileUsed = 'dynamic';
         } 
         
-        document.getElementById('logo').innerHTML = `<img src="./assets/providerLogos/${data.provider}.svg" class="trip-logo">`;
+        document.getElementById('logo').innerHTML = `<img src="./assets/providerLogos/${data.provider}.svg" class="trip-logo" title="Die Datenquelle steht in keinerlei Verbindung mit diesem Projekt. Die Daten können Fehler aufweisen.">`;
 
        
         if (!data) {
-            // Beide Profile haben keine Daten geliefert
-            console.error('Fehler beim Abrufen der Trip-Daten mit beiden Profilen.');
+
+            console.error('Fehler beim Abrufen der Trip-Daten.');
             const statusElement = document.getElementById('tripStatus');
             document.getElementById('body').innerHTML= `
                 <nav id="navbar">
@@ -531,7 +512,6 @@ fetchAndDisplayMapData();
         }
 
         if ((data.trip.line.productName === 'ICE') || (data.trip.line.productName === 'IC')) {
-            console.log('Its Fernzug!')
             document.getElementById('comfortbutton').classList.remove('hidden');
         }
 
@@ -563,7 +543,7 @@ fetchAndDisplayMapData();
         document.getElementById('destinationStation').textContent = data.trip.destination.name;
 
 
-// Funktion zur Bestimmung des Haltestellenstatus
+        // Funktion zur Bestimmung des Haltestellenstatus
         function getStopStatus(stop, currentTime, isLastStop) {
             if (stop.cancelled) {
                 return 'cancelled';
@@ -631,7 +611,6 @@ fetchAndDisplayMapData();
                 // Setze die CSS-Variable mit dem Fortschrittsprozentsatz
                 stopElement.style.setProperty('--progress-percentage', `${progressPercentage}%`);
                 stopElement.style.setProperty('--progress-px', `${40 / 100 * (progressPercentage - 1) - 45}px`);
-                console.log(progressPercentage)
                 stopElement.innerHTML = `
                 <picture>
                     <source srcset="./assets/icons/train-top-dark.svg" media="(prefers-color-scheme: dark)">
@@ -735,8 +714,7 @@ fetchAndDisplayMapData();
 
         const tripdepartureTime = new Date(new URLSearchParams(window.location.search).get('departureTime')).toISOString();
 
-        console.log(tripdepartureTime);
-        ;
+
         if ((stationId === null) || tripdepartureTime === null) {
             var choosenstation = data.trip.stopovers[0].stop.id;
             const tripdepartureTime = data.trip.stopovers[0].plannedDeparture;
@@ -841,8 +819,6 @@ fetchAndDisplayMapData();
 
         }
 
-        
-
 
         // Dynamischen Status des Zuges setzen
         updateTrainStatus(data.trip);
@@ -897,11 +873,6 @@ fetchAndDisplayMapData();
             setCookie('pinnedjourneyStation', stationId , 7);
             document.getElementById("pinIt").textContent = "Angeheftet";
             document.getElementById("addtrainIcon").src = "./assets/icons/addedtrain.svg";
-
-            // Logge den Cookie-Wert zur Konsole
-            console.log('Trip-Cookie-Wert:', tripCookieValue);
-
-            console.log('Trip-Station-Cookie-Wert:', stationCookieValue);
         });
 
         // Rufe das Cookie ab
@@ -923,34 +894,10 @@ fetchAndDisplayMapData();
         } else {
             console.log('It is not pinned Journey');
         }
-
-        // Datenanbieter-Logo aktualisieren
-        //const dataProviderLogo = document.querySelector('.trip-logo');
-        //if (profileUsed === 'oebb') {
-          //  dataProviderLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Logo_%C3%96BB.svg/2560px-Logo_%C3%96BB.svg.png";
-            //dataProviderLogo.alt = "ÖBB Logo";
-        //} else if (profileUsed === 'db') {
-          //  dataProviderLogo.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Deutsche_Bahn_AG-Logo.svg/512px-Deutsche_Bahn_AG-Logo.svg.png";
-            //dataProviderLogo.alt = "DB Logo";
-       // }
-
-        //initMap(profileUsed);
     }
 
     // Event-Handler für das Öffnen und Schließen des Modals
     document.addEventListener('DOMContentLoaded', function () {
-
-
-        
-            // setTimeout(() => {
-                //if (!map) {
-                  //  initMap(profileUsed);
-                //} else {
-               //     map.resize();
-             //   }
-           // }, 300);
-
-        
 
         // Rufe fetchAndDisplayData auf
         fetchAndDisplayData();

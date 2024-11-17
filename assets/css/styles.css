@@ -1176,6 +1176,8 @@ td {
 		left: 0px !important;
 		margin-top: calc(100vh - 115px) !important;
 		width: 100% !important;
+		border-bottom-left-radius: 0px !important;
+		border-bottom-right-radius: 0px !important;
 	}
 
 }

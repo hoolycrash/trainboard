@@ -245,7 +245,7 @@ function updateTable(data) {
 			var trainnumber = ``;
 		}
 
-		let linebadge = `<a href="trip.html?tripId=${encodeURIComponent(entry.tripId)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&stationID=${entry.stop.id}"><div class="linebadge ${entry.line.product} ${lineName.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}">`;
+		let linebadge = `<a href="trip.html?tripId=${encodeURIComponent(entry.tripId)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&stationID=${encodeURIComponent(stationID)}"><div class="linebadge ${entry.line.product} ${lineName.replace(/\s/g, '')}${entry.line.operator.id} ${entry.line.operator.id} ${entry.line.productName}">`;
 		if (entry.line.operator.id === 'freiberger-eisenbahngesellschaft') {
 			linebadge += "FEG</div>";
 		} else if (entry.line.productName === "FEX") {

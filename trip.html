@@ -121,7 +121,7 @@
     <br>
 
     <small>Datenanbieter:</small><br>
-    <img class="trip-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Logo_%C3%96BB.svg/2560px-Logo_%C3%96BB.svg.png" alt="ÖBB Logo" class="dataproviderLogo">
+    <span id="logo"></span>
 
 
 
@@ -375,7 +375,7 @@ fetchAndDisplayMapData();
             profileUsed = 'dynamic';
         } 
         
-       
+        document.getElementById('logo').innerHTML = `<img src="./assets/providerLogos/${data.provider}.svg" class="trip-logo">`;
 
        
         if (!data) {
@@ -839,6 +839,7 @@ fetchAndDisplayMapData();
 
         }
 
+        
 
 
         // Dynamischen Status des Zuges setzen

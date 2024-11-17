@@ -353,9 +353,9 @@ function updateTable(data) {
 		cell.classList.add("zerotable");
 
 		if (siteType !== 'A') {
-			wideCell2.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}"><span class="scrolling-wrapper"><span class="scrolling-text"> ${entry.destination.name} </span></span> </a>`;
+			wideCell2.innerHTML = `<a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}"><span class="scrolling-wrapper"><span class="scrolling-text station-name"> ${entry.destination.name} </span></span> </a>`;
 		} else {
-			wideCell2.innerHTML = `<span class="prefix">Von&nbsp;</span><a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}">${entry.provenance}</a>`;
+			wideCell2.innerHTML = `<span class="prefix">Von&nbsp;</span><a href="trip.html?stationID=${encodeURIComponent(stationID)}&departureTime=${encodeURIComponent(entry.plannedWhen)}&tripId=${encodeURIComponent(entry.tripId)}"><span class="station-name">${entry.provenance}</span></a>`;
 		}
 
 		if (InfoMessage !== undefined) {

@@ -54,17 +54,17 @@ tripStationInfo.classList.add('trip-station-info');
 // Erstelle die trip-origin-info und fülle sie mit einem span
 const tripOriginInfo = document.createElement('div');
 tripOriginInfo.classList.add('trip-origin-info');
-const originStation = document.createElement('span');
-originStation.id = 'originStation'; // ID für originStation
-tripOriginInfo.appendChild(originStation);
+const originStationPopup = document.createElement('span');
+originStationPopup.id = 'originStationPopup'; // ID für originStationPopup
+tripOriginInfo.appendChild(originStationPopup);
 tripStationInfo.appendChild(tripOriginInfo);
 
 // Erstelle die trip-destination-info
 const tripDestinationInfo = document.createElement('div');
 tripDestinationInfo.classList.add('trip-destination-info');
-const destinationStation = document.createElement('span');
-destinationStation.id = 'destinationStation'; // ID für destinationStation
-tripDestinationInfo.appendChild(destinationStation);
+const destinationStationPopup = document.createElement('span');
+destinationStationPopup.id = 'destinationStationPopup'; // ID für destinationStationPopup
+tripDestinationInfo.appendChild(destinationStationPopup);
 tripStationInfo.appendChild(tripDestinationInfo);
 
 // Füge station-info zur progress-bar hinzu
@@ -143,6 +143,10 @@ async function fetchAndDisplayData() {
 
     // Den Wert des Cookies 'pinnedjourney' abrufen und in einer Variablen speichern
     const pinnedJourney = getCookie('pinnedjourney');
+    const pinnedJourneyStation = getCookie('pinnedjourneyStation');
+
+    console.log(pinnedJourneyStation);
+    console.log(pinnedJourney);
 
     // Wenn der Cookie existiert, gib den Wert aus
     if (pinnedJourney) {
@@ -171,47 +175,25 @@ async function fetchAndDisplayData() {
     // Event Listener für Klick auf das Popup, um auf die Trip-Seite zu leiten
     document.getElementById('pinnedPopup').addEventListener('click', function () {
         // Seite mit der Trip-ID weiterleiten
-        window.location.href = `trip.html?tripId=${pinnedJourney}`;
+        window.location.href = `trip.html?tripId=${pinnedJourney}&?stationID=${pinnedJourneyStation}`;
     });
 
     const tripID = pinnedJourney;
 
-    let profile = 'oebb';  // Standardprofil ist 'oebb'
-
-    let data;
-    let primaryEndpoint = profile === 'oebb' ? 'oebb-trip' : 'trip';
-    let fallbackProfile = profile === 'oebb' ? 'db' : 'oebb';
-    let fallbackEndpoint = fallbackProfile === 'oebb' ? 'oebb-trip' : 'trip';
+    
 
     console.log(pinnedJourney);
 
     try {
-        const apiUrl = `https://data.cuzimmartin.dev/${primaryEndpoint}?tripId=${(pinnedJourney)}`;
+        const apiUrl = `https://data.cuzimmartin.dev/dynamic-trip?tripId=${(pinnedJourney)}&stationID=${(pinnedJourneyStation)}`;
         const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error(`Fehler beim Abrufen der Daten von ${primaryEndpoint}: ${response.statusText}`);
-        }
+        
         data = await response.json();
 
-        if (!data.trip) {
-            throw new Error('Keine Daten für diese Reise gefunden.');
-        }
+        
     } catch (error) {
-        console.warn(`Problem mit der ${primaryEndpoint} API, wechsle zur ${fallbackEndpoint} API.`, error);
-        try {
-            const apiUrl = `https://data.cuzimmartin.dev/${fallbackEndpoint}?tripId=${(pinnedJourney)}`;
-            const response = await fetch(apiUrl);
-            if (!response.ok) {
-                throw new Error(`Fehler bei der Fallback API (${fallbackEndpoint}): ${response.statusText}`);
-            }
-            data = await response.json();
-            profile = fallbackProfile;  // Setze das Profil auf das Fallback-Profil
-        } catch (secondError) {
-            console.error('Fehler auch bei der Fallback API:', secondError);
-            const statusElement = document.getElementById('tripStatus');
-            statusElement.textContent = `Fehler beim Abrufen der Zugdaten über beide APIs.`;
-            return;
-        }
+        console.warn(`Problem mit der  API.`, error);
+       
     }
 
     // Titel und Details setzen
@@ -226,7 +208,7 @@ async function fetchAndDisplayData() {
     document.getElementById('tripDurationTime').textContent = `${Math.floor(duration)}:${minutes.toString().padStart(2, '0')} Std`;
 
     // Ursprungsstation und Zielstation setzen
-    document.getElementById('originStation').textContent = data.trip.origin.name;
+    document.getElementById('originStationPopup').textContent = data.trip.origin.name;
     document.getElementById('originTime').textContent = departureTime.toLocaleTimeString('de-DE', {
         hour: '2-digit',
         minute: '2-digit',
@@ -234,7 +216,7 @@ async function fetchAndDisplayData() {
 
     console.log(departureTime);  // Prüfe, ob departureTime ein gültiges Datum ist
 
-    document.getElementById('destinationStation').textContent = data.trip.destination.name;
+    document.getElementById('destinationStationPopup').textContent = data.trip.destination.name;
     document.getElementById('destinationTime').textContent = arrivalTime.toLocaleTimeString('de-DE', {
         hour: '2-digit',
         minute: '2-digit',

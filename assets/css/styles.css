@@ -970,7 +970,6 @@ td {
 }
 
 
-
 /* Kreis mit Pfeil auf der Trennlinie */
 .arrow-circle {
 	position: absolute;
@@ -1403,12 +1402,18 @@ td {
 	align-items: center;
 }
 
+#originStationPopup, #destinationStationPopup {
+	color: #fff;
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+
 #originStation,
 #destinationStation {
 	font-size: 1.2rem;
 	font-weight: bold;
-	color: #fff;
 }
+
 
 #originTime,
 #destinationTime {

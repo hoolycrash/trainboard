@@ -189,6 +189,8 @@ async function fetchAndDisplayMapData() {
         polylineResponse = await fetch(polylineApiUrl);
         const polylineData = await polylineResponse.json();
 
+    
+
     let tripApiUrl = `https://data.cuzimmartin.dev/dynamic-trip?tripId=${encodeURIComponent(tripId)}&stationID=${stationId}`;
     let tripResponse;
     tripResponse = await fetch(tripApiUrl);
@@ -864,6 +866,7 @@ fetchAndDisplayMapData();
 
         let $number = encodeURIComponent(data.trip.id);
 
+
         // Funktion, um ein Cookie zu setzen
         function setCookie(name, value, days) {
             let expires = "";
@@ -891,20 +894,28 @@ fetchAndDisplayMapData();
         document.getElementById('pinDiv').addEventListener('click', function () {
             // Setze das Cookie
             setCookie('pinnedjourney', $number, 7); // Cookie für 7 Tage speichern
+            setCookie('pinnedjourneyStation', stationId , 7);
             document.getElementById("pinIt").textContent = "Angeheftet";
             document.getElementById("addtrainIcon").src = "./assets/icons/addedtrain.svg";
 
             // Logge den Cookie-Wert zur Konsole
-            console.log('Cookie-Wert:', cookieValue);
+            console.log('Trip-Cookie-Wert:', tripCookieValue);
+
+            console.log('Trip-Station-Cookie-Wert:', stationCookieValue);
         });
 
         // Rufe das Cookie ab
-        const cookieValue = getCookie('pinnedjourney');
+        const tripCookieValue = getCookie('pinnedjourney');
+
+        const stationCookieValue = getCookie('pinnedjourneyStation');
+
+        
+        
 
         const activeValue = `${encodeURIComponent(tripId)}`;
 
 
-        if (cookieValue === activeValue) {
+        if (tripCookieValue === activeValue) {
             console.log('It is pinned Journey');
             document.getElementById("pinIt").textContent = "Angeheftet";
             document.getElementById("addtrainIcon").src = "./assets/icons/addedtrain.svg";

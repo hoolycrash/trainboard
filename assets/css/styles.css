@@ -845,7 +845,7 @@ td {
 }
 
 .wide {
-	width: 100%;
+	width: 100% !important;
 }
 
 .header, tr:nth-child(even) {

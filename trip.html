@@ -29,7 +29,7 @@
         <div class="darker">
             <div class="dragbar"></div>
             <div class="blanktable">
-                <div class="tripcontainer">
+                <div class="tripcontainer wide">
 
                     <table class="wide"><tr><td><div class="smallBadge whiteBadge" id="linebadge"></div></td><td style="padding-top: 4px; padding-left: 4px;"><span id="trainTitle"></span></td><td class="wide"></td><td><a href="#" onclick="history.go(-1)" style="padding: 0px !important;"><img src="./assets/icons/close.svg" class="mediumicon"></a></td></tr></table>
                     <small class="disabled" id="operatorName"></small><br><small class="disabled" id="trip-date"></small>
@@ -810,10 +810,7 @@ fetchAndDisplayMapData();
             // Aktualisiere den Warnungszähler oben
             warningCounterElement.innerHTML = '&nbsp;Keine&nbsp;';
 
-            const WarningHeaderItem = document.createElement('div');
-            WarningHeaderItem.classList.add('trip-warning-item');
-            WarningHeaderItem.textContent = 'Keine Warnungen vorhanden.';
-            warningsList.appendChild(WarningHeaderItem);
+           document.getElementById('remarks').classList.add('hidden');
 
         }
 

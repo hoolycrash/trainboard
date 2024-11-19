@@ -433,6 +433,10 @@ a {
 	display: block;
 	font-size: 17px;
 	margin: calc(0px - (var(--cellpadding) / 2)) var(--cellpadding) var(--cellpadding);
+	word-break: break-word;
+	hyphens: auto;
+	white-space: normal;
+	overflow-wrap: break-word;
 }
 
 .home {

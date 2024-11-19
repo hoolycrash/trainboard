@@ -32,7 +32,7 @@
                 <div class="tripcontainer">
 
                     <table class="wide"><tr><td><div class="smallBadge whiteBadge" id="linebadge"></div></td><td style="padding-top: 4px; padding-left: 4px;"><span id="trainTitle"></span></td><td class="wide"></td><td><a href="#" onclick="history.go(-1)" style="padding: 0px !important;"><img src="./assets/icons/close.svg" class="mediumicon"></a></td></tr></table>
-                    <small class="disabled" id="operatorName"></small>•<small class="disabled" id="trip-date"></small>
+                    <small class="disabled" id="operatorName"></small><br><small class="disabled" id="trip-date"></small>
                     
                     
                 </div>
@@ -67,7 +67,7 @@
     <a href="#remarks">
         <div class="displayflex actiontable">
             <div class="actiontableelement"><img src="./assets/icons/arrow.svg" class="actionicon" id="warningicon"></div>
-            <div class="actiontableelement"><span id="trip-warning-counter-button">Keine</span>&nbsp;<span id="pinIt">akuelle Meldungen</span></div>
+            <div class="actiontableelement"><span id="trip-warning-counter-button">Keine</span>&nbsp;<span id="pinIt">akuelle Informationen</span></div>
         </div>
     </a>
 
@@ -90,16 +90,14 @@
     
 
     <!-- Liste der Haltestellen -->
-    <div class="trip-stopovers blanktext">
+    <div class="trip-stopovers">
         <!-- Dynamisch generierte Stopover-Elemente werden hier eingefügt -->
     </div>
 
     <!-- Warnungen und Hinweise -->
 
-    <div class="gray" id="remarks">
-        <div class="blanktext">
-            <table id="remarksTable" cellpadding="10"></table>
-        </div>
+    <div class="gray smaller" id="remarks">
+        <table id="remarksTable" cellpadding="10"></table>
 
         <br>
     </div>

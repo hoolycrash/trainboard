@@ -29,6 +29,10 @@ body {
 	
 }
 
+.bodyWithPopup, .home {
+	margin-bottom: 200px;
+}
+
 .button {
 	background-color: #000;
 	padding: 10px;
@@ -486,6 +490,14 @@ a {
 	overflow-y: hidden;
 	text-align: left;
 	width: 80% !important;
+	
+}
+
+.popuptext {
+	border-radius: 5px;
+	overflow-y: hidden;
+	text-align: left;
+	width: 100%;
 	
 }
 

@@ -154,6 +154,9 @@ async function fetchAndDisplayData() {
         console.log(tripId);  // Wenn du den Wert von `pinnedJourney` überprüfen möchtest, wird jetzt `tripId` angezeigt
         document.getElementById('linebadge').classList.add('badgeClassProductName');
 
+        document.getElementById('informationisle').classList.add('bigonly');
+        document.getElementById('descriptionbox').classList.add('bigonly');
+
     } else {
         console.log('Cookie "pinnedJourney" wurde nicht gefunden.');
         document.getElementById('pinnedPopup').classList.add('hidden');

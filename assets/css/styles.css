@@ -174,6 +174,14 @@ body {
 	overflow-x: hidden;
 }
 
+.catPic {
+	width: 100%;
+	border: solid 1px #202020;
+	margin-top: 5px;
+	border-radius: 10px;
+	background-clip: content-box;
+}
+
 hr {
 	border-color: #fff;
 	opacity: 0.2;
@@ -199,7 +207,6 @@ span {
 	font-weight: bold !important;
 	font-size: 17px;
 	font-family: "Kode Mono", monospace!important;
-	text-shadow: #000 0px 0px 5px;
 }
 
 .mapboxgl-popup-tip {

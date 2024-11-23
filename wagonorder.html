@@ -228,15 +228,21 @@
 
                 // Map für die Kategorienamen
                 const categoryNames = {
-                    "PASSENGERCARRIAGE_FIRST_CLASS": "1. Klasse Wagen",
-                    "PASSENGERCARRIAGE_ECONOMY_CLASS": "2. Klasse Wagen",
+                    "PASSENGERCARRIAGE_FIRST_CLASS": "Sitzwagen",
+                    "PASSENGERCARRIAGE_ECONOMY_CLASS": "Sitzwagen",
                     "LOCOMOTIVE": "Lokomotive",
-                    "HALFDININGCAR_FIRST_CLASS": "Speisewagen & 1. Klasse",
-                    "CONTROLCAR_FIRST_CLASS": "Steuerwagen & 1. Klasse",
-                    "HALFDININGCAR_ECONOMY_CLASS": "Speisewagen & 2. Klasse",
-                    "CONTROLCAR_ECONOMY_CLASS": "Steuerwagen & 2. Klasse",
-                    "DOUBLEDECK_CONTROLCAR_FIRST_ECONOMOY_CLASS": "Doppelstocksteuerwagen 1. & 2. Klasse",
-                    "DOUBLEDECK_ECONOMY_CLASS": "Doppelstockwagen 2. Klasse"
+                    "HALFDININGCAR_FIRST_CLASS": "Speisewagen & Sitzwagen",
+                    "CONTROLCAR_FIRST_CLASS": "Steuerwagen & Sitzwagen",
+                    "HALFDININGCAR_ECONOMY_CLASS": "Speisewagen & Sitzwagen",
+                    "CONTROLCAR_ECONOMY_CLASS": "Steuerwagen",
+                    "CONTROLCAR_FIRST_ECONOMY_CLASS": "Steuerwagen",
+                    "DOUBLEDECK_CONTROLCAR_FIRST_ECONOMOY_CLASS": "Doppelstocksteuerwagen",
+                    "DOUBLEDECK_CONTROLCAR_ECONOMY_CLASS": "Doppelstocksteuerwagen",
+                    "DOUBLEDECK_ECONOMY_CLASS": "Doppelstockwagen",
+                    "DOUBLEDECK_FIRST_CLASS": "Doppelstockwagen",
+                    "DOUBLEDECK_FIRST_ECONOMY_CLASS": "Doppelstockwagen",
+                    "SLEEPER_FIRST_ECONOMY_CLASS": "Schlafwagen",
+                    "COUCHETTE_ECONOMY_CLASS": "Liegewagen"
                     // Weitere Kategorien hier hinzufügen
                 };
 
@@ -276,7 +282,7 @@
                     vehicleDiv.innerHTML += `<span title="${vehicle.vehicleID}">${categoryDisplayName}</span><br>`;
                 };
 
-                vehicleDiv.innerHTML += `<small class=\"disabled\">${vehicle.typeDetails.constructionType}<span class="fzg-${vehicle.vehicleID}"></span></small>`;
+                vehicleDiv.innerHTML += `<small class=\"disabled\"><a style="padding: 0px;" class="disabled" href="https://google.com/search?q=${vehicle.typeDetails.constructionType}+${vehicle.typeDetails.series}+bahn&udm=2">${vehicle.typeDetails.constructionType}<img src="./assets/icons/search.svg" style="margin-left: 7px; height: 10px;"></a><span class="fzg-${vehicle.vehicleID}"></span></small>`;
 
 
 

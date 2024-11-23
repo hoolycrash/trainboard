@@ -1496,6 +1496,10 @@ td {
 	max-width: 700px;
 }
 
+.pinnedPopup:hover {
+	cursor: pointer;
+}
+
 
 .blanktable {
 	width: auto;

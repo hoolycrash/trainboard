@@ -154,8 +154,15 @@ async function fetchAndDisplayData() {
         console.log(tripId);  // Wenn du den Wert von `pinnedJourney` überprüfen möchtest, wird jetzt `tripId` angezeigt
         document.getElementById('linebadge').classList.add('badgeClassProductName');
 
-        document.getElementById('informationisle').classList.add('bigonly');
-        document.getElementById('descriptionbox').classList.add('bigonly');
+        var informationIsle = document.getElementById('informationisle');
+        if (informationIsle) {
+            informationIsle.classList.add('bigonly');
+        }
+
+        var descriptionBox = document.getElementById('descriptionbox');
+        if (descriptionBox) {
+            descriptionBox.classList.add('bigonly');
+        }
 
     } else {
         console.log('Cookie "pinnedJourney" wurde nicht gefunden.');

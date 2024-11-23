@@ -350,11 +350,11 @@ fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
 
 
 	console.log(data.name);
+/// Get Station CAT Images
 
-	// Definiere die Station, nach der gesucht werden soll
+
 const stationName = data.name;
 
-// JSON-Daten von der angegebenen URL abrufen
 fetch('https://bahnhofskatzen.de.cool/catsdata.json')
     .then(response => {
         if (!response.ok) {
@@ -363,11 +363,9 @@ fetch('https://bahnhofskatzen.de.cool/catsdata.json')
         return response.json();
     })
     .then(data => {
-        // Suche nach einem Element, bei dem die Station übereinstimmt
         const matchingCat = data.find(cat => cat.station === stationName);
 
         if (matchingCat) {
-            // Logge den Filename zur Konsole, wenn ein Treffer gefunden wurde
             console.log(`Filename: ${matchingCat.filename}`);
 
 			document.getElementById('stationCat').innerHTML += `

@@ -427,7 +427,7 @@ fetchAndDisplayMapData();
 
             // Wenn der Zug vollständig storniert wurde
             if (isTripCancelled && allStopoversCancelled) {
-                statusElement.textContent = `Der Zug ${trip.line.name} ist vollständig ausgefallen.`;
+                statusElement.innerHTML = `${trip.line.name} ist vollständig ausgefallen.`;
                 return;
             }
 
@@ -456,7 +456,7 @@ fetchAndDisplayMapData();
 
                 const platformInfo = getPlatformInfo(trip.departurePlatform || trip.plannedDeparturePlatform);
 
-                statusElement.textContent = `Der Zug fährt in ${timeString} von 🔻 ${trip.origin.name} ${platformInfo} ab.`;
+                statusElement.innerHTML = `${trip.line.name} fährt in ${timeString} von <b class="markedstation">${trip.origin.name}</b> ${platformInfo} ab.`;
                 return;
             }
 
@@ -473,7 +473,7 @@ fetchAndDisplayMapData();
 
                 if (timeUntilNextStop > 0) {
                     // Zug erreicht bald den nächsten Halt
-                    statusElement.textContent = `Der Zug erreicht in ${timeString} 🔻 ${nextStop.stop.name} ${platformInfoArrival}.`;
+                    statusElement.innerHTML = `${trip.line.name} erreicht in ${timeString} <b class="markedstation">${nextStop.stop.name}</b> ${platformInfoArrival}.`;
                 } else {
                     // Zug ist bereits am nächsten Halt angekommen
                     const departureTimeAtNextStop = nextStop.departure ? new Date(nextStop.departure) : new Date(nextStop.plannedDeparture);
@@ -482,31 +482,31 @@ fetchAndDisplayMapData();
                     if (timeUntilDeparture > 0) {
                         const departureTimeString = formatTimeDifference(timeUntilDeparture);
 
-                        statusElement.textContent = `Der Zug steht aktuell in 🔻 ${nextStop.stop.name} und fährt in ${departureTimeString} ${platformInfoDeparture} ab.`;
+                        statusElement.innerHTML = `${trip.line.name} steht aktuell in <b class="markedstation">${nextStop.stop.name}</b> und fährt in ${departureTimeString} ${platformInfoDeparture} ab.`;
                     } else {
-                        statusElement.textContent = `Der Zug hat 🔻 ${nextStop.stop.name} gerade verlassen und ist auf dem Weg zum nächsten Halt.`;
+                        statusElement.innerHTML = `${trip.line.name} hat <b class="markedstation">${nextStop.stop.name}</b> gerade verlassen und ist auf dem Weg zum nächsten Halt.`;
                     }
                 }
             } else {
                 // Wenn kein weiterer aktiver Halt mehr bevorsteht
                 if (arrivalTime && currentTime >= arrivalTime && !trip.destination.cancelled) {
-                    statusElement.textContent = `Der Zug hat sein Ziel 🔻 ${trip.destination.name} erreicht.`;
+                    statusElement.innerHTML = `${trip.line.name} hat sein Ziel <b class="markedstation">${trip.destination.name}</b> erreicht.`;
                 } else if (trip.destination.cancelled) {
-                    statusElement.textContent = `Der Zug endet vorzeitig und erreicht nicht sein geplantes Ziel.`;
+                    statusElement.innerHTML = `${trip.line.name} endet vorzeitig und erreicht nicht sein geplantes Ziel.`;
                 } else {
                     const timeUntilArrival = arrivalTime ? arrivalTime - currentTime : null;
                     const timeString = timeUntilArrival ? formatTimeDifference(timeUntilArrival) : 'unbekannter Zeit';
 
                     const platformInfo = getPlatformInfo(trip.arrivalPlatform || trip.plannedArrivalPlatform);
 
-                    statusElement.textContent = `Der Zug ist auf dem Weg zu seinem Endziel 🔻 ${trip.destination.name} und wird in ${timeString} ${platformInfo} ankommen.`;
+                    statusElement.innerHTML = `${trip.line.name} ist auf dem Weg zu seinem Endziel <b class="markedstation">${trip.destination.name}</b> und wird in ${timeString} ${platformInfo} ankommen.`;
                 }
             }
 
             // Hinweis auf ausgefallene Halte
             if (cancelledStopovers.length > 0) {
                 const cancelledStopsNames = cancelledStopovers.map(stop => stop.stop.name).join(', ');
-                statusElement.textContent += `\nDie folgenden Halte entfallen: ${cancelledStopsNames}.`;
+                statusElement.innerHTML += `\nDie folgenden Halte entfallen: ${cancelledStopsNames}.`;
             }
         }
 
@@ -522,7 +522,7 @@ fetchAndDisplayMapData();
 
         document.getElementById('operatorName').innerHTML = `${data.trip.line.operator.name}`;
 
-        document.getElementById('title').textContent = `${data.trip.line.productName} ${data.trip.line.fahrtNr} 🡺 ${data.trip.destination.name}`;
+        document.getElementById('title').innerHTML = `${data.trip.line.productName} ${data.trip.line.fahrtNr} 🡺 ${data.trip.destination.name}`;
 
         // Dauer berechnen
         const departureTime = new Date(data.trip.plannedDeparture);

@@ -44,6 +44,10 @@ body {
 	color: #fff;
 }
 
+.markedstation {
+	color: #fff !important;
+}
+
 
 .button:hover {
 	cursor: pointer;

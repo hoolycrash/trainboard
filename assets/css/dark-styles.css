@@ -134,6 +134,54 @@
 		color: #fff;
 	}
 
+	.markedstation {
+		color: #fff !important;
+	}
+
+	.tab {
+		background-color: #1d1d1f;
+		color: #fff;
+	
+	}
+
+	.trainTab {
+		background-image: url('../icons/tab_train_white.svg');
+	}
+	
+	.trackTab {
+		background-image: url('../icons/tab_track_white.svg');
+	}
+	
+	.tab button {
+		border: 1px solid #1d1d1f;
+		color: #fff;
+	  }
+	  
+	  
+	  .tab button.tabActive {
+		background-color: #636366;
+		border: 1px solid #1d1d1f;
+		color: #fff;
+	  }
+
+	.tablinks {
+		background-color: #1d1d1f;
+		color: #fff;
+	}
+
+
+	.startStation, .endStation {
+		background-color: #2c2c2c;
+	}
+	
+	.startStation {
+		background-image: url(../icons/darkstartstation.svg);
+	}
+	
+	.endStation {
+		background-image: url(../icons/darkendstation.svg);
+	}
+
 	
 
 	

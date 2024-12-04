@@ -96,12 +96,29 @@
     </div>
 
     <!-- Warnungen und Hinweise -->
+    <hr>
+    <h3>Aktuelle Meldungen</h3>
+    <div class="tab">
+        <button class="tablinks tabActive trainTab" onclick="openCity(event, 'Zug')" id="trainTab">Zug</button>
+        <button class="tablinks trackTab" onclick="openCity(event, 'Strecke')" id="trackTab">Strecke</button>
+      </div>
 
-    <div class="gray smaller" id="remarks">
+    <div class="tab smaller tabcontent" style="display: block; padding: 0px; overflow:hidden;" id="Zug">
+
         <table id="remarksTable" cellpadding="10"></table>
 
         <br>
     </div>
+
+    <div class="tab smaller tabcontent"  style="padding: 0px; overflow:hidden;" id="Strecke">
+        <div id="loadingConstructions"><center><br><img src="./assets/blackSpinner.svg" class="loadingspinner multicolorspinner"><br><br><b>Streckeninfos werden geladen.</b><br>Dies kann einen Moment dauern.</center></div>
+
+        <table cellpadding="10"><tbody id="constructionsTable"></tbody></table>
+
+        <br>
+    </div>
+
+
 
     <br>
 
@@ -127,6 +144,30 @@
       top: 300,
       behavior: "smooth",
     });
+
+    // Tabs Störungen
+    function openCity(evt, cityName) {
+  // Declare all variables
+  var i, tabcontent, tablinks;
+
+  // Get all elements with class="tabcontent" and hide them
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+
+  // Get all elements with class="tablinks" and remove the class "tabActive"
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" tabActive", "");
+  }
+
+  // Show the current tab, and add an "tabActive" class to the button that opened the tab
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " tabActive";
+}
+
+
 
     // Funktion, um Parameter aus der URL zu extrahieren
     function getParameterByName(name, url = window.location.href) {
@@ -170,6 +211,11 @@
         let polylineResponse;
         polylineResponse = await fetch(polylineApiUrl);
         const polylineData = await polylineResponse.json();
+
+        let baustellenApiUrl = `https://data.cuzimmartin.dev/trip/${encodeURIComponent(tripId)}/baustellen`;       
+        let baustellenResponse;
+        baustellenResponse = await fetch(baustellenApiUrl);
+        const baustellenData = await baustellenResponse.json();
 
     
 
@@ -297,6 +343,25 @@
                         .setLngLat(stopPosition) // Position des Markers setzen
                         .addTo(map); // Marker zur Karte hinzufügen
                 }
+            });
+
+            // Iteriere durch die Baustellen, um Marker hinzuzufügen
+            baustellenData.baustellen.forEach(baustelle => {
+                const baustellenPosition = [baustelle.koordinaten.von.x, baustelle.koordinaten.von.y];
+
+
+                    // Erstelle einen Marker mit einem anderen Stil für Stops
+                    const baustellenMarker = document.createElement('img');
+                    baustellenMarker.src = './assets/icons/' + baustelle.wirkung + '-marker.svg'; // anderes Icon für Stopps
+                    baustellenMarker.style.width = '10px'; // Breite des Stop-Markers
+                    baustellenMarker.style.height = '10px'; // Höhe des Stop-Markers
+
+                    // Marker mit dem Bild erstellen und hinzufügen
+                    new mapboxgl.Marker({
+                        element: baustellenMarker // Das Bild als Marker verwenden
+                    })
+                        .setLngLat(baustellenPosition) // Position des Markers setzen
+                        .addTo(map); // Marker zur Karte hinzufügen
             });
 
             // Marker für den Standort des Zuges hinzufügen
@@ -797,7 +862,7 @@ fetchAndDisplayMapData();
             
 
             const WarningHeaderItem = document.createElement('tr');
-            WarningHeaderItem.innerHTML = `<td colspan="2"><h3><span class=\"pill\">&nbsp;&nbsp;${warningCount}&nbsp;&nbsp;</span> aktuelle Informationen:</h3></td>`;
+            document.getElementById('trainTab').innerHTML = `Zug <span class=\"pill\">&nbsp;${warningCount}&nbsp;</span>`;
             warningsList.appendChild(WarningHeaderItem);
 
             uniqueRemarks.forEach(remark => {
@@ -890,6 +955,59 @@ fetchAndDisplayMapData();
         } else {
             console.log('It is not pinned Journey');
         }
+
+
+
+        // Baustellen
+
+        let constructionsUrl = `https://data.cuzimmartin.dev/trip/${encodeURIComponent(tripId)}/baustellen`;
+        let response = await fetch(constructionsUrl);
+        let constructionData = await response.json();
+
+        const constructionsList = document.getElementById('constructionsTable');
+
+        constructionData.baustellen.forEach((baustellen) => {
+
+            document.getElementById('loadingConstructions').classList.add('hidden');
+
+            console.log(baustellen.richtung);
+
+            let wirkung;
+
+            if (baustellen.wirkung == 'ABWEICHUNG_VOM_FPL') {
+                wirkung = 'Abweichung vom Fahrplan'
+            } else  if (baustellen.wirkung == 'FAHRZEITVERLAENGERUNG') {
+                wirkung = 'Fahrzeitverlängerung auf Regellaufweg'
+            } else  if (baustellen.wirkung == 'SONSTIGES') {
+                wirkung = 'Sonstiges'
+            } else  if (baustellen.wirkung == 'TOTALSPERRUNG') {
+                wirkung = 'Totalsperrung'
+            } else  if (baustellen.wirkung == 'GGL_MIT_ZS6') {
+                wirkung = 'Fahrt auf Gegengleis mit Signal Zs 6'
+            } else  if (baustellen.wirkung == 'GGL_MIT_ZS8') {
+                wirkung = 'Fahrt auf Gegengleis mit Signal Zs 8'
+            }else {
+                wirkung = baustellen.wirkung;
+            }
+
+
+            
+            constructionsList.innerHTML += `<tr><td><img src="./assets/icons/${baustellen.wirkung}.svg" class="serviceicon"></td><td class="wide">${wirkung}<br><small class="disabled">${baustellen.arbeiten}</small><br><div class="startStation"><small class="disabled">Von </small>${baustellen.langnameVon}</div><div class="endStation"><small class="disabled">Bis </small>${baustellen.langnameBis}</div></td></tr>`;
+
+
+            const baustellenCount = constructionData.baustellen.length;
+
+            document.getElementById('trackTab').innerHTML = `Strecke <span class=\"pill\">&nbsp;${baustellenCount}&nbsp;</span>`;
+
+
+            if (bauste = 0) {
+                document.getElementById('loadingConstructions').innerHTML = `<h3>🚞</h3><h3>Keine Streckeninformationen</h3>Für diese Strecke liegen keine Meldungen vor.`
+            }
+            
+           
+            
+        });
+
     }
 
     // Event-Handler für das Öffnen und Schließen des Modals

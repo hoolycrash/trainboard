@@ -11,7 +11,7 @@
 :root {
 	--switch-color: #5F5F5F;
 	--switch-bg-color: #f0f0f0;
-	--disabled-color: #b7b7b7;
+	--disabled-color: #787878;
 	--cellpadding: 15px;
 }
 
@@ -45,8 +45,79 @@ body {
 }
 
 .markedstation {
-	color: #fff !important;
+	color: #767676 !important;
 }
+
+.tabcontent{
+	display: none;
+}
+
+.tab {
+	background-color: #f2f2f7;
+	border-radius: 15px;
+	margin: 10px;
+	padding: 5px;
+	text-align: left;
+}
+
+.trainTab {
+	background-image: url('../icons/tab_train_black.svg');
+	background-size: 20px;
+	background-position: 12px;
+	background-repeat: no-repeat;
+}
+
+.trackTab {
+	background-image: url('../icons/tab_track_black.svg');
+	background-size: 20px;
+	background-position: 12px;
+	background-repeat: no-repeat;
+}
+
+.startStation, .endStation {
+	background-color: #fff;
+	padding: 10px;
+	padding-left: 20px;
+}
+
+.startStation {
+	border-radius: 10px 10px 0px 0px;
+	background-image: url(../icons/startstation.svg);
+	background-repeat: no-repeat;
+	background-size: 13px;
+	background-position-y: top;
+	background-position-x: left;
+}
+
+.endStation {
+	border-radius: 0px 0px 10px 10px;
+	background-image: url(../icons/endstation.svg);
+	background-repeat: no-repeat;
+	background-size: 13px;
+	background-position-y: bottom;
+	background-position-x: left;
+}
+
+.tab button {
+	width: calc(50% - 5px);
+	border: none;
+	outline: none;
+	cursor: pointer;
+	padding: 8px;
+	transition: 0.2s;
+	border-radius: 10px;
+	border: 1px solid #f2f2f7;
+	font-family: "Kode Mono", monospace;
+  }
+  
+  .tab button:hover {
+  }
+  
+  .tab button.tabActive {
+	background-color: #fff;
+	border: 1px solid #e7e7ec;
+	border-radius: 10px;
+  }
 
 
 .button:hover {

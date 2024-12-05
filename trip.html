@@ -488,7 +488,7 @@ fetchAndDisplayMapData();
             const isTripCancelled = trip.cancelled === true;
 
             // Prüfen, ob alle Stopovers storniert wurden
-            const allStopoversCancelled = trip.stopovers.every(stop => stop.cancelled === true);
+            const allStopoversCancelled = trip.stopovers.every(stop => (stop.cancelled === true));
 
             // Wenn der Zug vollständig storniert wurde
             if (isTripCancelled && allStopoversCancelled) {
@@ -497,8 +497,8 @@ fetchAndDisplayMapData();
             }
 
             // Wenn der Zug teilweise storniert wurde
-            const cancelledStopovers = trip.stopovers.filter(stop => stop.cancelled === true);
-            const activeStopovers = trip.stopovers.filter(stop => !stop.cancelled);
+            const cancelledStopovers = trip.stopovers.filter(stop => ((stop.cancelled) && (stop.arrival == null) && (stop.departure == null)));
+            const activeStopovers = trip.stopovers.filter(stop => ((!stop.cancelled) && (stop.arrival !== null) && (stop.departure !== null)));
 
             // Funktion zum Finden des nächsten aktiven Stopovers
             function findNextActiveStopover() {
@@ -609,7 +609,7 @@ fetchAndDisplayMapData();
 
         // Funktion zur Bestimmung des Haltestellenstatus
         function getStopStatus(stop, currentTime, isLastStop) {
-            if (stop.cancelled) {
+            if ((stop.cancelled) && (stop.arrival == null) && (stop.departure == null)) {
                 return 'cancelled';
             }
 
@@ -690,7 +690,7 @@ fetchAndDisplayMapData();
             
 
             // Generiere den Inhalt der Haltestelle
-            if (stop.cancelled) {
+            if ((stop.cancelled) && (stop.arrival == null) && (stop.departure == null)) {
                 stopElement.innerHTML += `
             
             <div class="trip-stop-time">

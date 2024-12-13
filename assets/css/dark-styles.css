@@ -1,7 +1,11 @@
 @media (prefers-color-scheme: dark) {
 	body {
-		background-color: #0f0f0f;
+		background-color: #191919;
 		color: #efefef;
+	}
+
+	.darkbody {
+		background-color: #0f0f0f;
 	}
 
 	td a {
@@ -118,7 +122,7 @@
 	}
 
 	.tinyinput {
-		background-color: #0f0f0f;
+		background-color: #191919;
 		color: #fff;
 	}
 
@@ -182,7 +186,17 @@
 		background-image: url(../icons/darkendstation.svg);
 	}
 
-	
+	.tooltiptext {
+		cursor: pointer;
+		background-color: #2f2f2f;
+		border-radius: 100px;
+		color: #bbbbbb;
+	}
+
+	.actualpopup {
+		background-color: #1b1b1b;
+		border: 1px solid #5c5c5c8a;
+	}
 
 	
 }

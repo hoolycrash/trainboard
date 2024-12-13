@@ -54,7 +54,7 @@ input[type=number]::-webkit-inner-spin-button {
     }
     
     .dashboardCard {
-        background-color: #0f0f0f;
+        background-color: #1f1f1f;
         color: #fff;
         box-shadow: none;
     }

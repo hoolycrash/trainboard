@@ -39,7 +39,16 @@
 	font-size: 17px;
 	margin: 5px;
 	color: #000;
-    min-height: 70px;
+    flex: 1 1 200px; /* Flex-grow, Flex-shrink, Flex-basis */
+      min-width: 150px;
+}
+
+.cardflexer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Abstand zwischen den Flexboxen */
+    max-width: 100%;
+    padding: 10px;
 }
 
 input[type=number]::-webkit-inner-spin-button {

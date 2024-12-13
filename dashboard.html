@@ -41,7 +41,7 @@
 <center>
 <div class="blanktext" id="totalcontent">
 
-  <input class="tinyinput darkinput" type="number" id="delayMinutes" name="delayMinutes" min="0" placeholder="XX" value="6" style="margin-left: 10px; width: 50px; height: 25px; text-align: right;">-Minuten-Pünktlichkeit <span id="infoPunctuality" class="tooltiptext">&nbsp;?&nbsp;</span>
+  <input class="tinyinput darkinput" type="number" id="delayMinutes" name="delayMinutes" min="0" placeholder="XX" value="6" style="margin-left: 10px; width: 30px; height: 25px; text-align: right;">-Minuten-Pünktlichkeit <span id="infoPunctuality" class="tooltiptext">&nbsp;?&nbsp;</span>
     
   <div class="dashboardContainer">
     <div class="dashboardSide" id="dashboardContainer1">
@@ -55,52 +55,35 @@
           <option value="365">365 Tage</option>
         </select>
 
-        <span class="dashboardCard" id="averageDelay"></span><br><br>
-
-        <table>
-          <tr>
-            <td style="width: 33%;">
-              <div class="dashboardCard">
-                Pünktlichkeit:<br>
-                <table>
-                  <tr>
-                    <td><canvas id="littlePieChart" style="max-width: 40px; height: 40px;"></canvas></td><td class="wide">&nbsp;<span id="punctualityPercentage" class="alwaysbig"></span></td>
-                  </tr>
-                </table>
-                
-                
-              </div>
-
-              <br>
-
-              
-            </td>
-            <td style="width: 33%;">
-              <div class="dashboardCard">
-                Reale Pünktlichkeit: <span id="infoRealPunct" class="tooltiptext">&nbsp;?&nbsp;</span><br>
-                <table>
-                  <tr>
-                    <td><canvas id="ReallittlePieChart" style="max-width: 40px; height: 40px;"></canvas></td><td class="wide">&nbsp;<span id="realPunctualityPercentage" class="alwaysbig"></span></td>
-                  </tr>
-                </table>
-                
-                
-              </div>
-
-
-            
-            </td>
-            
+        <div class="cardflexer">
+        <div class="dashboardCard">
+          Pünktlichkeit:<br>
+          <table>
+            <tr>
+              <td><canvas id="littlePieChart" style="max-width: 40px; height: 40px;"></canvas></td><td class="wide">&nbsp;<span id="punctualityPercentage" class="alwaysbig"></span></td>
+            </tr>
+          </table>       
           
+        </div>
 
 
-            
-            
-          </tr>
-          <tr></tr>
-        </table>
+        <div class="dashboardCard">
+          Reale Pünktlichkeit: <span id="infoRealPunct" class="tooltiptext">&nbsp;?&nbsp;</span><br>
+          <table>
+            <tr>
+              <td><canvas id="ReallittlePieChart" style="max-width: 40px; height: 40px;"></canvas></td><td class="wide">&nbsp;<span id="realPunctualityPercentage" class="alwaysbig"></span></td>
+            </tr>
+          </table>
+          
+          
+        </div>
 
-        
+        <div class="dashboardCard" id="averageDelay">
+          
+        </div>
+
+
+      </div>
 
 
 
@@ -219,7 +202,7 @@ fetch(apiUrl)
                 document.getElementById('stationName').innerHTML = `&nbsp;${data.stationName}&nbsp;`;
 
                 if (data.averageDelay <= delayMinutes) {
-                  document.getElementById('averageDelay').innerHTML = `&oslash;&nbsp;<span class=" green">+${data.averageDelay}</span>&nbsp;min.`;
+                  document.getElementById('averageDelay').innerHTML = `&oslash;&nbsp;Verspätung:<br><span class="alwaysbig green">${data.averageDelay}</span>&nbsp;min.`;
                 } else 
                 if (data.averageDelay <= (delayMinutes + 5)) {
                   document.getElementById('averageDelay').innerHTML = `&oslash;&nbsp;Verspätung:<br><span class="alwaysbig actualyellow">${data.averageDelay}</span>&nbsp;min.`;

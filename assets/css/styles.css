@@ -1159,6 +1159,11 @@ td {
 
 @media (max-width: 700px) {
 
+	.tripcontainer, .blanktext {
+		width: 95% !important;
+		
+	}
+
 	.tripcontainer, .blankext, .container {
 		width: 100%;
 	}

@@ -13,6 +13,7 @@
 	--switch-bg-color: #f0f0f0;
 	--disabled-color: #b7b7b7;
 	--cellpadding: 15px;
+	--map-bg-color: #343332;
 }
 
 html {
@@ -1290,7 +1291,9 @@ td {
 }
 
 
-
+.trip-body {
+	background-color: var(--map-bg-color);
+}
 
 
 /* Container für zentrierten Inhalt */

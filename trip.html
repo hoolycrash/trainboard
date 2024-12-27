@@ -18,7 +18,7 @@
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.5.1/mapbox-gl.js"></script>
 </head>
 
-<body id="body">
+<body class="trip-body">
 
     <noscript> You need to enable JavaScript to run this app.</noscript>
 
@@ -364,7 +364,7 @@ fetchAndDisplayMapData();
 
             console.error('Fehler beim Abrufen der Trip-Daten.');
             const statusElement = document.getElementById('tripStatus');
-            document.getElementById('body').innerHTML= `
+            document.body.innerHTML= `
                 <nav id="navbar">
                     <div class="tabs"><span class="active">&nbsp;Zuginformationen&nbsp;</span></div>
                     <div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div>

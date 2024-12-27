@@ -15,6 +15,17 @@
 
 <body>
 
+
+  <div class="popupContainer hidden" id="popupContainer">
+    <div class="actualpopup">
+
+      <div id="popupcontent"></div>
+
+      <div class="button" id="fertigbutton">Fertig</div>
+      
+    </div>
+  </div>
+
   <nav id="navbar">
     <div class="tabs">
       <a href="#" class="active" id="stationName"></a>
@@ -30,7 +41,7 @@
 <center>
 <div class="blanktext" id="totalcontent">
 
-  <input class="tinyinput darkinput" type="number" id="delayMinutes" name="delayMinutes" min="0" placeholder="XX" value="6" style="margin-left: 10px; width: 30px; height: 25px;">-Minuten-Pünktlichkeit
+  <input class="tinyinput darkinput" type="number" id="delayMinutes" name="delayMinutes" min="0" placeholder="XX" value="6" style="margin-left: 10px; width: 30px; height: 25px; text-align: right;">-Minuten-Pünktlichkeit <span id="infoPunctuality" class="tooltiptext">&nbsp;?&nbsp;</span>
     
   <div class="dashboardContainer">
     <div class="dashboardSide" id="dashboardContainer1">
@@ -44,34 +55,36 @@
           <option value="365">365 Tage</option>
         </select>
 
-        <table>
-          <tr>
-            <td style="width: 50%;">
-              <div class="dashboardCard">
-                Pünktlichkeit:<br>
-                <table>
-                  <tr>
-                    <td><canvas id="littlePieChart" style="max-width: 40px; height: 40px;"></canvas></td><td class="wide">&nbsp;<span id="punctualityPercentage" class="alwaysbig"></span></td>
-                  </tr>
-                </table>
-                
-                
-              </div>
-
-              <br>
-
-              
-            </td>
-            <td style="width: 50%;">
-              <div class="dashboardCard" id="averageDelay">
-                
-              </div>
+        <div class="cardflexer">
+        <div class="dashboardCard">
+          Statistische Pünktlichkeit:<br>
+          <table>
+            <tr>
+              <td><canvas id="littlePieChart" style="max-width: 40px; height: 40px;"></canvas></td><td class="wide">&nbsp;<span id="punctualityPercentage" class="alwaysbig"></span></td>
+            </tr>
+          </table>       
+          
+        </div>
 
 
-            
-            </td>
-          </tr>
-        </table>
+        <div class="dashboardCard">
+          Reale Pünktlichkeit: <span id="infoRealPunct" class="tooltiptext">&nbsp;?&nbsp;</span><br>
+          <table>
+            <tr>
+              <td><canvas id="ReallittlePieChart" style="max-width: 40px; height: 40px;"></canvas></td><td class="wide">&nbsp;<span id="realPunctualityPercentage" class="alwaysbig"></span></td>
+            </tr>
+          </table>
+          
+          
+        </div>
+
+        <div class="dashboardCard" id="averageDelay">
+          
+        </div>
+
+
+      </div>
+
 
 
         <div class="diagramContainer">
@@ -120,6 +133,44 @@
 
 
 <script>
+
+//Popups for Info
+
+document.getElementById('infoRealPunct').addEventListener('click', function() {
+    document.getElementById('popupContainer').classList.remove('hidden');
+
+    document.getElementById('popupcontent').innerHTML = `
+      <h3>Reale Pünktlichkeit</h3>
+      <p>Im Gegensatz zur <i>Statistischen Püntklichkeit</i> berücksichtigt die <i>Reale Pünktlichkeit</i> auch ausgefallene Züge.</p>
+      
+    `;
+});
+
+
+document.getElementById('infoPunctuality').addEventListener('click', function() {
+    document.getElementById('popupContainer').classList.remove('hidden');
+
+    document.getElementById('popupcontent').innerHTML = `
+      <h3>Minutenpünktlichkeit</h3>
+      <p>Ein Zug gilt als pünktlich wenn er maximal x Minuten hinter seiner planmäßigen Fahrtzeit liegt.</p>
+      
+      <p><b>Beispiel 5-Minuten-Pünktlichkeit:</b><br>
+        Soll ein Zug um 04:00 Uhr abfahren, so gilt er statistisch gesehen
+        <ul>
+          <li> 04:04:59 Uhr -> <span class="green">pünktlich</span></li>
+          <li> 04:05:00 Uhr -> <span class="red">unpünktlich</span></li>
+        </ul>
+      </p>
+      
+    `;
+});
+
+document.getElementById('fertigbutton').addEventListener('click', function() {
+    document.getElementById('popupContainer').classList.add('hidden')
+});
+
+
+// Actual Function
 const urlParams = new URLSearchParams(window.location.search);
 const stationID = urlParams.get('stationID');
 
@@ -159,6 +210,24 @@ fetch(apiUrl)
                   document.getElementById('averageDelay').innerHTML = `&oslash;&nbsp;Verspätung:<br><span class="alwaysbig red">${data.averageDelay}</span>&nbsp;min.`;
                 } 
 
+                const realDelay = data.totalTrains - data.punctualTrains + data.cancelledTrains;
+
+                console.log("Total Trains" + data.totalTrains);
+
+                console.log("Punctual" + data.punctualTrains);
+                
+
+                
+
+                const realDelayPercentage = (100 - (realDelay / data.totalTrains * 100));
+
+                console.log("Real Delay percentage" +  realDelayPercentage);
+
+                console.log("RealDelay:" + realDelay);
+
+                document.getElementById('realPunctualityPercentage').innerHTML = `${Math.floor(Number(realDelayPercentage))}%`;
+
+
                 document.getElementById('values').innerHTML = `
                   <span class="alwaysbig green">${data.punctualTrains}</span>/${totaltrainsWithCancelled} pünktlich</span><br>
                   <span class="alwaysbig actualyellow">${data.delayOverXMinutes}</span>/${totaltrainsWithCancelled} verspätet</span><br>
@@ -179,6 +248,9 @@ fetch(apiUrl)
                 } else {
                   pieChartIconColor = '#ec0016';
                 }
+
+
+                
 
                 //-------------- 30  TAGE STATISTIK ----------------
 
@@ -270,6 +342,9 @@ fetch(apiUrl)
                 
                 const xyValuesLittlePiechart = [data.punctualityPercentage, (100 - data.punctualityPercentage)];
 
+
+                
+
                 Chart.defaults.global.legend.display = false;
                 Chart.defaults.global.tooltips.enabled = true;
 
@@ -307,6 +382,49 @@ fetch(apiUrl)
                     }
                   }
                 });
+
+
+                console.log("Teststs" + realDelayPercentage)
+                const xyValuesRealLittlePiechart = [realDelayPercentage, (100 - realDelayPercentage)];
+
+                //Real Pie Chart
+                new Chart("ReallittlePieChart", {
+                  type: "doughnut",
+                  data: {
+                    labels: ['Pünktlich', 'Verspätet'],
+                    datasets: [{
+                      data: xyValuesRealLittlePiechart,
+                      backgroundColor: [
+                        pieChartIconColor,
+                        'gray',
+                      ],
+                      hoverOffset: 4,
+                      pointRadius: 4,
+                      pointBackgroundColor: "rgb(0,0,255)"
+                    }]
+                  },
+                  options: {
+                    plugins: {
+                    legend: {
+                      display: false // Legende ausblenden
+                    }
+                  },
+                    scales: {
+                      x: {
+                        min: 40,
+                        max: 40
+                      },
+                      y: {
+                        min:  40,
+                        max: 40
+                      }
+                    }
+                  }
+                });
+
+
+
+
 
                 //Pie Chart
                 const xyValues = [data.punctualTrains, data.delayOverXMinutes, data.cancelledTrains];

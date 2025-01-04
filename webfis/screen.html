@@ -239,26 +239,48 @@ var stationID = getQueryParam('station')
         }
     
         // Funktion zur unabhängigen Aktualisierung der ersten Station
-        function startStationUpdate(stopovers, destinationName, operatorName) {
-            setInterval(() => {
-                const now = new Date();
-                const firstStation = stopovers.find(stopover => {
-                    const departureTime = stopover.departure ? new Date(stopover.departure) : null;
-                    return !departureTime || departureTime > now;
-                });
-    
-                if (firstStation) {
-                    console.log("Aktualisierte erste Station:", firstStation.stop.name);
-                    document.getElementById('nextstation').innerHTML = `${firstStation.stop.name}`;
-                    firstLoggedStation = firstStation.stop.name;
-    
-                    if (firstLoggedStation === destinationName) {
-                            document.getElementById('infobox').innerHTML = `<p><b>Endstation</b><br><br>Diese Zugfahrt endet hier. Bitte steigen Sie aus.</p><br><br><p>Vielen Dank für Ihre Fahrt mit ${operatorName}.</p><br><br><p><small><i>This train terminates here. Please get off.</i></small></p>`;
-                            document.getElementById('destination').innerHTML = `Zug endet hier.`;
-                        }
-                }
-            }, 5000);
+function startStationUpdate(stopovers, destinationName, operatorName) {
+    setInterval(() => {
+        const now = new Date();
+        const firstStation = stopovers.find(stopover => {
+            const departureTime = stopover.departure ? new Date(stopover.departure) : null;
+            return !departureTime || departureTime > now;
+        });
+
+        if (firstStation) {
+            console.log("Aktualisierte erste Station:", firstStation.stop.name);
+
+            // Geplante und tatsächliche Abfahrtszeiten
+            const plannedTime = firstStation.plannedDeparture
+                ? new Date(firstStation.plannedDeparture).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                : null;
+            const isTime = firstStation.departure
+                ? new Date(firstStation.departure).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                : null;
+
+            // Gleisangabe
+            const track = firstStation.departurePlatform || firstStation.plannedDeparturePlatform || 'n/a';
+
+            // HTML-Elemente aktualisieren
+            document.getElementById('nextstation').innerHTML = `${firstStation.stop.name}`;
+            document.getElementById('nextstationPlanned').innerHTML = plannedTime ? `${plannedTime}` : '-';
+            document.getElementById('nextstationIs').innerHTML = isTime ? `${isTime}` : '-';
+            document.getElementById('tracknumber').innerHTML = `${track}`;
+
+            // Endstation überprüfen
+            if (firstStation.stop.name === destinationName) {
+                document.getElementById('infobox').innerHTML = `
+                    <p><b>Endstation</b><br><br>Diese Zugfahrt endet hier. Bitte steigen Sie aus.</p>
+                    <br><br>
+                    <p>Vielen Dank für Ihre Fahrt mit ${operatorName}.</p>
+                    <br><br>
+                    <p><small><i>This train terminates here. Please get off.</i></small></p>`;
+                document.getElementById('destination').innerHTML = `Zug endet hier.`;
+            }
         }
+    }, 5000); // Aktualisierung alle 5 Sekunden
+}
+
     </script>
     
     

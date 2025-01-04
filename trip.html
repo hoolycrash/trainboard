@@ -65,6 +65,13 @@
         </div>
     </a>
 
+    <a id="webfisbutton">
+        <div class="displayflex actiontable bigonly">
+            <div class="actiontableelement"><img src="./assets/icons/webFIS.svg" class="inverted noinvert actionicon"></div>
+            <div class="actiontableelement"><span id="pinIt">webFIS öffnen</span></div>
+        </div>
+    </a>
+
     <a href="#remarks">
         <div class="displayflex actiontable">
             <div class="actiontableelement"><img src="./assets/icons/arrow.svg" class="actionicon" id="warningicon"></div>
@@ -791,6 +798,8 @@ fetchAndDisplayMapData();
         if (wagonorderbutton) {
             wagonorderbutton.href = `wagonorder.html?trainnumber=${data.trip.line.fahrtNr}&station=${choosenstation}&producttype=${data.trip.line.productName}&departure=${tripdepartureTime}`;
         }
+
+        document.getElementById('webfisbutton').href = `./webfis/screen.html?trip=${encodeURIComponent(tripId)}&station=${choosenstation}`;
 
         // Funktion zum Entfernen von HTML-Tags aus Text (ohne Veränderung der Groß-/Kleinschreibung)
         function sanitizeText(text) {

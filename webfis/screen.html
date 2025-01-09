@@ -232,6 +232,7 @@ var stationID = getQueryParam('station')
                         }
                     });
                     console.log("Tabelle erfolgreich aktualisiert.");
+                    
                 })
                 .catch(error => {
                     console.error('Fehler beim Aktualisieren der Tabelle:', error);
@@ -263,8 +264,8 @@ function startStationUpdate(stopovers, destinationName, operatorName) {
 
             // HTML-Elemente aktualisieren
             document.getElementById('nextstation').innerHTML = `${firstStation.stop.name}`;
-            document.getElementById('nextstationPlanned').innerHTML = plannedTime ? `${plannedTime}` : '-';
-            document.getElementById('nextstationIs').innerHTML = isTime ? `${isTime}` : '-';
+            document.getElementById('nextstationPlanned').innerHTML = plannedTime;
+            document.getElementById('nextstationIs').innerHTML = isTime;
             document.getElementById('tracknumber').innerHTML = `${track}`;
 
             // Endstation überprüfen
@@ -277,6 +278,11 @@ function startStationUpdate(stopovers, destinationName, operatorName) {
                     <p><small><i>This train terminates here. Please get off.</i></small></p>`;
                 document.getElementById('destination').innerHTML = `Zug endet hier.`;
             }
+
+
+            
+
+            
         }
     }, 5000); // Aktualisierung alle 5 Sekunden
 }

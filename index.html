@@ -105,7 +105,7 @@
         async function searchLocations() {
             const userInput = document.getElementById('searchInput').value;
             const searchType = document.querySelector('input[name="searchType"]:checked').value;
-            const apiUrl = `https://data.cuzimmartin.dev/locations?query=${userInput}`;
+            const apiUrl = `https://data.cuzimmartin.dev/v1/db/location?search=${userInput}`;
 
             try {
                 const response = await fetch(apiUrl, {
@@ -130,15 +130,18 @@
 
             data.forEach(entry => {
                 // Check if suburban is true
-                const isSuburban = entry.products?.suburban === true;
-                const isRegional = entry.products?.regional || entry.products?.regionalexpress;
+                const isSuburban = entry.products?.includes("SBAHN");
+                const isRegional = entry.products?.includes("REGIONAL");
+
+                console.log(isSuburban);
+
 
                 if (
-                    entry.products?.nationalExpress ||
-                    entry.products?.national ||
-                    entry.products?.regionalExpress ||
-                    entry.products?.regional ||
-                    entry.products?.suburban
+                entry.products?.includes("ICE") ||
+                entry.products?.includes("EC_IC") ||
+                entry.products?.includes("IR") ||
+                entry.products?.includes("REGIONAL") ||
+                entry.products?.includes("SBAHN")
                 ) {
 
                     // Create a div with class "suggestion"
@@ -152,8 +155,8 @@
                     // Create an anchor element with a link based on the selected search type (departure or arrival)
                     const link = document.createElement('a');
                     link.href = (searchType === 'departure')
-                        ? `departure.html?station=${entry.id}`
-                        : `arrival.html?station=${entry.id}`;
+                        ? `departure.html?station=${entry.extId}`
+                        : `arrival.html?station=${entry.extId}`;
 
                     // If suburban is true, append an image to the link with class "bigicon"
                     if (isSuburban) {

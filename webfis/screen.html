@@ -81,11 +81,9 @@ var stationID = getQueryParam('station')
                 const destinationName = data.trip.destination.name;
                 const operatorName = data.trip.line.operator.name;
 
-    
-                // Zielort anzeigen
+                
                 document.getElementById('destination').innerHTML = `${destinationName}`;
     
-                // Linienname anzeigen
                 const badgeClassProductName = encodeURIComponent(data.trip.line.productName);
                 const badgeClassProduct = encodeURIComponent(data.trip.line.product);
                 const badgeClassLineOperator = encodeURIComponent(data.trip.line.name.match(/^[^(]+/)[0].trim().replace(/\s+/g, '')) + encodeURIComponent(data.trip.line.operator.id);
@@ -97,12 +95,11 @@ var stationID = getQueryParam('station')
                         <h2>${encodeURIComponent(data.trip.line.name.match(/^[^(]+/)[0].trim().replace(/\s+/g, ''))}</h2>
                     </div>`;
     
-                // Aktuelle Zeit
                 const now = new Date();
     
                 let firstLogged = false;
     
-                // Tabelle mit gefilterten Stopovers aktualisieren
+                // Reload Table
                 stopovers.forEach(stopover => {
                     const departureTime = stopover.departure ? new Date(stopover.departure) : null;
 

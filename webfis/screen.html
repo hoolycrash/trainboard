@@ -70,6 +70,7 @@ var stationID = getQueryParam('station')
 
 
 
+
         
         let firstLoggedStation = null;
     
@@ -87,13 +88,13 @@ var stationID = getQueryParam('station')
                 // Linienname anzeigen
                 const badgeClassProductName = encodeURIComponent(data.trip.line.productName);
                 const badgeClassProduct = encodeURIComponent(data.trip.line.product);
-                const badgeClassLineOperator = encodeURIComponent(data.trip.line.name.replace(/\s+/g, '')) + encodeURIComponent(data.trip.line.operator.id);
+                const badgeClassLineOperator = encodeURIComponent(data.trip.line.name.match(/^[^(]+/)[0].trim().replace(/\s+/g, '')) + encodeURIComponent(data.trip.line.operator.id);
                 const badgeClassOperator = encodeURIComponent(data.trip.line.operator.id);
                 const tripID = encodeURIComponent(data.trip.id);
     
                 document.getElementById('linename').innerHTML = `
                     <div class="linesignet ${badgeClassProductName} ${badgeClassProduct} ${badgeClassLineOperator} ${badgeClassOperator} ${tripID}">
-                        <h2>${encodeURIComponent(data.trip.line.name.replace(/\s+/g, ''))}</h2>
+                        <h2>${encodeURIComponent(data.trip.line.name.match(/^[^(]+/)[0].trim().replace(/\s+/g, ''))}</h2>
                     </div>`;
     
                 // Aktuelle Zeit

@@ -81,6 +81,11 @@
 
             transfers.forEach(transfer => {
 
+                
+                const cleanLineName = transfer.lineDetails.name.match(/^[^(]+/)[0].trim();
+                console.log(cleanLineName);
+
+
                 // Überspringe Transfers, die gecancelled sind
                 if (transfer.cancelled === true) {
                     return;
@@ -96,7 +101,7 @@
                 const row = document.createElement("tr");
 
                 const lineCell = document.createElement("td");
-                lineCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><div class="linebadge ' + transfer.lineDetails.productName + ' ' + transfer.lineDetails.product + ' ' + transfer.lineDetails.name.replace(" ", "") + transfer.lineDetails.operator.id + ' '+ transfer.lineDetails.operator.id + '">' + transfer.line + '</div></a>';
+                lineCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><div class="linebadge ' + transfer.lineDetails.productName + ' ' + transfer.lineDetails.product + ' ' + cleanLineName.replace(" ", "") + transfer.lineDetails.operator.id + ' '+ transfer.lineDetails.operator.id + '">' + cleanLineName + '</div></a>';
                 row.appendChild(lineCell);
 
                 const whenCell = document.createElement("td");
@@ -135,7 +140,7 @@
                 const tooltipText = statusTooltips[transfer.status] || 'Status unbekannt';
 
                 if(transfer.when === transfer.plannedWhen) {
-                    availableTransferTimeCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><span class="smallonly">' + formatTime(transfer.when) + '<br></span><span class="connectionbadge ' + transfer.status + '" title="' + tooltipText + '"><img src="./assets/icons/' + transfer.status + '.svg" class="transfericon">' + transfer.availableTransferTime + '&nbsp;min</span></a>';
+                    availableTransferTimeCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><span class="smallonly">' + formatTime(transfer.when) + '<br></span><span class="connectionbadge ' + transfer.status + '" title="' + tooltipText + '"><img src="./assets/icons/' + transfer.status + '.svg" alt="' + transfer.status + '"class="transfericon">' + transfer.availableTransferTime + '&nbsp;min</span></a>';
                 } else {
                     availableTransferTimeCell.innerHTML = '<a href="trip.html?stationID=' + station + '&departureTime=' + encodeURIComponent(transfer.plannedWhen) + '&tripId=' + encodeURIComponent(transfer.toTripId) + '"><span class="smallonly"><s class="disabled">' + formatTime(transfer.plannedWhen) + '</s>&nbsp;' + formatTime(transfer.when) + '<br></span><span class="connectionbadge ' + transfer.status + '" title="' + tooltipText + '"><img src="./assets/icons/' + transfer.status + '.svg" class="transfericon">' + transfer.availableTransferTime + '&nbsp;min</span></a>';
                 }

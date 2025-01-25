@@ -8,8 +8,8 @@ const darker = document.createElement('div');
 darker.classList.add('darker');
 
 // Erstelle die innere Struktur des "darker"-Containers
-const blanktext = document.createElement('div');
-blanktext.classList.add('blanktext');
+const popuptext = document.createElement('div');
+popuptext.classList.add('popuptext');
 
 // Erstelle die trip-header
 const tripHeader = document.createElement('div');
@@ -40,8 +40,8 @@ table.appendChild(tr);
 tripTitle.appendChild(table);
 tripHeader.appendChild(tripTitle);
 
-// Füge trip-header zum blanktext hinzu
-blanktext.appendChild(tripHeader);
+// Füge trip-header zum popuptext hinzu
+popuptext.appendChild(tripHeader);
 
 // Erstelle die trip-progress-bar Struktur
 const tripProgressBar = document.createElement('div');
@@ -106,9 +106,9 @@ tripTimeInfo.appendChild(tripDurationDiv);
 tripTimeInfo.appendChild(tripDestinationTime);
 tripProgressBar.appendChild(tripTimeInfo);
 
-// Füge die trip-progress-bar zum blanktext hinzu
-blanktext.appendChild(tripProgressBar);
-darker.appendChild(blanktext);
+// Füge die trip-progress-bar zum popuptext hinzu
+popuptext.appendChild(tripProgressBar);
+darker.appendChild(popuptext);
 
 // Füge die darker div zum pinnedPopup hinzu
 pinnedPopup.appendChild(darker);
@@ -153,6 +153,17 @@ async function fetchAndDisplayData() {
         const tripId = pinnedJourney;
         console.log(tripId);  // Wenn du den Wert von `pinnedJourney` überprüfen möchtest, wird jetzt `tripId` angezeigt
         document.getElementById('linebadge').classList.add('badgeClassProductName');
+
+        var informationIsle = document.getElementById('informationisle');
+        if (informationIsle) {
+            informationIsle.classList.add('bigonly');
+        }
+
+        var descriptionBox = document.getElementById('descriptionbox');
+        if (descriptionBox) {
+            descriptionBox.classList.add('bigonly');
+        }
+
     } else {
         console.log('Cookie "pinnedJourney" wurde nicht gefunden.');
         document.getElementById('pinnedPopup').classList.add('hidden');
@@ -183,6 +194,8 @@ async function fetchAndDisplayData() {
     
 
     console.log(pinnedJourney);
+
+    
 
     try {
         const apiUrl = `https://data.cuzimmartin.dev/dynamic-trip?tripId=${(pinnedJourney)}&stationID=${(pinnedJourneyStation)}`;

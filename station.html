@@ -13,7 +13,7 @@
     <meta name="robots" content="noindex">
 </head>
 
-<body>
+<body class="bodyWithPopup">
 
 <script src="./assets/src/pinnedPopup.js"></script>
 <center>
@@ -35,8 +35,8 @@
 		<p><a href="stationsearch.html"><u>Bahnhofsuche</u></a></p>
 	</div>
 	
-    <div id="container" class="tripcontainer">
-        <div class="container">
+    <div id="blanktext" class="coloredspace">
+        <div class="container blanktext">
             <div class="left-div">
 			
 				
@@ -91,6 +91,8 @@
 					<span id="timeSpan"></span>
 					
 				</div>
+
+				<span id="stationCat"></span>
 				
                 <br><br>
             </div>
@@ -344,7 +346,41 @@ fetch(`https://data.cuzimmartin.dev/fetch-station?eva=${stationID}`)
 			document.getElementById('weather').innerHTML = "<a href=\"weather.html?city=" + data.mailingAddress.city + "\"><div class=\"button\">" + Math.floor(weatherdata.main.temp) + "°C " + weatherdata.weather[0].description +"<br></div></a>";	  
 		}
 
-	})
+	})^
+
+
+	console.log(data.name);
+/// Get Station CAT Images
+
+
+const stationName = data.name;
+
+fetch('https://bahnhofskatzen.de.cool/catsdata.json')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP-Error! Status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const matchingCat = data.find(cat => cat.station === stationName);
+
+        if (matchingCat) {
+            console.log(`Filename: ${matchingCat.filename}`);
+
+			document.getElementById('stationCat').innerHTML += `
+				<div class="button">
+					<img src="https://bahnhofskatzen.de.cool/assets/cats/${matchingCat.filename}" class="catPic">
+					Bahnhofskatze<br>
+					<small>gesichtet von: <a href="${matchingCat.sociallink}">${matchingCat.socialname}</a></small>
+				</div>
+			`;
+        } 
+    })
+    .catch(error => {
+        console.error('Keine Bahnhofskatze', error);
+    });
+
 
 	
 })

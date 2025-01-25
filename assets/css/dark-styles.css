@@ -1,7 +1,11 @@
 @media (prefers-color-scheme: dark) {
 	body {
-		background-color: #0f0f0f;
+		background-color: #191919;
 		color: #efefef;
+	}
+
+	.darkbody {
+		background-color: #0f0f0f;
 	}
 
 	td a {
@@ -118,7 +122,7 @@
 	}
 
 	.tinyinput {
-		background-color: #0f0f0f;
+		background-color: #191919;
 		color: #fff;
 	}
 
@@ -127,14 +131,72 @@
 	}
 
 	.TRIPcontent {
-		background-color: #000;
+		background-color: rgba(0,0,0,0.9);
 	}
 
 	.actiontableelement {
 		color: #fff;
 	}
 
+	.markedstation {
+		color: #fff !important;
+	}
+
+	.tab {
+		background-color: #1d1d1f;
+		color: #fff;
 	
+	}
+
+	.trainTab {
+		background-image: url('../icons/tab_train_white.svg');
+	}
+	
+	.trackTab {
+		background-image: url('../icons/tab_track_white.svg');
+	}
+	
+	.tab button {
+		border: 1px solid #1d1d1f;
+		color: #fff;
+	  }
+	  
+	  
+	  .tab button.tabActive {
+		background-color: #636366;
+		border: 1px solid #1d1d1f;
+		color: #fff;
+	  }
+
+	.tablinks {
+		background-color: #1d1d1f;
+		color: #fff;
+	}
+
+
+	.startStation, .endStation {
+		background-color: #2c2c2c;
+	}
+	
+	.startStation {
+		background-image: url(../icons/darkstartstation.svg);
+	}
+	
+	.endStation {
+		background-image: url(../icons/darkendstation.svg);
+	}
+
+	.tooltiptext {
+		cursor: pointer;
+		background-color: #2f2f2f;
+		border-radius: 100px;
+		color: #bbbbbb;
+	}
+
+	.actualpopup {
+		background-color: #1b1b1b;
+		border: 1px solid #5c5c5c8a;
+	}
 
 	
 }

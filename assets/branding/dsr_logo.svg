@@ -1,0 +1,35 @@
+<svg width="109" height="109" viewBox="0 0 109 109" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_910_97)">
+<rect width="109" height="109" fill="url(#paint0_radial_910_97)"/>
+<path d="M55 -23V54.5L-57.5 163.5L-7.5 -12.5L55 -23Z" fill="url(#paint1_radial_910_97)" fill-opacity="0.05"/>
+<path d="M55 -23V54.5H-30L-7.5 -12.5L55 -23Z" fill="url(#paint2_radial_910_97)" fill-opacity="0.2"/>
+<path d="M55 -23V54.5L-15.5 -12.5L55 -23Z" fill="url(#paint3_radial_910_97)"/>
+<path d="M93 55H118" stroke="white" stroke-opacity="0.5"/>
+<path d="M89 33.5L110.651 21" stroke="white" stroke-opacity="0.6"/>
+<path d="M74.9219 19.5527L83.5745 -3.90215" stroke="white" stroke-opacity="0.7"/>
+<path d="M55 90.0781L55 115.078" stroke="white" stroke-opacity="0.2"/>
+<path d="M76.5 86.0781L89 107.729" stroke="white" stroke-opacity="0.3"/>
+<path d="M91 77L112.615 89.5624" stroke="white" stroke-opacity="0.4"/>
+</g>
+<defs>
+<radialGradient id="paint0_radial_910_97" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(109 100.5) rotate(-140.288) scale(157.294)">
+<stop/>
+<stop offset="1" stop-color="#4D4D4D"/>
+</radialGradient>
+<radialGradient id="paint1_radial_910_97" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(16 11) rotate(48.2892) scale(61.6198 56.0542)">
+<stop stop-color="#0CD8B3" stop-opacity="0.2"/>
+<stop offset="1" stop-color="#0CD8B3"/>
+</radialGradient>
+<radialGradient id="paint2_radial_910_97" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(16 11) rotate(48.2892) scale(61.6198 56.0541)">
+<stop stop-color="#0CD8B3" stop-opacity="0.2"/>
+<stop offset="1" stop-color="#0CD8B3"/>
+</radialGradient>
+<radialGradient id="paint3_radial_910_97" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(16 11) rotate(48.2892) scale(61.6198 56.0541)">
+<stop stop-color="#0CD8B3" stop-opacity="0.2"/>
+<stop offset="1" stop-color="#0CD8B3"/>
+</radialGradient>
+<clipPath id="clip0_910_97">
+<rect width="109" height="109" rx="40" fill="white"/>
+</clipPath>
+</defs>
+</svg>

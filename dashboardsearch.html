@@ -16,7 +16,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Verspätungs-Statistiken für Bahnhöfe | Trainboard">
     <meta name="twitter:description" content="Interaktives Verspätungsdahsboard für Bahnhöfe der EU.">
-    <meta name="twitter:image" content="https://trainboard.de.cool/assets/branding/bigtrainsearchbanner.png">
+    <meta name="twitter:image" content="https://trainboard.de.cool/assets/branding/bigdashboardbanner.png">
     <meta name="twitter:url" content="https://trainboard.de.cool/dashboardsearch.html">
 </head>
 
@@ -49,13 +49,26 @@
 		
 		<div id="results"></div>
 
+		<hr>
+        <div style="margin: 15px;">
+            <span style="color: yellow;"><b>Wilkommen zurück 👋</b></span><br>
+            Auch große Teile von Trainboard sind weiterhin von der HAFAS-Abschaltung betroffen.<br>
+            Bitte beachtet dazu den Beitrag auf <a href="https://github.com/hoolycrash/trainboard/wiki/Unterbrechungen-durch-Abschaltung-von-HAFAS"><u>Github</u>.</a>
+        </div>   
+
+		<!--
+		<br>
+
+		<font color="#ffe200"><b>Information:</b> Daten sind erst seit 25.10.2024 verf&uuml;gbar. Einige Funktionen sind eingeschr&auml;nkt.</font><br><br>--->
+
+
   </div>
   
   <br>
   
-	<div class="descriptionbox"><span id="description"></span><br><small>provided by: <span id="copyright"></span></small><br></div>
+	<div class="descriptionbox" id="descriptionbox"><span id="description"></span><br><small>provided by: <span id="copyright"></span></small><br></div>
   
-	<div class="isle"><a href="about.html">About</a> | <a href="https://github.com/hoolycrash/trainboard">Github</a></div>
+	<div class="isle" id="informationisle"><a href="about.html">About</a> | <a href="https://github.com/hoolycrash/trainboard">Github</a></div>
 
 <script>
 	function searchLocations() {

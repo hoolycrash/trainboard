@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./assets/css/dark-styles.css">
     <link rel="stylesheet" href="./assets/css/line-colors.css">
     <link rel="stylesheet" href="./assets/css/special-vehicles.css">
+    <link rel="stylesheet" href="./assets/css/wagonorder.css">
     <link rel="shortcut icon" type="image/x-icon" href="./assets/branding/favicon.ico">
     <link rel="manifest" href="/manifest.json" type="application/json" >
     <meta name="theme-color" content="#000">
@@ -15,161 +16,17 @@
 
 
     <style>
-        .wagonordertable {
-            width: 100% !important;
-            border-collapse: collapse !important;
-            margin-top: 20px !important;
-        }
-        .wagonordertd {
-            vertical-align: top;
-            padding: 10px;
-        }
-        .cubesector, .vehicle {
-            margin-bottom: 5px;
-            text-align: center;
-            align-items: center;
-
-        }
-
-        .vehicledescription {
-            text-align: left;
-            margin-top: 5px;
-        }
-
-        .cubesector, .vehicle {
-            display: flex;
-            padding-left: 5px;
-            padding-right: 5px;
-        }
-
-        .cubesector {
-            background-color: #d9d9d9;
-        }
-        .vehicle {
-            background-color: #222222;
-            width: 70px;
-            justify-content: center;
-        }
-
-
-        .LOCOMOTIVE, .POWERCAR {
-            color: #fff;
-        }
-
-        .LOCOMOTIVE::before {
-            content: "LOK";
-        }
-
-        .POWERCAR::before {
-            content: "TK";
-        }
-
-        .classestruefalse {
-            background-color: green;
-        }
-
-        .classesfalsetrue {
-            background-color: #ceb214;
-        }
-
-        .HALFDININGCAR_FIRST_CLASS {
-            background-image: linear-gradient(yellow, red);
-        }
-
-        .HALFDININGCAR_ECONOMY {
-            background-image: linear-gradient(green, red);
-        }
-
-        .classestruetrue {
-            background-image: linear-gradient(green, #ceb214);
-        }
-
-        .DININGCAR {
-            background-color: red;
-        }
-
-        .diningcarBadge {
-            background-color: red;
-            border: solid 1.5px #fff;
-            color: #fff;
-            border-radius: 5px;
-            padding: 3px;
-            line-height: 40px;
-        }
-
-        .economyBadge {
-            background-color: green;
-            color: #fff;
-            border-radius: 5px;
-            padding: 3px;
-            line-height: 40px;
-        }
-
-        .firstclassBadge {
-            background-color: #ceb214;
-            color: #262626;
-            border-radius: 5px;
-            padding: 3px;
-            line-height: 40px;
-        }
-
-        .badgeicon {
-            height: 15px;
-            padding-left: 8px;
-        }
-
-        .sectoricon {
-            background-color: rgb(47, 47, 138);
-            width: 30px;
-            height: 30px;
-            color: #fff;
-            font-weight: bold;
-            border-radius: 5px;
-        }
-
-
-
-        #vehiclesColumn div:nth-child(2) {
-            border-top-right-radius: 200%;
-            border-top-left-radius: 200%;
-        }
-
-        #vehiclesColumn div:last-child {
-            border-bottom-right-radius: 200%;
-            border-bottom-left-radius: 200%;
-        }
-
-
-        #vehiclesColumn div:nth-child(2).LOCOMOTIVE {
-            border-radius: 10px 10px 0px 0px !important;
-        }
-
-
-        #vehiclesColumn div:last-child.LOCOMOTIVE {
-            border-radius: 0px 0px 10px 10px !important;
-        }
-
-        .fixednavbar {
-            top: 0px;
-            position: fixed;
-            z-index: 20;background-color: #000;
-            width: -webkit-fill-available;
-        }
-
-        /* Neue CSS-Stile für die Tooltips */
-        .serviceicon {
-            cursor: pointer;
-        }
+        
     </style>
 </head>
-<body id="body">
+<body id="body" class="bodyWithPopup">
 
 <noscript> You need to enable JavaScript to run this app. </noscript>
 
 <div id="notouch" class="notouch hidden"></div>
 
-<nav id="navbar">
-    <div class="tabs"><span class="active">&nbsp;Wagenreihung&nbsp;</span></div>
+<nav id="navbar" style="width: calc(100% - 20px); position: fixed; top: 0px;">
+    <div class="tabs"><span class="active" id="tabcontent">&nbsp;Wagenreihung&nbsp;</span></div>
     <div class="iconbar bigonly"><a href="#" onclick="history.go(-1)">Schließen</a></div>
     <div class="iconbar"><a href="#" onclick="history.go(-1)"><img src="./assets/icons/close.svg" class="mediumicon"></a></div>
 </nav>
@@ -199,6 +56,8 @@
         const response = await fetch(`https://data.cuzimmartin.dev/wagenreihung?train_number=${trainnumber}&eva=${station}&train_type=${producttype}&departure_time=${departure}`);
         const data = await response.json();
 
+        
+
         if (data.departureID) {
             console.log(data.departureID)
 
@@ -223,6 +82,24 @@
             
             `;
         }
+
+        // Navbar Tab Text
+        const transportcategory = data.groups[0].transport.category;
+        const transportnumber = data.groups[0].transport.number;
+        fetch('https://data.cuzimmartin.dev/locations?query=' + station)
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            let stationName = '';
+            data.forEach(location => {
+                    stationName = location.name;
+                    console.log(stationName)
+                });
+                document.getElementById('tabcontent').innerHTML = `&nbsp;${transportcategory} ${transportnumber} in ${stationName}&nbsp;`;
+        });
+
+        
 
         const sectorsColumn = document.getElementById('sectorsColumn');
         const vehiclesColumn = document.getElementById('vehiclesColumn');
@@ -351,15 +228,21 @@
 
                 // Map für die Kategorienamen
                 const categoryNames = {
-                    "PASSENGERCARRIAGE_FIRST_CLASS": "1. Klasse Wagen",
-                    "PASSENGERCARRIAGE_ECONOMY_CLASS": "2. Klasse Wagen",
+                    "PASSENGERCARRIAGE_FIRST_CLASS": "Sitzwagen",
+                    "PASSENGERCARRIAGE_ECONOMY_CLASS": "Sitzwagen",
                     "LOCOMOTIVE": "Lokomotive",
-                    "HALFDININGCAR_FIRST_CLASS": "Speisewagen & 1. Klasse",
-                    "CONTROLCAR_FIRST_CLASS": "Steuerwagen & 1. Klasse",
-                    "HALFDININGCAR_ECONOMY_CLASS": "Speisewagen & 2. Klasse",
-                    "CONTROLCAR_ECONOMY_CLASS": "Steuerwagen & 2. Klasse",
-                    "DOUBLEDECK_CONTROLCAR_FIRST_ECONOMOY_CLASS": "Doppelstocksteuerwagen 1. & 2. Klasse",
-                    "DOUBLEDECK_ECONOMY_CLASS": "Doppelstockwagen 2. Klasse"
+                    "HALFDININGCAR_FIRST_CLASS": "Speisewagen & Sitzwagen",
+                    "CONTROLCAR_FIRST_CLASS": "Steuerwagen & Sitzwagen",
+                    "HALFDININGCAR_ECONOMY_CLASS": "Speisewagen & Sitzwagen",
+                    "CONTROLCAR_ECONOMY_CLASS": "Steuerwagen",
+                    "CONTROLCAR_FIRST_ECONOMY_CLASS": "Steuerwagen",
+                    "DOUBLEDECK_CONTROLCAR_FIRST_ECONOMOY_CLASS": "Doppelstocksteuerwagen",
+                    "DOUBLEDECK_CONTROLCAR_ECONOMY_CLASS": "Doppelstocksteuerwagen",
+                    "DOUBLEDECK_ECONOMY_CLASS": "Doppelstockwagen",
+                    "DOUBLEDECK_FIRST_CLASS": "Doppelstockwagen",
+                    "DOUBLEDECK_FIRST_ECONOMY_CLASS": "Doppelstockwagen",
+                    "SLEEPER_FIRST_ECONOMY_CLASS": "Schlafwagen",
+                    "COUCHETTE_ECONOMY_CLASS": "Liegewagen"
                     // Weitere Kategorien hier hinzufügen
                 };
 
@@ -399,7 +282,7 @@
                     vehicleDiv.innerHTML += `<span title="${vehicle.vehicleID}">${categoryDisplayName}</span><br>`;
                 };
 
-                vehicleDiv.innerHTML += `<small class=\"disabled\">${vehicle.typeDetails.constructionType}<span class="fzg-${vehicle.vehicleID}"></span></small>`;
+                vehicleDiv.innerHTML += `<small class=\"disabled\"><a style="padding: 0px;" class="disabled" href="https://google.com/search?q=${vehicle.typeDetails.constructionType}+${vehicle.typeDetails.series}+bahn&udm=2">${vehicle.typeDetails.constructionType}<img src="./assets/icons/search.svg" style="margin-left: 7px; height: 10px;"></a><span class="fzg-${vehicle.vehicleID}"></span></small>`;
 
 
 
@@ -411,6 +294,8 @@
 
                 vehiclesDescriptionColumn.appendChild(vehicleDiv);
             });
+
+            
         });
 
     }

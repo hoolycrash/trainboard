@@ -1,0 +1,18 @@
+<script>
+
+  // Bsp. in einer script.js, ausgeführt, sobald die Seite lädt
+  const urlParams = new URLSearchParams(window.location.search);
+  const access = urlParams.get('access');
+  const refresh = urlParams.get('refresh');
+
+  if (access && refresh) {
+    // Tokens in localStorage / SessionStorage ablegen:
+    localStorage.setItem('accessToken', access);
+    localStorage.setItem('refreshToken', refresh);
+
+    // Optional: Query-Parameter wieder entfernen (Optik):
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
+
+</script>

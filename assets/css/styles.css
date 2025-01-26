@@ -1938,6 +1938,7 @@ padding-left: 0px;
 
 @media (max-width: 768px) {
 
+  
 
 
     .trip-stopovers {
@@ -2000,11 +2001,21 @@ padding-left: 0px;
 
     #originTime, #twlngoriginTime,
     #destinationTime, #twlngdestinationTime {
-    font-size: 0.8rem;
+    font-size: 1rem;
+    }
+
+    .tdPure{
+        font-size: 1em !important;
+       
     }
 }
 
 @media (max-width: 480px) {
+
+    .tdPure{
+        font-size: 1em !important;
+        
+    }
 
     .trip-header {
         flex-direction: column;

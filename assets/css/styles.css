@@ -29,6 +29,61 @@ body {
 
 }
 
+/* Info Div auf Home*/
+/* Versteckt die Checkbox */
+#toggle {
+    display: none;
+}
+
+/* Das Klickbare Div */
+.toggle-label {
+    display: inline-block;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 8px;
+    cursor: pointer;
+    user-select: none;
+    width: fit-content;
+}
+
+/* Das zweite Div */
+.content {
+    display: none;
+    text-align: center;
+}
+
+.popuplinks{
+    background-color: rgba(38, 38, 38, 0.9);
+    backdrop-filter: blur(9px);
+    width: fit-content;
+    text-align: center;
+    position: fixed;
+    top: 100px;
+    right: 10px;
+    z-index: 30;
+    text-align: right;
+    padding: 10px;
+    max-width: 73vw;
+    max-width: 300px;
+    border-radius: 7px;
+    font-size: 0.8em;
+}
+
+/* Zeigt das zweite Div an, wenn die Checkbox aktiviert ist */
+#toggle:checked ~ .content {
+    display: block;
+}
+
+/* Ändert den Text des klickbaren Divs je nach Zustand */
+#toggle:checked + .toggle-label::before {
+    content: "×";
+}
+
+#toggle:not(:checked) + .toggle-label::before {
+    content: "≡";
+}
+
 .popupContainer {
     position: fixed;
     background-color: #000000ac;

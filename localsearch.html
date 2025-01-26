@@ -15,7 +15,9 @@
 
 <body class="home">
 
+<script src="./assets/src/widgets.js"></script>
 <script src="./assets/src/pinnedPopup.js"></script>
+<script src="./assets/src/twlngPopup.js"></script>
 
 <center>
 
@@ -61,7 +63,7 @@
 <script>
 	function searchLocations() {
 		const userInput = document.getElementById('searchInput').value;
-		const apiUrl = `https://data.cuzimmartin.dev/locations?query=${userInput}`;
+		const apiUrl = `https://data.cuzimmartin.dev/v1/db/location?search=${userInput}`;
 
 		fetch(apiUrl)
 		.then(response => response.json())
@@ -75,22 +77,26 @@
 
 		data.forEach(entry => {
 			// Check if suburban is true
-			const isSuburban = entry.products.suburban === true;
-		
-			const isRegional = entry.products.regional || entry.products.regionalexpress;
+			const isSuburban = entry.products?.includes("SBAHN");
+            const isRegional = entry.products?.includes("REGIONAL");
+
 			
-			const isLocal = entry.products.tram || entry.products.bus || entry.products.u || entry.products.ferry;		
+			
+			const isLocal = entry.products?.includes("TRAM") || entry.products?.includes("BUS") || entry.products?.includes("U") || entry.products?.includes("FERRY");
 		
+
 			if (
-				entry.products.nationalExpress ||
-				entry.products.national ||
-				entry.products.regionalExpress ||
-				entry.products.regional ||
-				entry.products.suburban ||
-				entry.products.bus ||
-				entry.products.tram ||
-				entry.products.U
-			) {
+                entry.products?.includes("ICE") ||
+                entry.products?.includes("EC_IC") ||
+                entry.products?.includes("IR") ||
+                entry.products?.includes("REGIONAL") ||
+                entry.products?.includes("SBAHN") ||
+                entry.products?.includes("BUS") ||
+                entry.products?.includes("TRAM") ||
+                entry.products?.includes("UBAHN")
+            )
+
+			{
 		
 				// Create a div with class "suggestion"
 				const suggestionDiv = document.createElement('div');

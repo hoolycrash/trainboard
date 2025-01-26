@@ -273,6 +273,15 @@ body {
     background-size: 40px;
 }
 
+.twlngbutton {
+    background-image: url('.././icons/twlng.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-size: 35px;
+    background-position-y: 2px;
+    background-color: #c72730;
+}
+
 .reload {
     background-image: url('.././icons/refresh.svg');
     background-size: contain;
@@ -352,7 +361,7 @@ span {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .connectionbadge {
@@ -530,6 +539,7 @@ overflow-x: scroll;
     padding: 5px;
     margin: 10px;
     max-width: 250px;
+    z-index: -20;
 }
 
 .isle {
@@ -1005,6 +1015,14 @@ table {
     width: 100%;
 }
 
+.pureTable {
+    border: initial;
+    border-spacing: initial;
+    width: auto;
+}
+
+
+
 tr {
     font-weight: bold;
 }
@@ -1013,6 +1031,10 @@ th {
     font-weight: normal;
     padding: var(--cellpadding);
     text-align: left;
+}
+
+.tdPure {
+    vertical-align: center;
 }
 
 td {
@@ -1642,25 +1664,62 @@ margin-top: 5px;
     border-radius: 0px!important;
 }
 
-
-
-.darker {
-    background-color: #00000092;
-    padding: 10px;
+.widgetbar {
+    position: fixed;
+    bottom: 10px;
+    left: 0px;
+    right: 10px;
+    z-index: -10;
+    width: 100vw;
+    overflow-x: auto; /* Horizontaler Scrollbalken */
+    white-space: nowrap;
+    text-align: left;
+    
 }
 
-.pinnedPopup {
-    background-color: rgba(38, 38, 38, 0.8);
+.darker {
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.78);
+    
+}
+
+.darkerwidget {
+    padding: 10px;
+    background-color: rgba(25, 25, 25, 0.91);
     backdrop-filter: blur(9px);
     color: #000;
     border-radius: 10px!important;
-    position: fixed;
-    bottom: 10px;
-    left: 10px;
-    right: 10px;
-    z-index: 3;
+    
+}
+
+.pinnedPopup {
+    display: inline-block;
+    color: #fff;
+    text-align: left;
     overflow: hidden;
-    max-width: 700px;
+    width: 94vw;
+    max-width: 500px;
+    padding: 2px;
+    padding-left: 10px;
+    overflow-x: hidden;
+}
+
+.widgetname{
+    font-size: 0.8em;
+    font-weight: normal;
+    text-shadow:
+            -1px -1px 7px black,
+            0px 0px 7px black,
+            1px 1px 7px black;
+    
+}
+
+.widgeticon {
+    height: 20px;
+    border: 1px solid #fff;
+    border-radius: 9px;
+    margin-top: 5px;
+    margin-right: 5px;
 }
 
 .pinnedPopup:hover {
@@ -1867,13 +1926,13 @@ padding-left: 0px;
     }
 
 
-    #originStation,
+    #originStation
     #destinationStation {
     font-size: 1rem;
     }
 
-    #originTime,
-    #destinationTime {
+    #originTime, #twlngoriginTime,
+    #destinationTime, #twlngdestinationTime {
     font-size: 0.8rem;
     }
 }

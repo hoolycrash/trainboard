@@ -92,6 +92,7 @@
 <script>
 	async function checkConnection() {
 		const connectBtn = document.getElementById('connect-button');
+		const accessToken = localStorage.getItem('accessToken');
 		connectBtn.addEventListener('click', (event) => {
 			event.preventDefault();
 
@@ -104,7 +105,7 @@
 		});
 
 		try {
-			// 3) Anfrage an dein Backend, ob schon verbunden
+			// 3) Anfrage an Backend, ob schon verbunden
 			const response = await fetch('https://data.cuzimmartin.dev/v1/traewelling/connection-status', {
 				headers: {
 					'Authorization': 'Bearer ' + accessToken

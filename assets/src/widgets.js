@@ -43,7 +43,7 @@
 
     const lineBadge = document.createElement("div");
     lineBadge.className =
-        "linebadge badgeClassProductName IC national IC2174nahreisezug nahreisezug";
+        "linebadge";
     lineBadge.id = "Pinnedlinebadge";
     lineBadge.textContent = "XX";
 

@@ -71,7 +71,29 @@ async function loadDashboard() {
         } else {
             document.getElementById('twlngdestinationTime').innerHTML = ('<s class="disabled">' + extractTime(data.data[0].train.destination.departurePlanned) + '</s> ' + extractTime(data.data[0].train.destination.departure));
         }
-       
+
+        fetch('https://data.cuzimmartin.dev/dynamic-trip?tripId=' + encodeURIComponent(data.data[0].train.hafasId) + '&stationID=' + data.data[0].train.origin.evaIdentifier)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('twlnglinebadge').classList.add(data.trip.line.productName);
+                document.getElementById('twlnglinebadge').classList.add(data.trip.line.product);
+                document.getElementById('twlnglinebadge').classList.add(data.trip.line.name.replace(/\s+/g, '').split('(')[0] + data.trip.line.operator.id);
+                document.getElementById('twlnglinebadge').classList.add(data.trip.line.operator.id);
+
+            })
+            .catch(error => {
+                console.error('Fehler beim Laden der JSON-Datei:', error);
+            });
+
+        
+        
+        
+
     } catch (error) {
         console.error(error);
         // wenn 401 dann wird die refresh funktion aufgerufen

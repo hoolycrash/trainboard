@@ -58,11 +58,20 @@ async function loadDashboard() {
         document.getElementById('twlngoriginStationPopup').textContent = data.data[0].train.origin.name;
         document.getElementById('twlngdestinationStationPopup').textContent = data.data[0].train.destination.name;
         document.getElementById('twlngtripDurationTime').innerHTML = (`${data.data[0].train.duration} min.`);
-        document.getElementById('twlngoriginTime').textContent = extractTime(data.data[0].train.origin.departure);
-        document.getElementById('twlngdestinationTime').textContent = extractTime(data.data[0].train.destination.arrival);
         document.getElementById("twlngpopuplink").href = `trip.html?tripId=${encodeURIComponent(data.data[0].train.hafasId)}&?stationID=${data.data[0].train.origin.evaIdentifier}`;
 
+        if (data.data[0].train.origin.departure === data.data[0].train.origin.departurePlanned) {
+            document.getElementById('twlngoriginTime').textContent = extractTime(data.data[0].train.origin.departure);
+        } else {
+            document.getElementById('twlngoriginTime').innerHTML = ('<s class="disabled">' + extractTime(data.data[0].train.origin.departurePlanned) +'</s> '+ extractTime(data.data[0].train.origin.departure));
+        }
 
+        if (data.data[0].train.destination.departure === data.data[0].train.destination.departurePlanned) {
+            document.getElementById('twlngdestinationTime').textContent = extractTime(data.data[0].train.destination.departure);
+        } else {
+            document.getElementById('twlngdestinationTime').innerHTML = ('<s class="disabled">' + extractTime(data.data[0].train.destination.departurePlanned) + '</s> ' + extractTime(data.data[0].train.destination.departure));
+        }
+       
     } catch (error) {
         console.error(error);
         // wenn 401 dann wird die refresh funktion aufgerufen

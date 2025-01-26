@@ -1700,19 +1700,7 @@ font-size: 1.2rem;
 font-weight: bold;
 }
 
-#originStation,
-#destinationStation {
-font-size: 1.2rem;
-font-weight: bold;
-}
 
-
-#originTime,
-#destinationTime {
-font-size: 1rem;
-color: #0f0;
-margin-top: 5px;
-}
 
 /* Stopover Liste */
 .trip-stopovers {

@@ -74,24 +74,31 @@ async function fetchAndDisplayData() {
     // Dauer berechnen
     const departureTime = new Date(data.trip.plannedDeparture);
     const arrivalTime = new Date(data.trip.plannedArrival);
+    const realdepartureTime = new Date(data.trip.departure);
+    const realarrivalTime = new Date(data.trip.arrival);
     const duration = (arrivalTime - departureTime) / (1000 * 60 * 60);  // Stunden
     const minutes = Math.floor((duration % 1) * 60);
     document.getElementById('tripDurationTime').textContent = `${Math.floor(duration)}:${minutes.toString().padStart(2, '0')} h`;
 
     // Ursprungsstation und Zielstation setzen
     document.getElementById('originStationPopup').textContent = data.trip.origin.name;
-    document.getElementById('originTime').textContent = departureTime.toLocaleTimeString('de-DE', {
-        hour: '2-digit',
-        minute: '2-digit',
-    });
+
+    if (data.trip.plannedDeparture === data.trip.departure) {
+        document.getElementById('originTime').textContent = departureTime.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit',});
+    } else {
+        document.getElementById('originTime').innerHTML = `<s class="disabled">${departureTime.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit',})}</s> ${realdepartureTime.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit',})}`;
+    }
 
     console.log(departureTime);  // Prüfe, ob departureTime ein gültiges Datum ist
 
     document.getElementById('destinationStationPopup').textContent = data.trip.destination.name;
-    document.getElementById('destinationTime').textContent = arrivalTime.toLocaleTimeString('de-DE', {
-        hour: '2-digit',
-        minute: '2-digit',
-    });
+    
+    if (data.trip.plannedArrival === data.trip.arrival) {
+        document.getElementById('destinationTime').textContent = arrivalTime.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit',});
+    } else {
+        document.getElementById('destinationTime').innerHTML = `<s class="disabled">${arrivalTime.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit',})}</s> ${realarrivalTime.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit',})}`;
+    }
+    
 
   
     const badgeClassProductName = encodeURIComponent(data.trip.line.productName);

@@ -100,6 +100,7 @@
     destinationTime.textContent = "xx:xx";
     tripDestinationTime.appendChild(destinationTime);
 
+
     tripTimeInfo.appendChild(tripOriginTime);
     tripTimeInfo.appendChild(tripDurationDiv);
     tripTimeInfo.appendChild(tripDestinationTime);

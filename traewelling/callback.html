@@ -1,3 +1,7 @@
+<body>
+<p>Träwelling Verbindung erfolgreich! Dieses Fenster schließt sich gleich...</p>
+</body>
+
 <script>
 
   // Bsp. in einer script.js, ausgeführt, sobald die Seite lädt
@@ -9,10 +13,10 @@
     // Tokens in localStorage / SessionStorage ablegen:
     localStorage.setItem('accessToken', access);
     localStorage.setItem('refreshToken', refresh);
-
-    // Optional: Query-Parameter wieder entfernen (Optik):
-    window.history.replaceState({}, document.title, window.location.pathname);
   }
 
+  setTimeout(() => {
+      window.close();
+  }, 3000);
 
 </script>

@@ -47,7 +47,6 @@
 				<p>Die Protokolldaten werden 7 Tage aufbewahrt.</p>
 				<p><i>Trainboard</i> verwendet den Drittanbieter <i>Google Fonts</i> zur Bereitstellung von Schriftarten, welche ein plattformübergreifend einheitliches Erscheinungsbild sicherstellen: <a href="https://policies.google.com/privacy" class="black underlined">https://policies.google.com/privacy</a></p>
 
-
 			</div>
 			<div class="right-div lineview">
 				<div class="imgcard versiondiv">
@@ -56,14 +55,15 @@
 					<div class="imgcardcontent" >
 						<small class="disabled">Trainboard</small><br>
 						<span class="imgcardtitle">Bernina</span> Feature Drop<br>
-						
 
 					</div>
 				</div>
 
 				<a href="https://github.com/hoolycrash/trainboard/"><div class="githubbutton button ">GitHub</div></a>
 
-				<a href="https://data.cuzimmartin.dev/v1/traewelling/login"><div class="twlngbutton button ">Träwelling verbinden</div></a>
+				<div id="connect-button" class="twlngbutton button">
+					Träwelling verbinden
+				</div>
 
 				<a href="https://github.com/hoolycrash/trainboard/graphs/contributors">
 					<div class="button ">
@@ -74,48 +74,85 @@
 						</div>
 					</div>
 				</a>
-				
 			</div>
 
 
 		</div>
 		<span id="notice"></span>
-
 		<br>
-
 	</div>
 	
 	
 	
-<div class="blanktext">
-	
-</div>
+<div class="blanktext"></div>
 	
 </center>
 
+
 <script>
-fetch('https://api.github.com/repos/hoolycrash/trainboard/contributors')
-  .then(response => response.json())
-  .then(data => {
-    const contributorsDiv = document.getElementById('contributors');
-    data.forEach(contributor => {
-      const div = document.createElement('div');
-      div.innerHTML = `
-        <a class="contributor" href="${contributor.html_url}" class="black">
-          <img src="${contributor.avatar_url}" alt="${contributor.login}" class="avatar">
-          <strong>${contributor.login}</strong>
-          <span class="green"> +${contributor.contributions}</span>
-        </a>
-      `;
-      contributorsDiv.appendChild(div);
-    });
-  })
-  .catch(error => {
-    console.error('Fehler beim Abrufen der Daten:', error);
-  });
+	async function checkConnection() {
+		const connectBtn = document.getElementById('connect-button');
+		connectBtn.addEventListener('click', (event) => {
+			event.preventDefault();
 
-  fetchAndDisplayData();
+			// 2) Popup öffnen
+			window.open(
+					'https://data.cuzimmartin.dev/v1/traewelling/login',
+					'TräwellingLogin',
+					'width=600,height=700'
+			);
+		});
 
+		try {
+			// 3) Anfrage an dein Backend, ob schon verbunden
+			const response = await fetch('https://data.cuzimmartin.dev/v1/traewelling/connection-status', {
+				headers: {
+					'Authorization': 'Bearer ' + accessToken
+				}
+			});
+
+			// Wenn ok response -> Standard Text
+			if (!response.ok) {
+				return;
+			}
+
+			// 4) Ergebnis auswerten
+			const result = await response.json(); // z.B. { connected: true } oder false
+			if (result.connected) {
+				// Bereits verbunden => Button-Text anpassen
+				connectBtn.textContent = 'Träwelling verbunden';
+				connectBtn.onclick = null;
+			}
+		} catch (err) {
+			console.error('Fehler beim Verbindungscheck:', err);
+		}
+	}
+
+	// Beim Laden der Seite ausführen
+	document.addEventListener('DOMContentLoaded', checkConnection);
+
+
+	fetch('https://api.github.com/repos/hoolycrash/trainboard/contributors')
+	  .then(response => response.json())
+	  .then(data => {
+		const contributorsDiv = document.getElementById('contributors');
+		data.forEach(contributor => {
+		  const div = document.createElement('div');
+		  div.innerHTML = `
+			<a class="contributor" href="${contributor.html_url}" class="black">
+			  <img src="${contributor.avatar_url}" alt="${contributor.login}" class="avatar">
+			  <strong>${contributor.login}</strong>
+			  <span class="green"> +${contributor.contributions}</span>
+			</a>
+		  `;
+		  contributorsDiv.appendChild(div);
+		});
+	  })
+	  .catch(error => {
+		console.error('Fehler beim Abrufen der Daten:', error);
+	  });
+
+	  fetchAndDisplayData();
 
 </script>
 

@@ -51,6 +51,8 @@ body {
 .content {
     display: none;
     text-align: center;
+    padding: 7px;
+    padding-top: 0px;
 }
 
 .popuplinks{
@@ -59,11 +61,11 @@ body {
     width: fit-content;
     text-align: center;
     position: fixed;
-    top: 100px;
-    right: 10px;
+    top: 120px;
+    right: calc((100% - 700px) / 2);
     z-index: 30;
     text-align: right;
-    padding: 10px;
+    padding: 2px;
     max-width: 73vw;
     max-width: 300px;
     border-radius: 7px;
@@ -82,6 +84,7 @@ body {
 
 #toggle:not(:checked) + .toggle-label::before {
     content: "≡";
+
 }
 
 .popupContainer {
@@ -96,6 +99,10 @@ body {
     animation-name: startblur;
     animation-duration: 0.3s;
     z-index: 300;
+}
+
+.bigtext {
+    font-size: 1em !important;
 }
 
 .versiondiv {
@@ -1275,6 +1282,11 @@ td {
 
 
 @media (max-width: 700px) {
+    
+    .popuplinks {
+        right: 7.5%;
+        top: 93px;
+    }
 
     .tripcontainer, .blanktext {
         width: 95% !important;

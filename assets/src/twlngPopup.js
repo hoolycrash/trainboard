@@ -30,7 +30,7 @@ async function loadDashboard() {
         return;
     }
     try {
-        const response = await fetch('https://data.cuzimmartin.dev/v1/traewelling/dashboard', {
+        const response = await fetch('https://data.cuzimmartin.dev/v1/traewelling/own-statuses', {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + accessToken

@@ -58,6 +58,7 @@ body {
 .popuplinks{
     background-color: rgba(38, 38, 38, 0.9);
     backdrop-filter: blur(9px);
+    -webkit-filter: blur(9px);
     width: fit-content;
     text-align: center;
     position: fixed;
@@ -91,6 +92,7 @@ body {
     position: fixed;
     background-color: #000000ac;
     backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     width: 100%;
     height: 100%;
     display: flex;
@@ -111,9 +113,9 @@ body {
 }
 
 @keyframes startblur {
-    from {backdrop-filter: blur(0px);}
+    from {backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px);}
 
-    to {backdrop-filter: blur(10px);}
+    to {backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(0px);}
 }
 
 .actualpopup {
@@ -595,6 +597,7 @@ overflow-x: scroll;
     right: 0px;
     background-color: rgba(38,38,38,0.8);
     backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
     color: #fff;
     font-size: 15px;
     border-radius: 3px;
@@ -674,6 +677,7 @@ a {
     max-width: 700px;
     background-color: rgba(38,38,38,0.8);
     backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
     color: #fff;
     border-radius: 20px;
     overflow-y: hidden;
@@ -1742,6 +1746,7 @@ font-weight: bold;
     padding: 10px;
     background-color: rgba(25, 25, 25, 0.91);
     backdrop-filter: blur(9px);
+    -webkit-backdrop-filter: blur(9px);
     color: #000;
     border-radius: 10px!important;
     
@@ -2172,5 +2177,6 @@ top: 0px;
     z-index: 10;
     background-color: rgba(255,255,255,0.9);
     backdrop-filter: blur(7px);
+    -webkit-backdrop-filter: blur(7px);
     font-size: smaller;
 }

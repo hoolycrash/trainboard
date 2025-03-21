@@ -96,7 +96,6 @@ async function loadDashboard() {
 
     } catch (error) {
         console.error(error);
-        // wenn 401 dann wird die refresh funktion aufgerufen
         await refreshAccessToken();
         
     }
